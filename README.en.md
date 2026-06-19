@@ -1,6 +1,6 @@
 # @file-viewer/web
 
-The standard pure web native wrapper for Flyfish File Viewer. It mounts the complete viewer directly into the target DOM and ships the ESM API, IIFE global bundle, and asset-copy CLI for legacy admin pages, script-tag usage, and framework-free systems.
+The standard pure web native component package for Flyfish File Viewer. It mounts the complete viewer directly into the target DOM and ships the ESM API, IIFE global bundle, and asset-copy CLI for legacy admin pages, script-tag usage, and framework-free systems.
 
 ```bash
 npm install @file-viewer/web
@@ -40,12 +40,12 @@ The historical package `@flyfish-group/file-viewer-web` remains supported for co
 
 ## Capabilities
 
-`@file-viewer/web` shares the same native preview capability set with the Vue 3, Vue 2, React, jQuery, and Svelte wrappers, including PDF, Word, Excel, PowerPoint, OFD, CAD/DWG/DXF/DWF, EPUB/UMD, archives, email, Markdown, highlighted code, images, audio, video, 3D models, geospatial files, and structured data assets. See the complete format matrix and option reference at https://doc.flyfish.dev/guide/formats
+`@file-viewer/web` shares the same native preview capability set with the Vue 3, Vue 2, React, jQuery, and Svelte standard component packages, including PDF, Word, Excel, PowerPoint, OFD, CAD/DWG/DXF/DWF, EPUB/UMD, archives, email, Markdown, highlighted code, images, audio, video, 3D models, geospatial files, and structured data assets. See the complete format matrix and option reference at https://doc.flyfish.dev/guide/formats
 
 <!-- FILE_VIEWER_GENERATED:START -->
 ## Ecosystem Matrix
 
-Every standard wrapper shares `@file-viewer/core` as the only common foundation, and no wrapper depends on another wrapper. Core owns format metadata, source loading, browser/renderers, events, operation APIs, search, zoom, print, and export; each framework wrapper owns its local controller, component lifecycle, type exports, and ecosystem-specific interaction layer.
+Every standard component package shares `@file-viewer/core` as the only common foundation, and no framework component package depends on another framework implementation. Core owns format metadata, source loading, browser/renderers, events, operation APIs, search, zoom, print, and export; each framework package owns its local controller, component lifecycle, type exports, and ecosystem-specific interaction layer.
 
 | Framework | Standard npm package | Entrypoints | GitHub | Gitee | Historical aliases |
 | --- | --- | --- | --- | --- | --- |
@@ -60,7 +60,7 @@ Every standard wrapper shares `@file-viewer/core` as the only common foundation,
 
 ## Format Support Matrix
 
-The shared core currently covers 23 preview pipelines and 194 file extensions. Renderers stay lazy-loaded, and wrapper packages only adapt their own ecosystem without nesting through another wrapper.
+The shared core currently covers 23 preview pipelines and 194 file extensions. Renderers stay lazy-loaded, and component packages only adapt their own ecosystem without nesting through another framework implementation.
 
 | Preview pipeline | Category | Extensions | Capabilities | Loading |
 | --- | --- | --- | --- | --- |
@@ -90,5 +90,5 @@ The shared core currently covers 23 preview pipelines and 194 file extensions. R
 
 See the official documentation for options, lifecycle hooks, beforeOperation, theme, watermark, search, zoom, print, and export APIs: https://doc.flyfish.dev/
 
-Online demo: https://viewer.flyfish.dev/. License: Apache-2.0. For second development or commercial use, keep clear Flyfish Viewer attribution; shared compatibility fixes are welcome in the matching wrapper repository.
+Online demo: https://viewer.flyfish.dev/. License: Apache-2.0. For second development or commercial use, keep clear Flyfish Viewer attribution; shared compatibility fixes are welcome in the matching component repository.
 <!-- FILE_VIEWER_GENERATED:END -->

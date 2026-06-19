@@ -51,6 +51,10 @@ export type {
   ViewerToolbarPosition,
   ViewerTypstOptions,
   ViewerWatermarkOptions,
+  ViewerLifecycleContext,
+  ViewerOperationContext,
+  ViewerState,
+  ViewerStateListener,
 } from './controller.js'
 
 export default FlyfishFileViewerWeb

@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "private": false,
   "type": "module",
-  "description": "Standard pure web wrapper for Flyfish File Viewer",
+  "description": "Standard pure web component package for Flyfish File Viewer",
   "keywords": [
     "file-viewer",
     "document-preview",

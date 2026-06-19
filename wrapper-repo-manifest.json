@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-19T10:08:26.370Z",
+  "generatedAt": "2026-06-19T12:31:17.920Z",
   "sourceBranch": "v3",
-  "sourceCommit": "aa31fe9",
+  "sourceCommit": "3e293b0",
   "organization": "flyfish-dev",
   "framework": "Pure Web",
   "packageName": "@file-viewer/web",
@@ -20,7 +20,7 @@
   "historicalPackages": [
     "@flyfish-group/file-viewer-web"
   ],
-  "sourcePackageDir": "packages/wrappers/web",
+  "sourcePackageDir": "packages/components/web",
   "corePackage": "@file-viewer/core",
-  "coreSourceVisibility": "private-source"
+  "coreSourceVisibility": "public-source"
 }
