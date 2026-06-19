@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-19T10:08:26.370Z",
+  "sourceBranch": "v3",
+  "sourceCommit": "aa31fe9",
+  "organization": "flyfish-dev",
+  "framework": "Pure Web",
+  "packageName": "@file-viewer/web",
+  "packageVersion": "2.0.0",
+  "repository": "file-viewer-web",
+  "github": "https://github.com/flyfish-dev/file-viewer-web",
+  "gitee": "https://gitee.com/flyfish-dev/file-viewer-web",
+  "entryFormats": [
+    "esm",
+    "types",
+    "iife",
+    "viewer-assets",
+    "copy-assets-cli"
+  ],
+  "historicalPackages": [
+    "@flyfish-group/file-viewer-web"
+  ],
+  "sourcePackageDir": "packages/wrappers/web",
+  "corePackage": "@file-viewer/core",
+  "coreSourceVisibility": "private-source"
+}

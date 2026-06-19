@@ -1,0 +1,75 @@
+{
+  "name": "@file-viewer/web",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Standard pure web wrapper for Flyfish File Viewer",
+  "keywords": [
+    "file-viewer",
+    "document-preview",
+    "native-viewer",
+    "vanilla-js",
+    "web"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "author": {
+    "name": "Wangyu",
+    "email": "wybaby168@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyfish-dev/file-viewer-web.git"
+  },
+  "homepage": "https://github.com/flyfish-dev/file-viewer-web",
+  "bugs": {
+    "url": "https://github.com/flyfish-dev/file-viewer-web/issues"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/flyfish-file-viewer-web.iife.js",
+  "jsdelivr": "./dist/flyfish-file-viewer-web.iife.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js",
+      "default": "./dist/node.js"
+    },
+    "./viewer/*": "./viewer/*",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "file-viewer-copy-assets": "./scripts/copy-assets.mjs"
+  },
+  "files": [
+    "dist",
+    "scripts/copy-assets.mjs",
+    "viewer",
+    "README.md",
+    "README.en.md"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.json && node scripts/build-iife.mjs",
+    "postinstall": "node ./scripts/copy-assets.mjs --postinstall",
+    "type-check": "tsc -b tsconfig.json"
+  },
+  "dependencies": {
+    "@file-viewer/core": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "esbuild": "^0.27.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.16"
+  },
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@11.0.9"
+}
