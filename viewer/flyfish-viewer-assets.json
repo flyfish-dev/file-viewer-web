@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-19T08:28:09.618Z",
+  "generatedAt": "2026-06-20T16:03:13.881Z",
   "rendererAssetManifests": [
     {
       "rendererId": "archive",
@@ -99,22 +99,23 @@
           "id": "typst-compiler-wasm",
           "rendererId": "typst",
           "kind": "wasm",
-          "target": "external",
+          "target": "public",
           "required": true,
-          "defaultUrl": "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler@0.7.0/pkg/typst_ts_web_compiler_bg.wasm",
+          "defaultPath": "wasm/typst/typst_ts_web_compiler_bg.wasm",
+          "packagePath": "@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm",
           "optionPath": "typst.compilerWasmUrl",
-          "description": "Typst compiler WebAssembly module; configurable for private CDN deployment."
+          "description": "Typst compiler WebAssembly module copied to the public assets directory."
         },
         {
           "id": "typst-renderer-wasm",
           "rendererId": "typst",
-          "kind": "bundled-wasm",
-          "target": "bundled",
+          "kind": "wasm",
+          "target": "public",
           "required": true,
-          "defaultUrl": "https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer@0.7.0/pkg/typst_ts_renderer_bg.wasm",
+          "defaultPath": "wasm/typst/typst_ts_renderer_bg.wasm",
           "packagePath": "@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm",
           "optionPath": "typst.rendererWasmUrl",
-          "description": "Typst SVG renderer WebAssembly module bundled by the active frontend build tool."
+          "description": "Typst SVG renderer WebAssembly module copied to the public assets directory."
         }
       ]
     },
@@ -125,18 +126,19 @@
           "id": "data-sql-wasm",
           "rendererId": "data-asset",
           "kind": "wasm",
-          "target": "external",
+          "target": "public",
           "required": false,
-          "defaultUrl": "https://cdn.jsdelivr.net/npm/sql.js@1.14.1/dist/sql-wasm.wasm",
+          "defaultPath": "wasm/data/sql-wasm.wasm",
+          "packagePath": "sql.js/dist/sql-wasm.wasm",
           "optionPath": "data.sqlWasmUrl",
-          "description": "sql.js WebAssembly module used when previewing SQLite files."
+          "description": "sql.js WebAssembly module copied to the public assets directory for SQLite previews."
         }
       ]
     }
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-06-19T08:28:09.617Z",
+    "checkedAt": "2026-06-20T16:03:13.881Z",
     "assets": [
       {
         "id": "libarchive-worker",
@@ -207,6 +209,36 @@
         "relativePath": "vendor/xlsx/sheet.worker.js",
         "exists": true,
         "description": "Optional Spreadsheet worker for off-main-thread styled-exceljs workbook parsing."
+      },
+      {
+        "id": "typst-compiler-wasm",
+        "rendererId": "typst",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/typst/typst_ts_web_compiler_bg.wasm",
+        "exists": true,
+        "description": "Typst compiler WebAssembly module copied to the public assets directory."
+      },
+      {
+        "id": "typst-renderer-wasm",
+        "rendererId": "typst",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/typst/typst_ts_renderer_bg.wasm",
+        "exists": true,
+        "description": "Typst SVG renderer WebAssembly module copied to the public assets directory."
+      },
+      {
+        "id": "data-sql-wasm",
+        "rendererId": "data-asset",
+        "kind": "wasm",
+        "target": "public",
+        "required": false,
+        "relativePath": "wasm/data/sql-wasm.wasm",
+        "exists": true,
+        "description": "sql.js WebAssembly module copied to the public assets directory for SQLite previews."
       }
     ],
     "missingRequired": [],
