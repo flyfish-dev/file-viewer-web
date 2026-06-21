@@ -110,7 +110,9 @@ const isExpectedAssetKind = (
   asset: FileViewerRendererAssetDefinition,
   pathStat: { isDirectory(): boolean; isFile(): boolean }
 ) => {
-  return asset.kind === 'wasm-directory' ? pathStat.isDirectory() : pathStat.isFile()
+  return asset.kind === 'directory' || asset.kind === 'wasm-directory'
+    ? pathStat.isDirectory()
+    : pathStat.isFile()
 }
 
 export const validateViewerAssets = async (
