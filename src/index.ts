@@ -6,6 +6,11 @@ import {
   type ViewerCoreOptions,
 } from './controller.js'
 import { fileViewerCoreRendererRegistry } from '@file-viewer/core'
+import {
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
+} from './element.js'
 
 export const mountViewer = (
   container: HTMLElement,
@@ -20,10 +25,25 @@ export const mountViewer = (
 
 const FlyfishFileViewerWeb = {
   createViewerControllerHandle,
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
   mountViewer,
 }
 
 export { createViewerControllerHandle }
+export {
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
+}
+export type {
+  FileViewerElementErrorDetail,
+  FileViewerElementEventName,
+  FileViewerElementReadyDetail,
+  FileViewerElementSource,
+  FileViewerElementStateChangeDetail,
+} from './element.js'
 
 export type {
   FileRef,

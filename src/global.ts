@@ -1,10 +1,16 @@
 import {
   createViewerControllerHandle,
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
   mountViewer
 } from './index'
 
 const FlyfishFileViewerWeb = {
   createViewerControllerHandle,
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
   mountViewer
 }
 
@@ -18,10 +24,14 @@ declare global {
 
 if (typeof window !== 'undefined') {
   window.FlyfishFileViewerWeb = FlyfishFileViewerWeb
+  defineFileViewerElement()
 }
 
 export {
   createViewerControllerHandle,
+  defineFileViewerElement,
+  FileViewerElement,
+  FILE_VIEWER_ELEMENT_TAG,
   mountViewer
 }
 
