@@ -6,6 +6,7 @@ import { build } from 'vite'
 
 const packageDir = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const entry = join(packageDir, 'src', 'global.ts')
+const excalidrawStub = join(packageDir, 'scripts', 'excalidraw-iife-stub.ts')
 const outDir = join(packageDir, 'dist')
 const fileName = 'flyfish-file-viewer-web.iife.js'
 
@@ -24,6 +25,12 @@ await build({
     'process.env': JSON.stringify({ NODE_ENV: 'production' })
   },
   resolve: {
+    alias: {
+      // The script-tag/IIFE bundle must stay framework-free. The official
+      // Excalidraw export package pulls React peer dependencies, so the IIFE
+      // build intentionally falls back to core's built-in rough.js renderer.
+      '@excalidraw/excalidraw': excalidrawStub
+    },
     dedupe: ['@file-viewer/core']
   },
   build: {

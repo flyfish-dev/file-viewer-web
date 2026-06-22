@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-21T00:09:27.840Z",
+  "generatedAt": "2026-06-21T15:10:58.634Z",
   "rendererAssetManifests": [
     {
       "rendererId": "drawing",
@@ -142,7 +142,17 @@
           "required": false,
           "defaultPath": "vendor/docx/docx.worker.js",
           "optionPath": "docx.workerUrl",
-          "description": "Optional DOCX worker for off-main-thread docx-preview parsing and HTML assembly."
+          "description": "Optional @file-viewer/docx worker for off-main-thread DOCX ZIP/XML parsing."
+        },
+        {
+          "id": "docx-worker-jszip",
+          "rendererId": "office-word-openxml",
+          "kind": "script",
+          "target": "public",
+          "required": false,
+          "defaultPath": "vendor/docx/jszip.min.js",
+          "optionPath": "docx.workerJsZipUrl",
+          "description": "JSZip runtime loaded by the @file-viewer/docx worker for fully offline DOCX parsing."
         }
       ]
     },
@@ -207,7 +217,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-06-21T00:09:27.840Z",
+    "checkedAt": "2026-06-21T15:10:58.633Z",
     "assets": [
       {
         "id": "drawio-viewer-script",
@@ -327,7 +337,17 @@
         "required": false,
         "relativePath": "vendor/docx/docx.worker.js",
         "exists": true,
-        "description": "Optional DOCX worker for off-main-thread docx-preview parsing and HTML assembly."
+        "description": "Optional @file-viewer/docx worker for off-main-thread DOCX ZIP/XML parsing."
+      },
+      {
+        "id": "docx-worker-jszip",
+        "rendererId": "office-word-openxml",
+        "kind": "script",
+        "target": "public",
+        "required": false,
+        "relativePath": "vendor/docx/jszip.min.js",
+        "exists": true,
+        "description": "JSZip runtime loaded by the @file-viewer/docx worker for fully offline DOCX parsing."
       },
       {
         "id": "spreadsheet-worker",
