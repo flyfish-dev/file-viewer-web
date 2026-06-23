@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-21T15:10:58.634Z",
+  "generatedAt": "2026-06-23T07:52:31.532Z",
   "rendererAssetManifests": [
     {
       "rendererId": "drawing",
@@ -195,6 +195,16 @@
           "packagePath": "@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm",
           "optionPath": "typst.rendererWasmUrl",
           "description": "Typst SVG renderer WebAssembly module copied to the public assets directory."
+        },
+        {
+          "id": "typst-font-assets",
+          "rendererId": "typst",
+          "kind": "directory",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/typst/fonts/",
+          "optionPath": "typst.fontAssetsUrl",
+          "description": "Self-hosted default Typst text fonts used by typst.ts without public CDN requests."
         }
       ]
     },
@@ -217,7 +227,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-06-21T15:10:58.633Z",
+    "checkedAt": "2026-06-23T07:52:31.531Z",
     "assets": [
       {
         "id": "drawio-viewer-script",
@@ -378,6 +388,16 @@
         "relativePath": "wasm/typst/typst_ts_renderer_bg.wasm",
         "exists": true,
         "description": "Typst SVG renderer WebAssembly module copied to the public assets directory."
+      },
+      {
+        "id": "typst-font-assets",
+        "rendererId": "typst",
+        "kind": "directory",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/typst/fonts/",
+        "exists": true,
+        "description": "Self-hosted default Typst text fonts used by typst.ts without public CDN requests."
       },
       {
         "id": "data-sql-wasm",

@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/web",
-  "version": "2.0.11",
+  "version": "2.1.1",
   "private": false,
   "type": "module",
   "description": "Standard pure web component package for Flyfish File Viewer",
@@ -9,7 +9,12 @@
     "document-preview",
     "native-viewer",
     "vanilla-js",
-    "web"
+    "web",
+    "document-viewer",
+    "file-preview",
+    "self-hosted",
+    "web-component",
+    "custom-element"
   ],
   "publishConfig": {
     "access": "public",
@@ -26,6 +31,10 @@
   "homepage": "https://github.com/flyfish-dev/file-viewer-web",
   "bugs": {
     "url": "https://github.com/flyfish-dev/file-viewer-web/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://dev.flyfish.group/shop"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -62,7 +71,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "^2.0.11"
+    "@file-viewer/core": "^2.1.1"
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
