@@ -52,6 +52,7 @@ const observedAttributes = [
   'name',
   'type',
   'size',
+  'locale',
   'theme',
   'toolbar',
   'toolbar-position',
@@ -213,6 +214,19 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
 
   set options(value: ViewerOptions | undefined) {
     this.setMountOptions({ options: value });
+  }
+
+  get locale(): ViewerOptions['locale'] | undefined {
+    return this.mountOptions.options?.locale || this.getAttribute('locale') as ViewerOptions['locale'] | null || undefined;
+  }
+
+  set locale(value: ViewerOptions['locale'] | undefined) {
+    this.setMountOptions({
+      options: {
+        ...(this.mountOptions.options || {}),
+        locale: value,
+      },
+    });
   }
 
   get source(): FileViewerElementSource {
@@ -473,6 +487,11 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
 
   private readAttributeViewerOptions(): ViewerOptions | undefined {
     const options = parseJsonObject<ViewerOptions>(this.getAttribute('options')) || {};
+    const locale = this.getAttribute('locale');
+    if (locale) {
+      options.locale = locale as ViewerOptions['locale'];
+    }
+
     const theme = this.getAttribute('theme');
     if (theme) {
       options.theme = theme as ViewerOptions['theme'];
