@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/web",
-  "version": "2.1.4",
+  "version": "2.1.8",
   "private": false,
   "type": "module",
   "description": "Standard pure web component package for Flyfish File Viewer",
@@ -71,7 +71,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "^2.1.4"
+    "@file-viewer/core": "^2.1.8"
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
