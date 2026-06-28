@@ -1,10 +1,16 @@
 import { createViewer } from '@file-viewer/core';
 import {
   DEFAULT_FILE_VIEWER_SOURCE_FILENAME,
+  createFileViewerTranslator,
   getExtension,
+  hasVisibleFileViewerToolbarActions,
+  isFileViewerZoomButtonDisabled,
+  normalizeFileViewerToolbar,
   normalizeFilename,
   readFileViewerBuffer,
   resolveFileViewerSourceFilename,
+  resolveFileViewerToolbarPosition,
+  resolveVisibleFileViewerToolbar,
   wrapFileViewerFileRef,
   type FileViewerAiOptions,
   type FileViewerArchiveOptions,
@@ -366,6 +372,62 @@ const isAbortError = (error: unknown) => {
   return Boolean(error && typeof error === 'object' && (error as { name?: string }).name === 'AbortError');
 };
 
+const DEFAULT_TOOLBAR_AVAILABILITY: FileViewerOperationAvailability = {
+  download: false,
+  print: false,
+  exportHtml: false,
+  zoom: false,
+  zoomIn: false,
+  zoomOut: false,
+  zoomReset: false,
+};
+
+const DEFAULT_TOOLBAR_ZOOM_STATE: FileViewerZoomState = {
+  scale: 1,
+  label: '100%',
+  canZoomIn: false,
+  canZoomOut: false,
+  canReset: false,
+};
+
+const WEB_VIEWER_STYLE = `
+.file-viewer-web-shell{position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;background:transparent}
+.file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0}
+.file-viewer-web-toolbar{flex:0 0 auto;min-height:45px;display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;padding:6px 10px;border-bottom:1px solid rgba(20,35,53,.06);background:rgba(255,255,255,.92);box-sizing:border-box;z-index:20}
+.file-viewer-web-toolbar[hidden]{display:none!important}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));min-height:42px;padding:6px;border:1px solid rgba(20,35,53,.1);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(15,23,42,.16);backdrop-filter:blur(16px)}
+.file-viewer-web-toolbar-group{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid rgba(20,35,53,.08);border-radius:999px;background:rgba(20,35,53,.035)}
+.file-viewer-web-toolbar button{min-width:42px;height:30px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#40546a;font:inherit;font-size:12px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}
+.file-viewer-web-toolbar button:hover:not(:disabled){background:rgba(33,163,102,.1);color:#16774c}
+.file-viewer-web-toolbar button:disabled{color:#aab5c0;cursor:not-allowed}
+.file-viewer-web-toolbar .file-viewer-web-icon-button{width:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;padding:0 8px;color:#23465e}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:48px;height:32px;border-radius:999px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:32px;min-width:32px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px}
+.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}
+.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar button{color:#d7dee8}
+@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar button{color:#d7dee8}}
+`;
+
+const createButton = (
+  documentRef: Document,
+  label: string,
+  className: string,
+  onClick: () => void | Promise<unknown>
+) => {
+  const button = documentRef.createElement('button');
+  button.type = 'button';
+  button.className = className;
+  button.textContent = label;
+  button.title = label;
+  button.setAttribute('aria-label', label);
+  button.addEventListener('click', () => {
+    void onClick();
+  });
+  return button;
+};
+
 export const mountViewer = (
   container: HTMLElement,
   initialOptions: ViewerMountOptions = {},
@@ -374,6 +436,18 @@ export const mountViewer = (
   if (!isBrowser()) {
     throw new Error('Flyfish File Viewer can only be mounted in a browser DOM environment.');
   }
+
+  const documentRef = container.ownerDocument;
+  const styleEl = documentRef.createElement('style');
+  styleEl.textContent = WEB_VIEWER_STYLE;
+  const shell = documentRef.createElement('div');
+  shell.className = 'file-viewer-web-shell';
+  const toolbarEl = documentRef.createElement('div');
+  toolbarEl.className = 'file-viewer-web-toolbar';
+  const contentEl = documentRef.createElement('div');
+  contentEl.className = 'file-viewer-web-content';
+  shell.append(toolbarEl, contentEl);
+  container.replaceChildren(styleEl, shell);
 
   let disposed = false;
   let currentOptions: ViewerMountOptions = initialOptions;
@@ -399,8 +473,125 @@ export const mountViewer = (
       ? { ...state.search, matches: [...state.search.matches] }
       : null,
   });
+  const getCurrentExtension = () => {
+    if (state.lifecycle?.type) {
+      return state.lifecycle.type;
+    }
+    return currentSource ? getExtension(resolveViewerSourceFilename(currentSource)) : '';
+  };
+  let instance: FileViewerInstance;
+  const getToolbarZoomState = () => state.zoom || instance.getZoomState() || DEFAULT_TOOLBAR_ZOOM_STATE;
+  const getToolbarAvailability = () => state.availability || instance.getCapabilities() || DEFAULT_TOOLBAR_AVAILABILITY;
+  const syncShellTheme = () => {
+    shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
+  };
+  let controller: ViewerController | null = null;
+  const renderToolbar = () => {
+    if (disposed) {
+      return;
+    }
+
+    syncShellTheme();
+    const options = currentOptions.options || {};
+    const toolbar = normalizeFileViewerToolbar(options);
+    const availability = getToolbarAvailability();
+    const visibleToolbar = resolveVisibleFileViewerToolbar(toolbar, availability);
+    const showToolbar = hasVisibleFileViewerToolbarActions(visibleToolbar);
+    const toolbarPosition = resolveFileViewerToolbarPosition(options, getCurrentExtension());
+    const toolbarDisabled = state.loading || !!state.error;
+    const zoomState = getToolbarZoomState();
+    const t = createFileViewerTranslator(options);
+    toolbarEl.hidden = !showToolbar;
+    toolbarEl.dataset.toolbarPosition = toolbarPosition;
+    toolbarEl.replaceChildren();
+
+    if (!showToolbar) {
+      return;
+    }
+
+    if (visibleToolbar.zoom) {
+      const group = documentRef.createElement('div');
+      group.className = 'file-viewer-web-toolbar-group';
+      group.setAttribute('aria-label', t('toolbar.zoomGroup'));
+
+      if (availability.zoomOut) {
+        const button = createButton(documentRef, '-', 'file-viewer-web-icon-button', () => controller?.zoomOut());
+        button.title = t('toolbar.zoomOut');
+        button.setAttribute('aria-label', t('toolbar.zoomOut'));
+        button.disabled = isFileViewerZoomButtonDisabled({
+          action: 'canZoomOut',
+          availability,
+          toolbarDisabled,
+          zoomState,
+        });
+        group.appendChild(button);
+      }
+
+      if (availability.zoomReset) {
+        const meter = createButton(documentRef, zoomState.label, 'file-viewer-web-zoom-meter', () => controller?.resetZoom());
+        meter.title = t('toolbar.zoomReset');
+        meter.disabled = isFileViewerZoomButtonDisabled({
+          action: 'canReset',
+          availability,
+          toolbarDisabled,
+          zoomState,
+        });
+        group.appendChild(meter);
+      }
+
+      if (availability.zoomIn) {
+        const button = createButton(documentRef, '+', 'file-viewer-web-icon-button', () => controller?.zoomIn());
+        button.title = t('toolbar.zoomIn');
+        button.setAttribute('aria-label', t('toolbar.zoomIn'));
+        button.disabled = isFileViewerZoomButtonDisabled({
+          action: 'canZoomIn',
+          availability,
+          toolbarDisabled,
+          zoomState,
+        });
+        group.appendChild(button);
+      }
+
+      if (availability.zoomReset) {
+        const button = createButton(documentRef, '1:1', 'file-viewer-web-icon-button', () => controller?.resetZoom());
+        button.title = t('toolbar.zoomReset');
+        button.setAttribute('aria-label', t('toolbar.zoomReset'));
+        button.disabled = isFileViewerZoomButtonDisabled({
+          action: 'canReset',
+          availability,
+          toolbarDisabled,
+          zoomState,
+        });
+        group.appendChild(button);
+      }
+
+      if (group.childElementCount) {
+        toolbarEl.appendChild(group);
+      }
+    }
+
+    if (visibleToolbar.download) {
+      const button = createButton(documentRef, t('toolbar.download'), '', () => controller?.downloadOriginalFile());
+      button.title = t('toolbar.downloadTitle');
+      button.disabled = toolbarDisabled;
+      toolbarEl.appendChild(button);
+    }
+    if (visibleToolbar.print) {
+      const button = createButton(documentRef, t('toolbar.print'), '', () => controller?.printRenderedHtml());
+      button.title = t('toolbar.printTitle');
+      button.disabled = toolbarDisabled;
+      toolbarEl.appendChild(button);
+    }
+    if (visibleToolbar.exportHtml) {
+      const button = createButton(documentRef, t('toolbar.exportHtml'), '', () => controller?.exportRenderedHtml());
+      button.title = t('toolbar.exportHtmlTitle');
+      button.disabled = toolbarDisabled;
+      toolbarEl.appendChild(button);
+    }
+  };
   const notifyState = (event?: ViewerEvent) => {
     const snapshot = snapshotState();
+    renderToolbar();
     currentOptions.onStateChange?.(snapshot, event);
     listeners.forEach(listener => listener(snapshot, event));
   };
@@ -435,11 +626,12 @@ export const mountViewer = (
     currentOptions.onEvent?.(event);
     notifyState(event);
   };
-  const instance = createViewer(container, {
+  instance = createViewer(contentEl, {
     registry: coreOptions.registry,
     options: currentOptions.options,
     onEvent: applyViewerEvent,
   });
+  renderToolbar();
 
   const cancel = () => {
     abortController?.abort();
@@ -481,12 +673,13 @@ export const mountViewer = (
     void loadSource(currentSource);
   }
 
-  const controller: ViewerController = {
+  controller = {
     container,
     async load(nextOptions) {
       if (disposed) return;
       currentOptions = nextOptions;
       instance.updateOptions(currentOptions.options || {});
+      renderToolbar();
       if (hasSource(currentOptions)) {
         await loadSource(toViewerSourceInput(currentOptions));
       }
@@ -499,6 +692,7 @@ export const mountViewer = (
         options: nextOptions.options ?? currentOptions.options,
       };
       instance.updateOptions(currentOptions.options || {});
+      renderToolbar();
       if (hasSource(currentOptions)) {
         await loadSource(toViewerSourceInput(currentOptions));
       } else {
