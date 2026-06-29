@@ -28,6 +28,7 @@ import {
   type FileViewerOperationContext,
   type FileViewerOptions,
   type FileViewerPdfOptions,
+  type FileViewerPresentationOptions,
   type FileViewerSpreadsheetOptions,
   type FileViewerPublicApi,
   type FileViewerSource,
@@ -50,6 +51,7 @@ export type ViewerToolbarPosition = FileViewerToolbarPosition;
 export type ViewerToolbarOptions = FileViewerToolbarOptions;
 export type ViewerArchiveOptions = FileViewerArchiveOptions;
 export type ViewerPdfOptions = FileViewerPdfOptions;
+export type ViewerPresentationOptions = FileViewerPresentationOptions;
 export type ViewerSpreadsheetOptions = FileViewerSpreadsheetOptions;
 export type ViewerDocxOptions = FileViewerDocxOptions;
 export type ViewerTypstOptions = FileViewerTypstOptions;
