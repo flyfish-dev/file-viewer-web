@@ -48,6 +48,7 @@ export type {
 export type {
   FileRef,
   ViewerAiOptions,
+  ViewerApplyViewStateOptions,
   ViewerArchiveOptions,
   ViewerCadOptions,
   ViewerController,
@@ -71,6 +72,7 @@ export type {
   ViewerToolbarOptions,
   ViewerToolbarPosition,
   ViewerTypstOptions,
+  ViewerViewState,
   ViewerWatermarkOptions,
   ViewerLifecycleContext,
   ViewerOperationContext,

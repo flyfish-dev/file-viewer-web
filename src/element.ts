@@ -332,6 +332,17 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
     return this.controller?.resetZoom() ?? Promise.resolve(null);
   }
 
+  getViewState(): ReturnType<ViewerControllerHandle['getViewState']> {
+    return this.controller?.getViewState() ?? null;
+  }
+
+  applyViewState(
+    state: Parameters<ViewerControllerHandle['applyViewState']>[0],
+    options?: Parameters<ViewerControllerHandle['applyViewState']>[1]
+  ): ReturnType<ViewerControllerHandle['applyViewState']> {
+    return this.controller?.applyViewState(state, options) ?? Promise.resolve(null);
+  }
+
   searchDocument(query: string): ReturnType<ViewerControllerHandle['searchDocument']> {
     return this.controller?.searchDocument(query) ?? Promise.resolve(null);
   }

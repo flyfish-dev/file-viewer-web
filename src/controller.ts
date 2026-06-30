@@ -1,4 +1,4 @@
-import { createViewer } from '@file-viewer/core';
+import { applyFileViewerZoomAvailability, createViewer } from '@file-viewer/core';
 import {
   DEFAULT_FILE_VIEWER_SOURCE_FILENAME,
   createFileViewerTranslator,
@@ -13,6 +13,7 @@ import {
   resolveVisibleFileViewerToolbar,
   wrapFileViewerFileRef,
   type FileViewerAiOptions,
+  type FileViewerApplyViewStateOptions,
   type FileViewerArchiveOptions,
   type FileViewerCadOptions,
   type FileViewerDocxOptions,
@@ -38,6 +39,7 @@ import {
   type FileViewerToolbarOptions,
   type FileViewerToolbarPosition,
   type FileViewerTypstOptions,
+  type FileViewerViewState,
   type FileViewerWatermarkOptions,
   type FileViewerZoomState,
   type RendererRegistry,
@@ -58,6 +60,8 @@ export type ViewerTypstOptions = FileViewerTypstOptions;
 export type ViewerCadOptions = FileViewerCadOptions;
 export type ViewerSearchOptions = FileViewerSearchOptions;
 export type ViewerAiOptions = FileViewerAiOptions;
+export type ViewerViewState = FileViewerViewState;
+export type ViewerApplyViewStateOptions = FileViewerApplyViewStateOptions;
 export type ViewerThemeMode = FileViewerThemeMode;
 export type ViewerOptions = FileViewerOptions;
 export type ViewerEventType = FileViewerEventType;
@@ -76,6 +80,7 @@ export interface ViewerState {
   search: FileViewerSearchState | null;
   zoom: FileViewerZoomState | null;
   location: FileViewerDocumentAnchor | null;
+  viewState: FileViewerViewState | null;
 }
 
 export type ViewerStateListener = (
@@ -135,6 +140,11 @@ export interface ViewerController {
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
   resetZoom(): Promise<FileViewerZoomState | null>;
+  getViewState(): FileViewerViewState | null;
+  applyViewState(
+    state: FileViewerViewState,
+    options?: FileViewerApplyViewStateOptions
+  ): Promise<FileViewerViewState | null>;
   searchDocument(query: string): Promise<FileViewerSearchState | null>;
   clearDocumentSearch(): Promise<FileViewerSearchState | null>;
   nextSearchResult(): Promise<FileViewerSearchState | null>;
@@ -165,6 +175,11 @@ export interface ViewerControllerHandle {
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
   resetZoom(): Promise<FileViewerZoomState | null>;
+  getViewState(): FileViewerViewState | null;
+  applyViewState(
+    state: FileViewerViewState,
+    options?: FileViewerApplyViewStateOptions
+  ): Promise<FileViewerViewState | null>;
   searchDocument(query: string): Promise<FileViewerSearchState | null>;
   clearDocumentSearch(): Promise<FileViewerSearchState | null>;
   nextSearchResult(): Promise<FileViewerSearchState | null>;
@@ -318,6 +333,12 @@ export const createViewerControllerHandle = (
   resetZoom() {
     return getController()?.resetZoom() ?? Promise.resolve(null);
   },
+  getViewState() {
+    return getController()?.getViewState() ?? null;
+  },
+  applyViewState(state, options) {
+    return getController()?.applyViewState(state, options) ?? Promise.resolve(null);
+  },
   searchDocument(query) {
     return getController()?.searchDocument(query) ?? Promise.resolve(null);
   },
@@ -403,10 +424,11 @@ const WEB_VIEWER_STYLE = `
 .file-viewer-web-toolbar button:hover:not(:disabled){background:rgba(33,163,102,.1);color:#16774c}
 .file-viewer-web-toolbar button:disabled{color:#aab5c0;cursor:not-allowed}
 .file-viewer-web-toolbar .file-viewer-web-icon-button{width:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center}
-.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;padding:0 8px;color:#23465e}
+.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;height:30px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:#23465e}
+.file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:48px;height:32px;border-radius:999px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:32px;min-width:32px}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px;height:32px}
 .file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}
 .file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar button{color:#d7dee8}
 @media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar button{color:#d7dee8}}
@@ -428,6 +450,19 @@ const createButton = (
     void onClick();
   });
   return button;
+};
+
+const createReadonlyMeter = (
+  documentRef: Document,
+  label: string,
+  className: string
+) => {
+  const meter = documentRef.createElement('span');
+  meter.className = `${className} file-viewer-web-zoom-meter--readonly`;
+  meter.textContent = label;
+  meter.title = label;
+  meter.setAttribute('aria-label', label);
+  return meter;
 };
 
 export const mountViewer = (
@@ -468,13 +503,8 @@ export const mountViewer = (
     search: null,
     zoom: null,
     location: null,
+    viewState: null,
   };
-  const snapshotState = (): ViewerState => ({
-    ...state,
-    search: state.search
-      ? { ...state.search, matches: [...state.search.matches] }
-      : null,
-  });
   const getCurrentExtension = () => {
     if (state.lifecycle?.type) {
       return state.lifecycle.type;
@@ -483,7 +513,28 @@ export const mountViewer = (
   };
   let instance: FileViewerInstance;
   const getToolbarZoomState = () => state.zoom || instance.getZoomState() || DEFAULT_TOOLBAR_ZOOM_STATE;
-  const getToolbarAvailability = () => state.availability || instance.getCapabilities() || DEFAULT_TOOLBAR_AVAILABILITY;
+  const getToolbarAvailability = () => applyFileViewerZoomAvailability(
+    state.availability || instance.getCapabilities() || DEFAULT_TOOLBAR_AVAILABILITY,
+    getToolbarZoomState()
+  );
+  const snapshotState = (): ViewerState => ({
+    ...state,
+    availability: getToolbarAvailability(),
+    search: state.search
+      ? { ...state.search, matches: [...state.search.matches] }
+      : null,
+    zoom: state.zoom ? { ...state.zoom } : null,
+    location: state.location ? { ...state.location } : null,
+    viewState: state.viewState
+      ? {
+          ...state.viewState,
+          zoom: state.viewState.zoom ? { ...state.viewState.zoom } : undefined,
+          scroll: state.viewState.scroll ? { ...state.viewState.scroll } : undefined,
+          navigation: state.viewState.navigation ? { ...state.viewState.navigation } : undefined,
+          extra: state.viewState.extra ? { ...state.viewState.extra } : undefined,
+        }
+      : null,
+  });
   const syncShellTheme = () => {
     shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
   };
@@ -539,6 +590,12 @@ export const mountViewer = (
           zoomState,
         });
         group.appendChild(meter);
+      } else {
+        group.appendChild(createReadonlyMeter(
+          documentRef,
+          zoomState.label,
+          'file-viewer-web-zoom-meter'
+        ));
       }
 
       if (availability.zoomIn) {
@@ -624,6 +681,8 @@ export const mountViewer = (
       state.location = event.payload;
     } else if (event.type === 'zoom-change') {
       state.zoom = event.payload;
+    } else if (event.type === 'view-state-change') {
+      state.viewState = event.payload.state;
     }
     currentOptions.onEvent?.(event);
     notifyState(event);
@@ -740,6 +799,12 @@ export const mountViewer = (
     resetZoom() {
       return callApi(instance, api => api.resetZoom(), null);
     },
+    getViewState() {
+      return instance.getViewState();
+    },
+    applyViewState(state, options) {
+      return callApi(instance, api => api.applyViewState(state, options), null);
+    },
     searchDocument(query) {
       return callApi(instance, api => api.search(query), null);
     },
@@ -765,7 +830,7 @@ export const mountViewer = (
       return instance.getDocumentTextChunks();
     },
     getOperationAvailability() {
-      return instance.getCapabilities();
+      return getToolbarAvailability();
     },
     getZoomState() {
       return instance.getZoomState();
