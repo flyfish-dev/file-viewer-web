@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/web",
-  "version": "2.1.15",
+  "version": "2.1.16",
   "kind": "viewer-assets",
   "assets": "flyfish-viewer-assets.json"
 }
