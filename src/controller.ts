@@ -426,12 +426,22 @@ const WEB_VIEWER_STYLE = `
 .file-viewer-web-toolbar .file-viewer-web-icon-button{width:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;height:30px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:#23465e}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
+.file-viewer-web-search{gap:4px}
+.file-viewer-web-search input{width:clamp(128px,18vw,220px);height:30px;box-sizing:border-box;border:0;border-radius:999px;padding:0 10px;background:#fff;color:#172033;font:inherit;font-size:12px;line-height:30px;outline:0}
+.file-viewer-web-search input:focus{box-shadow:0 0 0 2px rgba(31,157,103,.22)}
+.file-viewer-web-search button{min-width:32px;height:30px;padding:0 8px;border-radius:999px}
+.file-viewer-web-search-count{min-width:42px;text-align:center;color:#607282;font-size:12px;font-weight:800;line-height:30px;white-space:nowrap}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:48px;height:32px;border-radius:999px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:32px;min-width:32px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px;height:32px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search button{min-width:32px;height:32px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search input{height:32px;line-height:32px;width:clamp(120px,18vw,190px)}
 .file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}
 .file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar button{color:#d7dee8}
-@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar button{color:#d7dee8}}
+.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-search input{background:rgba(15,23,42,.78);color:#f8fafc}
+.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-search-count{color:#cbd5e1}
+@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar button{color:#d7dee8}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-search input{background:rgba(15,23,42,.78);color:#f8fafc}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-search-count{color:#cbd5e1}}
+@media (max-width:640px){.file-viewer-web-toolbar{max-width:100%;overflow-x:auto}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{max-width:calc(100% - 32px)}.file-viewer-web-search input{width:120px}}
 `;
 
 const createButton = (
@@ -539,6 +549,20 @@ export const mountViewer = (
     shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
   };
   let controller: ViewerController | null = null;
+  let searchDraft = '';
+  const isSearchToolbarVisible = (
+    toolbar: ViewerToolbarOptions,
+    options: ViewerOptions
+  ) => {
+    if (toolbar.search === false || options.search === false || !state.ready || state.loading || state.error) {
+      return false;
+    }
+    if (contentEl.querySelector('.file-viewer-missing-renderer')) {
+      return false;
+    }
+    const renderer = instance.getRenderer(getCurrentExtension());
+    return !!renderer?.capabilities?.search;
+  };
   const renderToolbar = () => {
     if (disposed) {
       return;
@@ -549,7 +573,8 @@ export const mountViewer = (
     const toolbar = normalizeFileViewerToolbar(options);
     const availability = getToolbarAvailability();
     const visibleToolbar = resolveVisibleFileViewerToolbar(toolbar, availability);
-    const showToolbar = hasVisibleFileViewerToolbarActions(visibleToolbar);
+    const showSearchToolbar = isSearchToolbarVisible(toolbar, options);
+    const showToolbar = hasVisibleFileViewerToolbarActions(visibleToolbar) || showSearchToolbar;
     const toolbarPosition = resolveFileViewerToolbarPosition(options, getCurrentExtension());
     const toolbarDisabled = state.loading || !!state.error;
     const zoomState = getToolbarZoomState();
@@ -560,6 +585,67 @@ export const mountViewer = (
 
     if (!showToolbar) {
       return;
+    }
+
+    if (showSearchToolbar) {
+      const searchState = state.search;
+      const searchTotal = searchState?.total ?? 0;
+      const currentIndex = searchTotal > 0 ? (searchState?.currentIndex ?? -1) + 1 : 0;
+      const group = documentRef.createElement('form');
+      group.className = 'file-viewer-web-toolbar-group file-viewer-web-search';
+      group.setAttribute('role', 'search');
+      group.setAttribute('aria-label', t('toolbar.search'));
+
+      const input = documentRef.createElement('input');
+      input.type = 'search';
+      input.value = searchDraft;
+      input.placeholder = t('toolbar.searchPlaceholder');
+      input.title = t('toolbar.searchPlaceholder');
+      input.setAttribute('aria-label', t('toolbar.searchPlaceholder'));
+      input.disabled = toolbarDisabled;
+      input.addEventListener('input', () => {
+        searchDraft = input.value;
+      });
+
+      const searchButton = documentRef.createElement('button');
+      searchButton.type = 'submit';
+      searchButton.textContent = t('toolbar.search');
+      searchButton.title = t('toolbar.search');
+      searchButton.setAttribute('aria-label', t('toolbar.search'));
+      searchButton.disabled = toolbarDisabled;
+
+      const previousButton = createButton(documentRef, '<', 'file-viewer-web-icon-button', () => controller?.previousSearchResult());
+      previousButton.title = t('toolbar.searchPrevious');
+      previousButton.setAttribute('aria-label', t('toolbar.searchPrevious'));
+      previousButton.disabled = toolbarDisabled || searchTotal < 1;
+
+      const nextButton = createButton(documentRef, '>', 'file-viewer-web-icon-button', () => controller?.nextSearchResult());
+      nextButton.title = t('toolbar.searchNext');
+      nextButton.setAttribute('aria-label', t('toolbar.searchNext'));
+      nextButton.disabled = toolbarDisabled || searchTotal < 1;
+
+      const clearButton = createButton(documentRef, 'x', 'file-viewer-web-icon-button', async () => {
+        searchDraft = '';
+        await controller?.clearDocumentSearch();
+      });
+      clearButton.title = t('toolbar.searchClear');
+      clearButton.setAttribute('aria-label', t('toolbar.searchClear'));
+      clearButton.disabled = toolbarDisabled || (!searchDraft && !searchState?.query);
+
+      const count = documentRef.createElement('span');
+      count.className = 'file-viewer-web-search-count';
+      count.textContent = `${currentIndex}/${searchTotal}`;
+      count.setAttribute('aria-live', 'polite');
+
+      group.addEventListener('submit', event => {
+        event.preventDefault();
+        searchDraft = input.value;
+        const query = searchDraft.trim();
+        void (query ? controller?.searchDocument(query) : controller?.clearDocumentSearch());
+      });
+
+      group.append(input, searchButton, previousButton, nextButton, clearButton, count);
+      toolbarEl.appendChild(group);
     }
 
     if (visibleToolbar.zoom) {
@@ -661,6 +747,8 @@ export const mountViewer = (
       state.ready = false;
       state.error = null;
       state.lifecycle = event.payload;
+      state.search = null;
+      searchDraft = '';
     } else if (event.type === 'load-complete') {
       state.loading = false;
       state.ready = true;
@@ -677,6 +765,7 @@ export const mountViewer = (
       state.availability = event.payload;
     } else if (event.type === 'search-change') {
       state.search = event.payload;
+      searchDraft = event.payload.query;
     } else if (event.type === 'location-change') {
       state.location = event.payload;
     } else if (event.type === 'zoom-change') {

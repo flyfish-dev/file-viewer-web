@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-23T07:52:31.532Z",
+  "generatedAt": "2026-07-01T09:14:04.023Z",
   "rendererAssetManifests": [
     {
       "rendererId": "drawing",
@@ -157,6 +157,21 @@
       ]
     },
     {
+      "rendererId": "office-presentation",
+      "assets": [
+        {
+          "id": "pptx-worker",
+          "rendererId": "office-presentation",
+          "kind": "worker",
+          "target": "public",
+          "required": false,
+          "defaultPath": "vendor/pptx/pptx.worker.js",
+          "optionPath": "presentation.workerUrl",
+          "description": "Optional @file-viewer/pptx worker for stable PPTX parsing in IIFE, CDN, and offline deployments."
+        }
+      ]
+    },
+    {
       "rendererId": "spreadsheet-openxml",
       "assets": [
         {
@@ -227,7 +242,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-06-23T07:52:31.531Z",
+    "checkedAt": "2026-07-01T09:14:04.022Z",
     "assets": [
       {
         "id": "drawio-viewer-script",
@@ -358,6 +373,16 @@
         "relativePath": "vendor/docx/jszip.min.js",
         "exists": true,
         "description": "JSZip runtime loaded by the @file-viewer/docx worker for fully offline DOCX parsing."
+      },
+      {
+        "id": "pptx-worker",
+        "rendererId": "office-presentation",
+        "kind": "worker",
+        "target": "public",
+        "required": false,
+        "relativePath": "vendor/pptx/pptx.worker.js",
+        "exists": true,
+        "description": "Optional @file-viewer/pptx worker for stable PPTX parsing in IIFE, CDN, and offline deployments."
       },
       {
         "id": "spreadsheet-worker",
