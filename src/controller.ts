@@ -1,4 +1,11 @@
-import { applyFileViewerZoomAvailability, createViewer } from '@file-viewer/core';
+import {
+  appendFileViewerStyle,
+  applyFileViewerZoomAvailability,
+  createViewer,
+  isFileViewerShadowRoot,
+  normalizeFileViewerStyleIsolation,
+  type FileViewerStyleHandle,
+} from '@file-viewer/core';
 import {
   DEFAULT_FILE_VIEWER_SOURCE_FILENAME,
   createFileViewerTranslator,
@@ -9,6 +16,7 @@ import {
   normalizeFilename,
   readFileViewerBuffer,
   resolveFileViewerSourceFilename,
+  resolveFileViewerToolbarOrder,
   resolveFileViewerToolbarPosition,
   resolveVisibleFileViewerToolbar,
   wrapFileViewerFileRef,
@@ -23,6 +31,9 @@ import {
   type FileViewerEventHandler,
   type FileViewerEventType,
   type FileViewerFileRef,
+  type FileViewerFitMode,
+  type FileViewerFitOptions,
+  type FileViewerFitResult,
   type FileViewerInstance,
   type FileViewerLifecycleContext,
   type FileViewerOperationAvailability,
@@ -60,6 +71,9 @@ export type ViewerTypstOptions = FileViewerTypstOptions;
 export type ViewerCadOptions = FileViewerCadOptions;
 export type ViewerSearchOptions = FileViewerSearchOptions;
 export type ViewerAiOptions = FileViewerAiOptions;
+export type ViewerFitMode = FileViewerFitMode;
+export type ViewerFitOptions = FileViewerFitOptions;
+export type ViewerFitResult = FileViewerFitResult;
 export type ViewerViewState = FileViewerViewState;
 export type ViewerApplyViewStateOptions = FileViewerApplyViewStateOptions;
 export type ViewerThemeMode = FileViewerThemeMode;
@@ -140,6 +154,7 @@ export interface ViewerController {
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
   resetZoom(): Promise<FileViewerZoomState | null>;
+  fitToView(fit?: FileViewerFitMode | FileViewerFitOptions): Promise<FileViewerFitResult | null>;
   getViewState(): FileViewerViewState | null;
   applyViewState(
     state: FileViewerViewState,
@@ -175,6 +190,7 @@ export interface ViewerControllerHandle {
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
   resetZoom(): Promise<FileViewerZoomState | null>;
+  fitToView(fit?: FileViewerFitMode | FileViewerFitOptions): Promise<FileViewerFitResult | null>;
   getViewState(): FileViewerViewState | null;
   applyViewState(
     state: FileViewerViewState,
@@ -333,6 +349,9 @@ export const createViewerControllerHandle = (
   resetZoom() {
     return getController()?.resetZoom() ?? Promise.resolve(null);
   },
+  fitToView(fit) {
+    return getController()?.fitToView(fit) ?? Promise.resolve(null);
+  },
   getViewState() {
     return getController()?.getViewState() ?? null;
   },
@@ -414,35 +433,49 @@ const DEFAULT_TOOLBAR_ZOOM_STATE: FileViewerZoomState = {
 };
 
 const WEB_VIEWER_STYLE = `
-.file-viewer-web-shell{position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;background:transparent}
-.file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0}
-.file-viewer-web-toolbar{flex:0 0 auto;min-height:45px;display:inline-flex;align-items:center;justify-content:flex-end;gap:6px;padding:6px 10px;border-bottom:1px solid rgba(20,35,53,.06);background:rgba(255,255,255,.92);box-sizing:border-box;z-index:20}
+:host{display:block;width:100%;height:100%;min-width:0;min-height:0;contain:content;--file-viewer-bg:transparent;--file-viewer-text:#172033;--file-viewer-muted:#607282;--file-viewer-font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--file-viewer-border:rgba(20,35,53,.08);--file-viewer-toolbar-bg:rgba(255,255,255,.92);--file-viewer-toolbar-border:rgba(20,35,53,.06);--file-viewer-toolbar-shadow:0 18px 44px rgba(15,23,42,.16);--file-viewer-toolbar-radius:999px;--file-viewer-toolbar-gap:6px;--file-viewer-toolbar-padding:6px 10px;--file-viewer-toolbar-floating-padding:6px;--file-viewer-toolbar-floating-offset:16px;--file-viewer-group-bg:rgba(20,35,53,.035);--file-viewer-group-border:rgba(20,35,53,.08);--file-viewer-button-color:#40546a;--file-viewer-button-hover-bg:rgba(33,163,102,.1);--file-viewer-button-hover-color:#16774c;--file-viewer-button-disabled-color:#aab5c0;--file-viewer-button-radius:8px;--file-viewer-input-bg:#fff;--file-viewer-input-color:#172033;--file-viewer-focus-ring:rgba(31,157,103,.22);--file-viewer-z-toolbar:20;--file-viewer-z-floating-toolbar:30}
+:host([theme='dark']){--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
+*,*::before,*::after{box-sizing:border-box}
+.file-viewer-web-shell{position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--file-viewer-bg);color:var(--file-viewer-text);font:var(--file-viewer-font);letter-spacing:0;box-sizing:border-box;contain:content}
+.file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain}
+.file-viewer-web-toolbar{flex:0 0 auto;min-height:45px;display:inline-flex;align-items:center;justify-content:flex-end;gap:var(--file-viewer-toolbar-gap);padding:var(--file-viewer-toolbar-padding);border-bottom:1px solid var(--file-viewer-toolbar-border);background:var(--file-viewer-toolbar-bg);box-sizing:border-box;z-index:var(--file-viewer-z-toolbar)}
 .file-viewer-web-toolbar[hidden]{display:none!important}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{position:absolute;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));min-height:42px;padding:6px;border:1px solid rgba(20,35,53,.1);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 18px 44px rgba(15,23,42,.16);backdrop-filter:blur(16px)}
-.file-viewer-web-toolbar-group{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid rgba(20,35,53,.08);border-radius:999px;background:rgba(20,35,53,.035)}
-.file-viewer-web-toolbar button{min-width:42px;height:30px;padding:0 10px;border:0;border-radius:8px;background:transparent;color:#40546a;font:inherit;font-size:12px;font-weight:800;line-height:1;white-space:nowrap;cursor:pointer}
-.file-viewer-web-toolbar button:hover:not(:disabled){background:rgba(33,163,102,.1);color:#16774c}
-.file-viewer-web-toolbar button:disabled{color:#aab5c0;cursor:not-allowed}
+.file-viewer-web-toolbar[data-toolbar-position="top-center"]{justify-content:center}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{position:absolute;right:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-right,0px));bottom:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-bottom,0px));min-height:42px;padding:var(--file-viewer-toolbar-floating-padding);border:1px solid var(--file-viewer-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-toolbar-bg);box-shadow:var(--file-viewer-toolbar-shadow);backdrop-filter:blur(16px);z-index:var(--file-viewer-z-floating-toolbar)}
+.file-viewer-web-toolbar-group{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--file-viewer-group-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-group-bg)}
+.file-viewer-web-toolbar button{min-width:42px;height:30px;padding:0 10px;border:0;border-radius:var(--file-viewer-button-radius);background:transparent;color:var(--file-viewer-button-color);font:inherit;font-size:12px;font-weight:800;line-height:1;letter-spacing:0;white-space:nowrap;cursor:pointer}
+.file-viewer-web-toolbar button:hover:not(:disabled){background:var(--file-viewer-button-hover-bg);color:var(--file-viewer-button-hover-color)}
+.file-viewer-web-toolbar button:disabled{color:var(--file-viewer-button-disabled-color);cursor:not-allowed}
 .file-viewer-web-toolbar .file-viewer-web-icon-button{width:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center}
-.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;height:30px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:#23465e}
+.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;height:30px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:var(--file-viewer-button-color)}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
 .file-viewer-web-search{gap:4px}
-.file-viewer-web-search input{width:clamp(128px,18vw,220px);height:30px;box-sizing:border-box;border:0;border-radius:999px;padding:0 10px;background:#fff;color:#172033;font:inherit;font-size:12px;line-height:30px;outline:0}
-.file-viewer-web-search input:focus{box-shadow:0 0 0 2px rgba(31,157,103,.22)}
+.file-viewer-web-search input{width:clamp(128px,18vw,220px);height:30px;box-sizing:border-box;border:0;border-radius:var(--file-viewer-toolbar-radius);padding:0 10px;background:var(--file-viewer-input-bg);color:var(--file-viewer-input-color);font:inherit;font-size:12px;line-height:30px;letter-spacing:0;outline:0}
+.file-viewer-web-search input:focus{box-shadow:0 0 0 2px var(--file-viewer-focus-ring)}
 .file-viewer-web-search button{min-width:32px;height:30px;padding:0 8px;border-radius:999px}
-.file-viewer-web-search-count{min-width:42px;text-align:center;color:#607282;font-size:12px;font-weight:800;line-height:30px;white-space:nowrap}
+.file-viewer-web-search-count{min-width:42px;text-align:center;color:var(--file-viewer-muted);font-size:12px;font-weight:800;line-height:30px;white-space:nowrap}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:48px;height:32px;border-radius:999px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:32px;min-width:32px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px;height:32px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search button{min-width:32px;height:32px}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search input{height:32px;line-height:32px;width:clamp(120px,18vw,190px)}
-.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}
-.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-toolbar button{color:#d7dee8}
-.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-search input{background:rgba(15,23,42,.78);color:#f8fafc}
-.file-viewer-web-shell[data-viewer-theme='dark'] .file-viewer-web-search-count{color:#cbd5e1}
-@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar{border-color:rgba(148,163,184,.18);background:rgba(15,23,42,.9)}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-toolbar button{color:#d7dee8}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-search input{background:rgba(15,23,42,.78);color:#f8fafc}.file-viewer-web-shell[data-viewer-theme='system'] .file-viewer-web-search-count{color:#cbd5e1}}
+.file-viewer-web-shell[data-viewer-theme='dark']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
+@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}}
 @media (max-width:640px){.file-viewer-web-toolbar{max-width:100%;overflow-x:auto}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{max-width:calc(100% - 32px)}.file-viewer-web-search input{width:120px}}
 `;
+
+const addPart = (element: HTMLElement, ...parts: string[]) => {
+  const partList = element.part as DOMTokenList | undefined;
+  if (partList?.add) {
+    partList.add(...parts);
+    return;
+  }
+  const nextParts = new Set([
+    ...(element.getAttribute('part') || '').split(/\s+/).filter(Boolean),
+    ...parts,
+  ]);
+  element.setAttribute('part', [...nextParts].join(' '));
+};
 
 const createButton = (
   documentRef: Document,
@@ -453,6 +486,7 @@ const createButton = (
   const button = documentRef.createElement('button');
   button.type = 'button';
   button.className = className;
+  addPart(button, 'button');
   button.textContent = label;
   button.title = label;
   button.setAttribute('aria-label', label);
@@ -469,6 +503,7 @@ const createReadonlyMeter = (
 ) => {
   const meter = documentRef.createElement('span');
   meter.className = `${className} file-viewer-web-zoom-meter--readonly`;
+  addPart(meter, 'button');
   meter.textContent = label;
   meter.title = label;
   meter.setAttribute('aria-label', label);
@@ -485,16 +520,35 @@ export const mountViewer = (
   }
 
   const documentRef = container.ownerDocument;
-  const styleEl = documentRef.createElement('style');
-  styleEl.textContent = WEB_VIEWER_STYLE;
+  const initialStyleIsolation = normalizeFileViewerStyleIsolation(initialOptions.options?.styleIsolation);
+  const containerRoot = container.getRootNode?.();
+  const canReuseExistingShadowRoot = isFileViewerShadowRoot(containerRoot);
+  const shouldUseShadowRoot = initialStyleIsolation === 'auto' || initialStyleIsolation === 'shadow';
+  const existingHostShadowRoot = shouldUseShadowRoot ? container.shadowRoot : null;
+  const canAttachShadowRoot = typeof container.attachShadow === 'function' && !container.shadowRoot;
+  const shouldAttachShadowRoot = shouldUseShadowRoot &&
+    !canReuseExistingShadowRoot &&
+    !existingHostShadowRoot &&
+    canAttachShadowRoot;
+  const renderRoot: HTMLElement | ShadowRoot = shouldAttachShadowRoot
+    ? container.attachShadow({ mode: 'open', delegatesFocus: true })
+    : existingHostShadowRoot || container;
+  renderRoot.replaceChildren();
+  const styleHandle: FileViewerStyleHandle = appendFileViewerStyle(renderRoot, WEB_VIEWER_STYLE, {
+    adoptedStyleSheet: isFileViewerShadowRoot(renderRoot),
+  });
   const shell = documentRef.createElement('div');
   shell.className = 'file-viewer-web-shell';
+  addPart(shell, 'shell');
   const toolbarEl = documentRef.createElement('div');
   toolbarEl.className = 'file-viewer-web-toolbar';
+  addPart(toolbarEl, 'toolbar');
   const contentEl = documentRef.createElement('div');
   contentEl.className = 'file-viewer-web-content';
+  addPart(contentEl, 'content');
+  contentEl.dataset.viewerScrollContainer = 'true';
   shell.append(toolbarEl, contentEl);
-  container.replaceChildren(styleEl, shell);
+  renderRoot.appendChild(shell);
 
   let disposed = false;
   let currentOptions: ViewerMountOptions = initialOptions;
@@ -587,17 +641,23 @@ export const mountViewer = (
       return;
     }
 
-    if (showSearchToolbar) {
+    const appendSearchToolbar = () => {
+      if (!showSearchToolbar) {
+        return;
+      }
+
       const searchState = state.search;
       const searchTotal = searchState?.total ?? 0;
       const currentIndex = searchTotal > 0 ? (searchState?.currentIndex ?? -1) + 1 : 0;
       const group = documentRef.createElement('form');
       group.className = 'file-viewer-web-toolbar-group file-viewer-web-search';
+      addPart(group, 'toolbar-group');
       group.setAttribute('role', 'search');
       group.setAttribute('aria-label', t('toolbar.search'));
 
       const input = documentRef.createElement('input');
       input.type = 'search';
+      addPart(input, 'input');
       input.value = searchDraft;
       input.placeholder = t('toolbar.searchPlaceholder');
       input.title = t('toolbar.searchPlaceholder');
@@ -609,6 +669,7 @@ export const mountViewer = (
 
       const searchButton = documentRef.createElement('button');
       searchButton.type = 'submit';
+      addPart(searchButton, 'button');
       searchButton.textContent = t('toolbar.search');
       searchButton.title = t('toolbar.search');
       searchButton.setAttribute('aria-label', t('toolbar.search'));
@@ -634,6 +695,7 @@ export const mountViewer = (
 
       const count = documentRef.createElement('span');
       count.className = 'file-viewer-web-search-count';
+      addPart(count, 'toolbar-status');
       count.textContent = `${currentIndex}/${searchTotal}`;
       count.setAttribute('aria-live', 'polite');
 
@@ -646,11 +708,16 @@ export const mountViewer = (
 
       group.append(input, searchButton, previousButton, nextButton, clearButton, count);
       toolbarEl.appendChild(group);
-    }
+    };
 
-    if (visibleToolbar.zoom) {
+    const appendZoomToolbar = () => {
+      if (!visibleToolbar.zoom) {
+        return;
+      }
+
       const group = documentRef.createElement('div');
       group.className = 'file-viewer-web-toolbar-group';
+      addPart(group, 'toolbar-group');
       group.setAttribute('aria-label', t('toolbar.zoomGroup'));
 
       if (availability.zoomOut) {
@@ -713,26 +780,51 @@ export const mountViewer = (
       if (group.childElementCount) {
         toolbarEl.appendChild(group);
       }
-    }
+    };
 
-    if (visibleToolbar.download) {
-      const button = createButton(documentRef, t('toolbar.download'), '', () => controller?.downloadOriginalFile());
-      button.title = t('toolbar.downloadTitle');
+    const appendToolbarButton = (
+      visible: boolean | undefined,
+      label: string,
+      title: string,
+      onClick: () => void | Promise<unknown>
+    ) => {
+      if (!visible) {
+        return;
+      }
+      const button = createButton(documentRef, label, '', onClick);
+      button.title = title;
       button.disabled = toolbarDisabled;
       toolbarEl.appendChild(button);
-    }
-    if (visibleToolbar.print) {
-      const button = createButton(documentRef, t('toolbar.print'), '', () => controller?.printRenderedHtml());
-      button.title = t('toolbar.printTitle');
-      button.disabled = toolbarDisabled;
-      toolbarEl.appendChild(button);
-    }
-    if (visibleToolbar.exportHtml) {
-      const button = createButton(documentRef, t('toolbar.exportHtml'), '', () => controller?.exportRenderedHtml());
-      button.title = t('toolbar.exportHtmlTitle');
-      button.disabled = toolbarDisabled;
-      toolbarEl.appendChild(button);
-    }
+    };
+
+    resolveFileViewerToolbarOrder(toolbar).forEach(item => {
+      if (item === 'search') {
+        appendSearchToolbar();
+      } else if (item === 'zoom') {
+        appendZoomToolbar();
+      } else if (item === 'download') {
+        appendToolbarButton(
+          visibleToolbar.download,
+          t('toolbar.download'),
+          t('toolbar.downloadTitle'),
+          () => controller?.downloadOriginalFile()
+        );
+      } else if (item === 'print') {
+        appendToolbarButton(
+          visibleToolbar.print,
+          t('toolbar.print'),
+          t('toolbar.printTitle'),
+          () => controller?.printRenderedHtml()
+        );
+      } else if (item === 'exportHtml') {
+        appendToolbarButton(
+          visibleToolbar.exportHtml,
+          t('toolbar.exportHtml'),
+          t('toolbar.exportHtmlTitle'),
+          () => controller?.exportRenderedHtml()
+        );
+      }
+    });
   };
   const notifyState = (event?: ViewerEvent) => {
     const snapshot = snapshotState();
@@ -801,6 +893,9 @@ export const mountViewer = (
         fetchFile: coreOptions.fetchFile,
         signal: controller?.signal,
       });
+      if (disposed || controller?.signal.aborted || abortController !== controller) {
+        return null;
+      }
       return await instance.load(resolvedSource);
     } catch (error) {
       if (isAbortError(error) && controller?.signal.aborted) {
@@ -861,7 +956,8 @@ export const mountViewer = (
       disposed = true;
       cancel();
       void instance.destroy('component-unmount');
-      container.innerHTML = '';
+      styleHandle.remove();
+      renderRoot.replaceChildren();
     },
     getApi() {
       return instance;
@@ -887,6 +983,9 @@ export const mountViewer = (
     },
     resetZoom() {
       return callApi(instance, api => api.resetZoom(), null);
+    },
+    fitToView(fit) {
+      return callApi(instance, api => api.fitToView(fit), null);
     },
     getViewState() {
       return instance.getViewState();

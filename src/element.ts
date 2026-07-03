@@ -7,6 +7,8 @@ import {
   type ViewerCoreOptions,
   type ViewerEvent,
   type ViewerEventHandler,
+  type ViewerFitMode,
+  type ViewerFitOptions,
   type ViewerMountOptions,
   type ViewerOptions,
   type ViewerState,
@@ -58,6 +60,8 @@ const observedAttributes = [
   'toolbar-position',
   'watermark',
   'search',
+  'fit',
+  'style-isolation',
   'options',
 ] as const;
 
@@ -132,6 +136,19 @@ const callUnique = <Argument>(
 };
 
 const toKebabEventName = (event: ViewerEvent) => `viewer-${event.type}`;
+
+const addPart = (element: HTMLElement, ...parts: string[]) => {
+  const partList = element.part as DOMTokenList | undefined;
+  if (partList?.add) {
+    partList.add(...parts);
+    return;
+  }
+  const nextParts = new Set([
+    ...(element.getAttribute('part') || '').split(/\s+/).filter(Boolean),
+    ...parts,
+  ]);
+  element.setAttribute('part', [...nextParts].join(' '));
+};
 
 export class FileViewerElement extends ElementBase implements ViewerControllerHandle {
   static get observedAttributes(): ObservedAttributeName[] {
@@ -225,6 +242,36 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       options: {
         ...(this.mountOptions.options || {}),
         locale: value,
+      },
+    });
+  }
+
+  get fit(): ViewerOptions['fit'] | undefined {
+    return this.mountOptions.options?.fit ||
+      (this.getAttribute('fit') as ViewerFitMode | null) ||
+      undefined;
+  }
+
+  set fit(value: ViewerOptions['fit'] | undefined) {
+    this.setMountOptions({
+      options: {
+        ...(this.mountOptions.options || {}),
+        fit: value,
+      },
+    });
+  }
+
+  get styleIsolation(): ViewerOptions['styleIsolation'] | undefined {
+    return this.mountOptions.options?.styleIsolation ||
+      (this.getAttribute('style-isolation') as ViewerOptions['styleIsolation'] | null) ||
+      undefined;
+  }
+
+  set styleIsolation(value: ViewerOptions['styleIsolation'] | undefined) {
+    this.setMountOptions({
+      options: {
+        ...(this.mountOptions.options || {}),
+        styleIsolation: value,
       },
     });
   }
@@ -330,6 +377,10 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
 
   resetZoom(): ReturnType<ViewerControllerHandle['resetZoom']> {
     return this.controller?.resetZoom() ?? Promise.resolve(null);
+  }
+
+  fitToView(fit?: ViewerFitMode | ViewerFitOptions): ReturnType<ViewerControllerHandle['fitToView']> {
+    return this.controller?.fitToView(fit) ?? Promise.resolve(null);
   }
 
   getViewState(): ReturnType<ViewerControllerHandle['getViewState']> {
@@ -441,16 +492,33 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
     }
     const node = document.createElement('div');
     node.className = 'file-viewer-web-host';
+    addPart(node, 'host');
     node.style.width = '100%';
     node.style.height = '100%';
     node.style.minWidth = '0';
     node.style.minHeight = '0';
     this.mountNode = node;
-    this.appendChild(node);
+    const root = this.resolveElementRenderRoot();
+    root.appendChild(node);
     if (!this.style.display) {
       this.style.display = 'block';
     }
     return node;
+  }
+
+  private resolveElementRenderRoot(): HTMLElement | ShadowRoot {
+    if (this.shadowRoot) {
+      return this.shadowRoot;
+    }
+    const isolation = this.styleIsolation;
+    if (
+      isolation !== 'none' &&
+      isolation !== 'scoped' &&
+      typeof this.attachShadow === 'function'
+    ) {
+      return this.attachShadow({ mode: 'open', delegatesFocus: true });
+    }
+    return this;
   }
 
   private createEffectiveMountOptions(): ViewerMountOptions {
@@ -543,6 +611,19 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       options.search = searchJson;
     } else if (searchBoolean !== undefined) {
       options.search = searchBoolean;
+    }
+
+    const fit = this.getAttribute('fit');
+    const fitJson = parseJsonObject<ViewerOptions['fit']>(fit);
+    if (fitJson !== undefined) {
+      options.fit = fitJson;
+    } else if (fit) {
+      options.fit = fit as ViewerFitMode;
+    }
+
+    const styleIsolation = this.getAttribute('style-isolation');
+    if (styleIsolation) {
+      options.styleIsolation = styleIsolation as ViewerOptions['styleIsolation'];
     }
 
     return Object.keys(options).length ? options : undefined;

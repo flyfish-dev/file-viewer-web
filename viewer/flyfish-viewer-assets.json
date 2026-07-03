@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-01T09:14:04.023Z",
+  "generatedAt": "2026-07-03T16:42:33.531Z",
   "rendererAssetManifests": [
     {
       "rendererId": "drawing",
@@ -79,7 +79,7 @@
           "rendererId": "archive",
           "kind": "worker",
           "target": "public",
-          "required": false,
+          "required": true,
           "defaultPath": "vendor/libarchive/worker-bundle.js",
           "optionPath": "archive.workerUrl",
           "description": "libarchive.js module worker used for broad archive format parsing."
@@ -89,7 +89,7 @@
           "rendererId": "archive",
           "kind": "wasm",
           "target": "public",
-          "required": false,
+          "required": true,
           "defaultPath": "vendor/libarchive/libarchive.wasm",
           "optionPath": "archive.wasmUrl",
           "description": "libarchive.js WebAssembly module expected next to the public worker."
@@ -242,7 +242,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-07-01T09:14:04.022Z",
+    "checkedAt": "2026-07-03T16:42:33.531Z",
     "assets": [
       {
         "id": "drawio-viewer-script",
@@ -309,7 +309,7 @@
         "rendererId": "archive",
         "kind": "worker",
         "target": "public",
-        "required": false,
+        "required": true,
         "relativePath": "vendor/libarchive/worker-bundle.js",
         "exists": true,
         "description": "libarchive.js module worker used for broad archive format parsing."
@@ -319,7 +319,7 @@
         "rendererId": "archive",
         "kind": "wasm",
         "target": "public",
-        "required": false,
+        "required": true,
         "relativePath": "vendor/libarchive/libarchive.wasm",
         "exists": true,
         "description": "libarchive.js WebAssembly module expected next to the public worker."
