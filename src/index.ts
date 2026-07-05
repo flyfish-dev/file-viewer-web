@@ -72,6 +72,8 @@ export type {
   ViewerToolbarOptions,
   ViewerToolbarPosition,
   ViewerTypstOptions,
+  ViewerUiDensity,
+  ViewerUiOptions,
   ViewerViewState,
   ViewerWatermarkOptions,
   ViewerLifecycleContext,

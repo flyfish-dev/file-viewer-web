@@ -3,6 +3,7 @@ import {
   applyFileViewerZoomAvailability,
   createViewer,
   isFileViewerShadowRoot,
+  normalizeFileViewerUiDensity,
   normalizeFileViewerStyleIsolation,
   type FileViewerStyleHandle,
 } from '@file-viewer/core';
@@ -50,6 +51,8 @@ import {
   type FileViewerToolbarOptions,
   type FileViewerToolbarPosition,
   type FileViewerTypstOptions,
+  type FileViewerUiDensity,
+  type FileViewerUiOptions,
   type FileViewerViewState,
   type FileViewerWatermarkOptions,
   type FileViewerZoomState,
@@ -77,6 +80,8 @@ export type ViewerFitResult = FileViewerFitResult;
 export type ViewerViewState = FileViewerViewState;
 export type ViewerApplyViewStateOptions = FileViewerApplyViewStateOptions;
 export type ViewerThemeMode = FileViewerThemeMode;
+export type ViewerUiDensity = FileViewerUiDensity;
+export type ViewerUiOptions = FileViewerUiOptions;
 export type ViewerOptions = FileViewerOptions;
 export type ViewerEventType = FileViewerEventType;
 export type ViewerEvent = FileViewerEvent;
@@ -433,32 +438,33 @@ const DEFAULT_TOOLBAR_ZOOM_STATE: FileViewerZoomState = {
 };
 
 const WEB_VIEWER_STYLE = `
-:host{display:block;width:100%;height:100%;min-width:0;min-height:0;contain:content;--file-viewer-bg:transparent;--file-viewer-text:#172033;--file-viewer-muted:#607282;--file-viewer-font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--file-viewer-border:rgba(20,35,53,.08);--file-viewer-toolbar-bg:rgba(255,255,255,.92);--file-viewer-toolbar-border:rgba(20,35,53,.06);--file-viewer-toolbar-shadow:0 18px 44px rgba(15,23,42,.16);--file-viewer-toolbar-radius:999px;--file-viewer-toolbar-gap:6px;--file-viewer-toolbar-padding:6px 10px;--file-viewer-toolbar-floating-padding:6px;--file-viewer-toolbar-floating-offset:16px;--file-viewer-group-bg:rgba(20,35,53,.035);--file-viewer-group-border:rgba(20,35,53,.08);--file-viewer-button-color:#40546a;--file-viewer-button-hover-bg:rgba(33,163,102,.1);--file-viewer-button-hover-color:#16774c;--file-viewer-button-disabled-color:#aab5c0;--file-viewer-button-radius:8px;--file-viewer-input-bg:#fff;--file-viewer-input-color:#172033;--file-viewer-focus-ring:rgba(31,157,103,.22);--file-viewer-z-toolbar:20;--file-viewer-z-floating-toolbar:30}
+:host{display:block;width:100%;height:100%;min-width:0;min-height:0;contain:content;--file-viewer-bg:transparent;--file-viewer-text:#172033;--file-viewer-muted:#607282;--file-viewer-font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--file-viewer-border:rgba(20,35,53,.08);--file-viewer-toolbar-bg:rgba(255,255,255,.92);--file-viewer-toolbar-border:rgba(20,35,53,.06);--file-viewer-toolbar-shadow:0 18px 44px rgba(15,23,42,.16);--file-viewer-toolbar-radius:999px;--file-viewer-toolbar-gap:6px;--file-viewer-toolbar-min-height:45px;--file-viewer-toolbar-padding:6px 10px;--file-viewer-toolbar-floating-min-height:42px;--file-viewer-toolbar-floating-padding:6px;--file-viewer-toolbar-floating-offset:16px;--file-viewer-group-bg:rgba(20,35,53,.035);--file-viewer-group-border:rgba(20,35,53,.08);--file-viewer-group-gap:2px;--file-viewer-group-padding:2px;--file-viewer-button-color:#40546a;--file-viewer-button-hover-bg:rgba(33,163,102,.1);--file-viewer-button-hover-color:#16774c;--file-viewer-button-disabled-color:#aab5c0;--file-viewer-button-radius:8px;--file-viewer-button-min-width:42px;--file-viewer-button-height:30px;--file-viewer-button-padding:0 10px;--file-viewer-icon-button-size:30px;--file-viewer-zoom-meter-min-width:48px;--file-viewer-zoom-meter-padding:0 8px;--file-viewer-floating-button-min-width:48px;--file-viewer-floating-button-height:32px;--file-viewer-floating-icon-button-size:32px;--file-viewer-floating-zoom-meter-min-width:54px;--file-viewer-search-input-height:30px;--file-viewer-search-input-padding:0 10px;--file-viewer-search-button-min-width:32px;--file-viewer-search-button-padding:0 8px;--file-viewer-search-count-min-width:42px;--file-viewer-floating-search-input-height:32px;--file-viewer-focus-ring:rgba(31,157,103,.22);--file-viewer-z-toolbar:20;--file-viewer-z-floating-toolbar:30}
 :host([theme='dark']){--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
 *,*::before,*::after{box-sizing:border-box}
 .file-viewer-web-shell{position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--file-viewer-bg);color:var(--file-viewer-text);font:var(--file-viewer-font);letter-spacing:0;box-sizing:border-box;contain:content}
+.file-viewer-web-shell[data-viewer-density="compact"]{--file-viewer-toolbar-gap:3px;--file-viewer-toolbar-min-height:34px;--file-viewer-toolbar-padding:3px 5px;--file-viewer-toolbar-floating-min-height:32px;--file-viewer-toolbar-floating-padding:3px;--file-viewer-toolbar-floating-offset:10px;--file-viewer-group-gap:2px;--file-viewer-group-padding:2px;--file-viewer-button-radius:6px;--file-viewer-button-min-width:34px;--file-viewer-button-height:26px;--file-viewer-button-padding:0 6px;--file-viewer-icon-button-size:26px;--file-viewer-zoom-meter-min-width:42px;--file-viewer-zoom-meter-padding:0 5px;--file-viewer-floating-button-min-width:38px;--file-viewer-floating-button-height:28px;--file-viewer-floating-icon-button-size:28px;--file-viewer-floating-zoom-meter-min-width:46px;--file-viewer-search-input-height:26px;--file-viewer-search-input-padding:0 8px;--file-viewer-search-button-min-width:28px;--file-viewer-search-button-padding:0 6px;--file-viewer-search-count-min-width:36px;--file-viewer-floating-search-input-height:28px}
 .file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain}
-.file-viewer-web-toolbar{flex:0 0 auto;min-height:45px;display:inline-flex;align-items:center;justify-content:flex-end;gap:var(--file-viewer-toolbar-gap);padding:var(--file-viewer-toolbar-padding);border-bottom:1px solid var(--file-viewer-toolbar-border);background:var(--file-viewer-toolbar-bg);box-sizing:border-box;z-index:var(--file-viewer-z-toolbar)}
+.file-viewer-web-toolbar{flex:0 0 auto;min-height:var(--file-viewer-toolbar-min-height);display:inline-flex;align-items:center;justify-content:flex-end;gap:var(--file-viewer-toolbar-gap);padding:var(--file-viewer-toolbar-padding);border-bottom:1px solid var(--file-viewer-toolbar-border);background:var(--file-viewer-toolbar-bg);box-sizing:border-box;z-index:var(--file-viewer-z-toolbar)}
 .file-viewer-web-toolbar[hidden]{display:none!important}
 .file-viewer-web-toolbar[data-toolbar-position="top-center"]{justify-content:center}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{position:absolute;right:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-right,0px));bottom:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-bottom,0px));min-height:42px;padding:var(--file-viewer-toolbar-floating-padding);border:1px solid var(--file-viewer-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-toolbar-bg);box-shadow:var(--file-viewer-toolbar-shadow);backdrop-filter:blur(16px);z-index:var(--file-viewer-z-floating-toolbar)}
-.file-viewer-web-toolbar-group{display:inline-flex;align-items:center;gap:2px;padding:2px;border:1px solid var(--file-viewer-group-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-group-bg)}
-.file-viewer-web-toolbar button{min-width:42px;height:30px;padding:0 10px;border:0;border-radius:var(--file-viewer-button-radius);background:transparent;color:var(--file-viewer-button-color);font:inherit;font-size:12px;font-weight:800;line-height:1;letter-spacing:0;white-space:nowrap;cursor:pointer}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{position:absolute;right:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-right,0px));bottom:calc(var(--file-viewer-toolbar-floating-offset) + env(safe-area-inset-bottom,0px));min-height:var(--file-viewer-toolbar-floating-min-height);padding:var(--file-viewer-toolbar-floating-padding);border:1px solid var(--file-viewer-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-toolbar-bg);box-shadow:var(--file-viewer-toolbar-shadow);backdrop-filter:blur(16px);z-index:var(--file-viewer-z-floating-toolbar)}
+.file-viewer-web-toolbar-group{display:inline-flex;align-items:center;gap:var(--file-viewer-group-gap);padding:var(--file-viewer-group-padding);border:1px solid var(--file-viewer-group-border);border-radius:var(--file-viewer-toolbar-radius);background:var(--file-viewer-group-bg)}
+.file-viewer-web-toolbar button{min-width:var(--file-viewer-button-min-width);height:var(--file-viewer-button-height);padding:var(--file-viewer-button-padding);border:0;border-radius:var(--file-viewer-button-radius);background:transparent;color:var(--file-viewer-button-color);font:inherit;font-size:12px;font-weight:800;line-height:1;letter-spacing:0;white-space:nowrap;cursor:pointer}
 .file-viewer-web-toolbar button:hover:not(:disabled){background:var(--file-viewer-button-hover-bg);color:var(--file-viewer-button-hover-color)}
 .file-viewer-web-toolbar button:disabled{color:var(--file-viewer-button-disabled-color);cursor:not-allowed}
-.file-viewer-web-toolbar .file-viewer-web-icon-button{width:30px;min-width:30px;padding:0;display:inline-flex;align-items:center;justify-content:center}
-.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:48px;height:30px;padding:0 8px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:var(--file-viewer-button-color)}
+.file-viewer-web-toolbar .file-viewer-web-icon-button{width:var(--file-viewer-icon-button-size);min-width:var(--file-viewer-icon-button-size);padding:0;display:inline-flex;align-items:center;justify-content:center}
+.file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:var(--file-viewer-zoom-meter-min-width);height:var(--file-viewer-button-height);padding:var(--file-viewer-zoom-meter-padding);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:var(--file-viewer-button-color)}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
 .file-viewer-web-search{gap:4px}
-.file-viewer-web-search input{width:clamp(128px,18vw,220px);height:30px;box-sizing:border-box;border:0;border-radius:var(--file-viewer-toolbar-radius);padding:0 10px;background:var(--file-viewer-input-bg);color:var(--file-viewer-input-color);font:inherit;font-size:12px;line-height:30px;letter-spacing:0;outline:0}
+.file-viewer-web-search input{width:clamp(128px,18vw,220px);height:var(--file-viewer-search-input-height);box-sizing:border-box;border:0;border-radius:var(--file-viewer-toolbar-radius);padding:var(--file-viewer-search-input-padding);background:var(--file-viewer-input-bg);color:var(--file-viewer-input-color);font:inherit;font-size:12px;line-height:var(--file-viewer-search-input-height);letter-spacing:0;outline:0}
 .file-viewer-web-search input:focus{box-shadow:0 0 0 2px var(--file-viewer-focus-ring)}
-.file-viewer-web-search button{min-width:32px;height:30px;padding:0 8px;border-radius:999px}
-.file-viewer-web-search-count{min-width:42px;text-align:center;color:var(--file-viewer-muted);font-size:12px;font-weight:800;line-height:30px;white-space:nowrap}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:48px;height:32px;border-radius:999px}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:32px;min-width:32px}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:54px;height:32px}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search button{min-width:32px;height:32px}
-.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search input{height:32px;line-height:32px;width:clamp(120px,18vw,190px)}
+.file-viewer-web-search button{min-width:var(--file-viewer-search-button-min-width);height:var(--file-viewer-search-input-height);padding:var(--file-viewer-search-button-padding);border-radius:999px}
+.file-viewer-web-search-count{min-width:var(--file-viewer-search-count-min-width);text-align:center;color:var(--file-viewer-muted);font-size:12px;font-weight:800;line-height:var(--file-viewer-search-input-height);white-space:nowrap}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] button{min-width:var(--file-viewer-floating-button-min-width);height:var(--file-viewer-floating-button-height);border-radius:999px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-icon-button{width:var(--file-viewer-floating-icon-button-size);min-width:var(--file-viewer-floating-icon-button-size)}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:var(--file-viewer-floating-zoom-meter-min-width);height:var(--file-viewer-floating-button-height)}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search button{min-width:var(--file-viewer-search-button-min-width);height:var(--file-viewer-floating-search-input-height)}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search input{height:var(--file-viewer-floating-search-input-height);line-height:var(--file-viewer-floating-search-input-height);width:clamp(120px,18vw,190px)}
 .file-viewer-web-shell[data-viewer-theme='dark']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
 @media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}}
 @media (max-width:640px){.file-viewer-web-toolbar{max-width:100%;overflow-x:auto}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{max-width:calc(100% - 32px)}.file-viewer-web-search input{width:120px}}
@@ -601,6 +607,7 @@ export const mountViewer = (
   });
   const syncShellTheme = () => {
     shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
+    shell.dataset.viewerDensity = normalizeFileViewerUiDensity(currentOptions.options?.ui?.density);
   };
   let controller: ViewerController | null = null;
   let searchDraft = '';

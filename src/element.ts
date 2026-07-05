@@ -14,6 +14,7 @@ import {
   type ViewerState,
   type ViewerStateListener,
   type ViewerToolbarPosition,
+  type ViewerUiDensity,
 } from './controller.js';
 
 export const FILE_VIEWER_ELEMENT_TAG = 'flyfish-file-viewer';
@@ -61,6 +62,7 @@ const observedAttributes = [
   'watermark',
   'search',
   'fit',
+  'density',
   'style-isolation',
   'options',
 ] as const;
@@ -272,6 +274,24 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       options: {
         ...(this.mountOptions.options || {}),
         styleIsolation: value,
+      },
+    });
+  }
+
+  get density(): ViewerUiDensity | undefined {
+    return this.mountOptions.options?.ui?.density ||
+      (this.getAttribute('density') as ViewerUiDensity | null) ||
+      undefined;
+  }
+
+  set density(value: ViewerUiDensity | undefined) {
+    this.setMountOptions({
+      options: {
+        ...(this.mountOptions.options || {}),
+        ui: {
+          ...(this.mountOptions.options?.ui || {}),
+          density: value,
+        },
       },
     });
   }
@@ -619,6 +639,14 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       options.fit = fitJson;
     } else if (fit) {
       options.fit = fit as ViewerFitMode;
+    }
+
+    const density = this.getAttribute('density');
+    if (density) {
+      options.ui = {
+        ...(options.ui || {}),
+        density: density as ViewerUiDensity,
+      };
     }
 
     const styleIsolation = this.getAttribute('style-isolation');
