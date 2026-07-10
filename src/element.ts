@@ -1,4 +1,6 @@
-import { fileViewerCoreRendererRegistry } from '@file-viewer/core';
+import {
+  fileViewerCoreRendererRegistry,
+} from '@file-viewer/core';
 import {
   mountViewer as mountCoreViewer,
   type FileRef,
@@ -16,6 +18,7 @@ import {
   type ViewerToolbarPosition,
   type ViewerUiDensity,
 } from './controller.js';
+import type { FileViewerPrintOptions } from '@file-viewer/core';
 
 export const FILE_VIEWER_ELEMENT_TAG = 'flyfish-file-viewer';
 
@@ -379,8 +382,12 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
     return this.controller?.downloadOriginalFile() ?? Promise.resolve();
   }
 
-  printRenderedHtml(): Promise<void> {
-    return this.controller?.printRenderedHtml() ?? Promise.resolve();
+  printRenderedHtml(options?: FileViewerPrintOptions): Promise<void> {
+    return this.controller?.printRenderedHtml(options) ?? Promise.resolve();
+  }
+
+  printWithMask(options?: FileViewerPrintOptions): Promise<void> {
+    return this.controller?.printWithMask(options) ?? Promise.resolve();
   }
 
   exportRenderedHtml(): Promise<void> {

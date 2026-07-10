@@ -4,6 +4,7 @@ import {
   createViewer,
   isFileViewerShadowRoot,
   normalizeFileViewerUiDensity,
+  normalizeFileViewerTheme,
   normalizeFileViewerStyleIsolation,
   type FileViewerStyleHandle,
 } from '@file-viewer/core';
@@ -11,15 +12,18 @@ import {
   DEFAULT_FILE_VIEWER_SOURCE_FILENAME,
   createFileViewerTranslator,
   getExtension,
+  normalizeFileViewerSourceUrl,
   hasVisibleFileViewerToolbarActions,
   isFileViewerZoomButtonDisabled,
   normalizeFileViewerToolbar,
   normalizeFilename,
   readFileViewerBuffer,
   resolveFileViewerSourceFilename,
+  resolveFileViewerColorScheme,
   resolveFileViewerToolbarOrder,
   resolveFileViewerToolbarPosition,
   resolveVisibleFileViewerToolbar,
+  toggleFileViewerColorScheme,
   wrapFileViewerFileRef,
   type FileViewerAiOptions,
   type FileViewerApplyViewStateOptions,
@@ -55,6 +59,7 @@ import {
   type FileViewerUiOptions,
   type FileViewerViewState,
   type FileViewerWatermarkOptions,
+  type FileViewerPrintOptions,
   type FileViewerZoomState,
   type RendererRegistry,
   type RendererSession,
@@ -154,7 +159,8 @@ export interface ViewerController {
   destroy(): void;
   getApi(): FileViewerPublicApi | FileViewerInstance | null;
   downloadOriginalFile(): Promise<void>;
-  printRenderedHtml(): Promise<void>;
+  printRenderedHtml(options?: FileViewerPrintOptions): Promise<void>;
+  printWithMask(options?: FileViewerPrintOptions): Promise<void>;
   exportRenderedHtml(): Promise<void>;
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
@@ -190,7 +196,8 @@ export interface ViewerControllerHandle {
   getController(): ViewerController | null;
   getApi(): FileViewerPublicApi | FileViewerInstance | null;
   downloadOriginalFile(): Promise<void>;
-  printRenderedHtml(): Promise<void>;
+  printRenderedHtml(options?: FileViewerPrintOptions): Promise<void>;
+  printWithMask(options?: FileViewerPrintOptions): Promise<void>;
   exportRenderedHtml(): Promise<void>;
   zoomIn(): Promise<FileViewerZoomState | null>;
   zoomOut(): Promise<FileViewerZoomState | null>;
@@ -239,7 +246,8 @@ const defaultFetchFile: ViewerFetchFile = async ({ url, signal }) => {
     throw new Error('fetch is not available in the current environment.');
   }
 
-  const response = await fetch(url, { signal });
+  const requestUrl = normalizeFileViewerSourceUrl(url) || url;
+  const response = await fetch(requestUrl, { signal });
   if (!response.ok) {
     throw new Error(`Failed to fetch file: ${response.status} ${response.statusText}`);
   }
@@ -339,8 +347,11 @@ export const createViewerControllerHandle = (
   downloadOriginalFile() {
     return getController()?.downloadOriginalFile() ?? Promise.resolve();
   },
-  printRenderedHtml() {
-    return getController()?.printRenderedHtml() ?? Promise.resolve();
+  printRenderedHtml(options?: FileViewerPrintOptions) {
+    return getController()?.printRenderedHtml(options) ?? Promise.resolve();
+  },
+  printWithMask(options?: FileViewerPrintOptions) {
+    return getController()?.printWithMask(options) ?? Promise.resolve();
   },
   exportRenderedHtml() {
     return getController()?.exportRenderedHtml() ?? Promise.resolve();
@@ -438,12 +449,12 @@ const DEFAULT_TOOLBAR_ZOOM_STATE: FileViewerZoomState = {
 };
 
 const WEB_VIEWER_STYLE = `
-:host{display:block;width:100%;height:100%;min-width:0;min-height:0;contain:content;--file-viewer-bg:transparent;--file-viewer-text:#172033;--file-viewer-muted:#607282;--file-viewer-font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--file-viewer-border:rgba(20,35,53,.08);--file-viewer-toolbar-bg:rgba(255,255,255,.92);--file-viewer-toolbar-border:rgba(20,35,53,.06);--file-viewer-toolbar-shadow:0 18px 44px rgba(15,23,42,.16);--file-viewer-toolbar-radius:999px;--file-viewer-toolbar-gap:6px;--file-viewer-toolbar-min-height:45px;--file-viewer-toolbar-padding:6px 10px;--file-viewer-toolbar-floating-min-height:42px;--file-viewer-toolbar-floating-padding:6px;--file-viewer-toolbar-floating-offset:16px;--file-viewer-group-bg:rgba(20,35,53,.035);--file-viewer-group-border:rgba(20,35,53,.08);--file-viewer-group-gap:2px;--file-viewer-group-padding:2px;--file-viewer-button-color:#40546a;--file-viewer-button-hover-bg:rgba(33,163,102,.1);--file-viewer-button-hover-color:#16774c;--file-viewer-button-disabled-color:#aab5c0;--file-viewer-button-radius:8px;--file-viewer-button-min-width:42px;--file-viewer-button-height:30px;--file-viewer-button-padding:0 10px;--file-viewer-icon-button-size:30px;--file-viewer-zoom-meter-min-width:48px;--file-viewer-zoom-meter-padding:0 8px;--file-viewer-floating-button-min-width:48px;--file-viewer-floating-button-height:32px;--file-viewer-floating-icon-button-size:32px;--file-viewer-floating-zoom-meter-min-width:54px;--file-viewer-search-input-height:30px;--file-viewer-search-input-padding:0 10px;--file-viewer-search-button-min-width:32px;--file-viewer-search-button-padding:0 8px;--file-viewer-search-count-min-width:42px;--file-viewer-floating-search-input-height:32px;--file-viewer-focus-ring:rgba(31,157,103,.22);--file-viewer-z-toolbar:20;--file-viewer-z-floating-toolbar:30}
-:host([theme='dark']){--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
+:host{display:block;width:100%;height:100%;min-width:0;min-height:0;contain:content;--file-viewer-bg:transparent;--file-viewer-content-bg:transparent;--file-viewer-text:#172033;--file-viewer-muted:#607282;--file-viewer-font:14px/1.45 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--file-viewer-border:rgba(20,35,53,.08);--file-viewer-toolbar-bg:rgba(255,255,255,.92);--file-viewer-toolbar-border:rgba(20,35,53,.06);--file-viewer-toolbar-shadow:0 18px 44px rgba(15,23,42,.16);--file-viewer-toolbar-radius:999px;--file-viewer-toolbar-gap:6px;--file-viewer-toolbar-min-height:45px;--file-viewer-toolbar-padding:6px 10px;--file-viewer-toolbar-floating-min-height:42px;--file-viewer-toolbar-floating-padding:6px;--file-viewer-toolbar-floating-offset:16px;--file-viewer-group-bg:rgba(20,35,53,.035);--file-viewer-group-border:rgba(20,35,53,.08);--file-viewer-group-gap:2px;--file-viewer-group-padding:2px;--file-viewer-button-color:#40546a;--file-viewer-button-hover-bg:rgba(33,163,102,.1);--file-viewer-button-hover-color:#16774c;--file-viewer-button-disabled-color:#aab5c0;--file-viewer-button-radius:8px;--file-viewer-button-min-width:42px;--file-viewer-button-height:30px;--file-viewer-button-padding:0 10px;--file-viewer-icon-button-size:30px;--file-viewer-zoom-meter-min-width:48px;--file-viewer-zoom-meter-padding:0 8px;--file-viewer-floating-button-min-width:48px;--file-viewer-floating-button-height:32px;--file-viewer-floating-icon-button-size:32px;--file-viewer-floating-zoom-meter-min-width:54px;--file-viewer-search-input-height:30px;--file-viewer-search-input-padding:0 10px;--file-viewer-search-button-min-width:32px;--file-viewer-search-button-padding:0 8px;--file-viewer-search-count-min-width:42px;--file-viewer-floating-search-input-height:32px;--file-viewer-focus-ring:rgba(31,157,103,.22);--file-viewer-z-toolbar:20;--file-viewer-z-floating-toolbar:30}
+:host([theme='dark']){--file-viewer-bg:#0f1720;--file-viewer-content-bg:#111b24;--file-viewer-text:#e5eef8;--file-viewer-muted:#cbd5e1;--file-viewer-border:rgba(148,163,184,.18);--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-group-bg:rgba(148,163,184,.1);--file-viewer-group-border:rgba(148,163,184,.16);--file-viewer-button-color:#d7dee8;--file-viewer-button-hover-bg:rgba(45,212,191,.14);--file-viewer-button-hover-color:#5eead4;--file-viewer-button-disabled-color:#64748b;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc}
 *,*::before,*::after{box-sizing:border-box}
 .file-viewer-web-shell{position:relative;width:100%;height:100%;min-height:0;display:flex;flex-direction:column;overflow:hidden;background:var(--file-viewer-bg);color:var(--file-viewer-text);font:var(--file-viewer-font);letter-spacing:0;box-sizing:border-box;contain:content}
 .file-viewer-web-shell[data-viewer-density="compact"]{--file-viewer-toolbar-gap:3px;--file-viewer-toolbar-min-height:34px;--file-viewer-toolbar-padding:3px 5px;--file-viewer-toolbar-floating-min-height:32px;--file-viewer-toolbar-floating-padding:3px;--file-viewer-toolbar-floating-offset:10px;--file-viewer-group-gap:2px;--file-viewer-group-padding:2px;--file-viewer-button-radius:6px;--file-viewer-button-min-width:34px;--file-viewer-button-height:26px;--file-viewer-button-padding:0 6px;--file-viewer-icon-button-size:26px;--file-viewer-zoom-meter-min-width:42px;--file-viewer-zoom-meter-padding:0 5px;--file-viewer-floating-button-min-width:38px;--file-viewer-floating-button-height:28px;--file-viewer-floating-icon-button-size:28px;--file-viewer-floating-zoom-meter-min-width:46px;--file-viewer-search-input-height:26px;--file-viewer-search-input-padding:0 8px;--file-viewer-search-button-min-width:28px;--file-viewer-search-button-padding:0 6px;--file-viewer-search-count-min-width:36px;--file-viewer-floating-search-input-height:28px}
-.file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain}
+.file-viewer-web-content{position:relative;flex:1 1 auto;min-height:0;min-width:0;overflow:auto;overscroll-behavior:contain;background:var(--file-viewer-content-bg)}
 .file-viewer-web-toolbar{flex:0 0 auto;min-height:var(--file-viewer-toolbar-min-height);display:inline-flex;align-items:center;justify-content:flex-end;gap:var(--file-viewer-toolbar-gap);padding:var(--file-viewer-toolbar-padding);border-bottom:1px solid var(--file-viewer-toolbar-border);background:var(--file-viewer-toolbar-bg);box-sizing:border-box;z-index:var(--file-viewer-z-toolbar)}
 .file-viewer-web-toolbar[hidden]{display:none!important}
 .file-viewer-web-toolbar[data-toolbar-position="top-center"]{justify-content:center}
@@ -453,8 +464,17 @@ const WEB_VIEWER_STYLE = `
 .file-viewer-web-toolbar button:hover:not(:disabled){background:var(--file-viewer-button-hover-bg);color:var(--file-viewer-button-hover-color)}
 .file-viewer-web-toolbar button:disabled{color:var(--file-viewer-button-disabled-color);cursor:not-allowed}
 .file-viewer-web-toolbar .file-viewer-web-icon-button{width:var(--file-viewer-icon-button-size);min-width:var(--file-viewer-icon-button-size);padding:0;display:inline-flex;align-items:center;justify-content:center}
+.file-viewer-web-theme-button svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter{min-width:var(--file-viewer-zoom-meter-min-width);height:var(--file-viewer-button-height);padding:var(--file-viewer-zoom-meter-padding);display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;color:var(--file-viewer-button-color)}
 .file-viewer-web-toolbar .file-viewer-web-zoom-meter--readonly{font-size:12px;font-weight:800;line-height:1;white-space:nowrap}
+.file-viewer-web-print-menu{position:relative;display:inline-flex}
+.file-viewer-web-print-menu > button{min-width:var(--file-viewer-button-min-width);height:var(--file-viewer-button-height);padding:var(--file-viewer-button-padding);border:0;border-radius:var(--file-viewer-button-radius);background:transparent;color:var(--file-viewer-button-color);font:inherit;font-size:12px;font-weight:800;line-height:1;letter-spacing:0;white-space:nowrap;cursor:pointer}
+.file-viewer-web-print-menu > button:hover:not(:disabled){background:var(--file-viewer-button-hover-bg);color:var(--file-viewer-button-hover-color)}
+.file-viewer-web-print-menu > button:disabled{color:var(--file-viewer-button-disabled-color);cursor:not-allowed}
+.file-viewer-web-print-menu-panel{position:absolute;top:calc(100% + 4px);right:0;z-index:40;min-width:118px;padding:4px;border:1px solid var(--file-viewer-group-border);border-radius:10px;background:var(--file-viewer-toolbar-bg);box-shadow:var(--file-viewer-toolbar-shadow);display:none;flex-direction:column;gap:2px}
+.file-viewer-web-print-menu[data-open="true"] .file-viewer-web-print-menu-panel{display:flex}
+.file-viewer-web-print-menu-panel button{width:100%;min-width:0;justify-content:flex-start;text-align:left;border-radius:8px}
+.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-print-menu-panel{top:auto;bottom:calc(100% + 6px);z-index:50}
 .file-viewer-web-search{gap:4px}
 .file-viewer-web-search input{width:clamp(128px,18vw,220px);height:var(--file-viewer-search-input-height);box-sizing:border-box;border:0;border-radius:var(--file-viewer-toolbar-radius);padding:var(--file-viewer-search-input-padding);background:var(--file-viewer-input-bg);color:var(--file-viewer-input-color);font:inherit;font-size:12px;line-height:var(--file-viewer-search-input-height);letter-spacing:0;outline:0}
 .file-viewer-web-search input:focus{box-shadow:0 0 0 2px var(--file-viewer-focus-ring)}
@@ -465,9 +485,9 @@ const WEB_VIEWER_STYLE = `
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-zoom-meter{min-width:var(--file-viewer-floating-zoom-meter-min-width);height:var(--file-viewer-floating-button-height)}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search button{min-width:var(--file-viewer-search-button-min-width);height:var(--file-viewer-floating-search-input-height)}
 .file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-search input{height:var(--file-viewer-floating-search-input-height);line-height:var(--file-viewer-floating-search-input-height);width:clamp(120px,18vw,190px)}
-.file-viewer-web-shell[data-viewer-theme='dark']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}
-@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system']{--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-button-color:#d7dee8;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc;--file-viewer-muted:#cbd5e1}}
-@media (max-width:640px){.file-viewer-web-toolbar{max-width:100%;overflow-x:auto}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{max-width:calc(100% - 32px)}.file-viewer-web-search input{width:120px}}
+.file-viewer-web-shell[data-viewer-theme='dark']{color-scheme:dark;--file-viewer-bg:#0f1720;--file-viewer-content-bg:#111b24;--file-viewer-text:#e5eef8;--file-viewer-muted:#cbd5e1;--file-viewer-border:rgba(148,163,184,.18);--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-group-bg:rgba(148,163,184,.1);--file-viewer-group-border:rgba(148,163,184,.16);--file-viewer-button-color:#d7dee8;--file-viewer-button-hover-bg:rgba(45,212,191,.14);--file-viewer-button-hover-color:#5eead4;--file-viewer-button-disabled-color:#64748b;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc}
+@media (prefers-color-scheme:dark){.file-viewer-web-shell[data-viewer-theme='system']{color-scheme:dark;--file-viewer-bg:#0f1720;--file-viewer-content-bg:#111b24;--file-viewer-text:#e5eef8;--file-viewer-muted:#cbd5e1;--file-viewer-border:rgba(148,163,184,.18);--file-viewer-toolbar-bg:rgba(15,23,42,.9);--file-viewer-toolbar-border:rgba(148,163,184,.18);--file-viewer-group-bg:rgba(148,163,184,.1);--file-viewer-group-border:rgba(148,163,184,.16);--file-viewer-button-color:#d7dee8;--file-viewer-button-hover-bg:rgba(45,212,191,.14);--file-viewer-button-hover-color:#5eead4;--file-viewer-button-disabled-color:#64748b;--file-viewer-input-bg:rgba(15,23,42,.78);--file-viewer-input-color:#f8fafc}}
+@media (max-width:640px){.file-viewer-web-toolbar{max-width:100%;overflow-x:auto;overflow-y:visible}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"]{max-width:calc(100% - 32px);overflow:visible}.file-viewer-web-toolbar[data-toolbar-position="bottom-right"] .file-viewer-web-print-menu-panel{left:50%;right:auto;transform:translateX(-50%);min-width:min(148px,calc(100vw - 32px))}.file-viewer-web-search input{width:120px}}
 `;
 
 const addPart = (element: HTMLElement, ...parts: string[]) => {
@@ -516,6 +536,15 @@ const createReadonlyMeter = (
   return meter;
 };
 
+const setThemeButtonIcon = (
+  button: HTMLButtonElement,
+  currentTheme: 'light' | 'dark'
+) => {
+  button.innerHTML = currentTheme === 'dark'
+    ? '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"/></svg>'
+    : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>';
+};
+
 export const mountViewer = (
   container: HTMLElement,
   initialOptions: ViewerMountOptions = {},
@@ -558,6 +587,12 @@ export const mountViewer = (
 
   let disposed = false;
   let currentOptions: ViewerMountOptions = initialOptions;
+  const viewerColorSchemeQuery = documentRef.defaultView?.matchMedia?.('(prefers-color-scheme: dark)') ?? null;
+  const resolveCurrentViewerTheme = (theme: ViewerOptions['theme']) => {
+    return viewerColorSchemeQuery
+      ? resolveFileViewerColorScheme(theme, viewerColorSchemeQuery.matches)
+      : resolveFileViewerColorScheme(theme);
+  };
   let currentSource: ViewerSourceInput | null = hasSource(currentOptions)
     ? toViewerSourceInput(currentOptions)
     : null;
@@ -606,7 +641,7 @@ export const mountViewer = (
       : null,
   });
   const syncShellTheme = () => {
-    shell.dataset.viewerTheme = currentOptions.options?.theme || 'light';
+    shell.dataset.viewerTheme = normalizeFileViewerTheme(currentOptions.options?.theme);
     shell.dataset.viewerDensity = normalizeFileViewerUiDensity(currentOptions.options?.ui?.density);
   };
   let controller: ViewerController | null = null;
@@ -758,12 +793,18 @@ export const mountViewer = (
         ));
       }
 
-      if (availability.zoomIn) {
-        const button = createButton(documentRef, '+', 'file-viewer-web-icon-button', () => controller?.zoomIn());
-        button.title = t('toolbar.zoomIn');
-        button.setAttribute('aria-label', t('toolbar.zoomIn'));
+      if (availability.zoomReset) {
+        // Placed before the zoom-in button (not after) so that toggling this
+        // button's visibility never shifts the zoom-in button's position: the
+        // toolbar group is right-aligned, and both icon buttons share the same
+        // width, so inserting "1:1" after "+" would make it land exactly on
+        // top of the previous "+" position, turning a repeated zoom-in click
+        // into an accidental reset (see GitHub issue #88).
+        const button = createButton(documentRef, '1:1', 'file-viewer-web-icon-button', () => controller?.resetZoom());
+        button.title = t('toolbar.zoomReset');
+        button.setAttribute('aria-label', t('toolbar.zoomReset'));
         button.disabled = isFileViewerZoomButtonDisabled({
-          action: 'canZoomIn',
+          action: 'canReset',
           availability,
           toolbarDisabled,
           zoomState,
@@ -771,12 +812,12 @@ export const mountViewer = (
         group.appendChild(button);
       }
 
-      if (availability.zoomReset) {
-        const button = createButton(documentRef, '1:1', 'file-viewer-web-icon-button', () => controller?.resetZoom());
-        button.title = t('toolbar.zoomReset');
-        button.setAttribute('aria-label', t('toolbar.zoomReset'));
+      if (availability.zoomIn) {
+        const button = createButton(documentRef, '+', 'file-viewer-web-icon-button', () => controller?.zoomIn());
+        button.title = t('toolbar.zoomIn');
+        button.setAttribute('aria-label', t('toolbar.zoomIn'));
         button.disabled = isFileViewerZoomButtonDisabled({
-          action: 'canReset',
+          action: 'canZoomIn',
           availability,
           toolbarDisabled,
           zoomState,
@@ -804,6 +845,48 @@ export const mountViewer = (
       toolbarEl.appendChild(button);
     };
 
+    const appendThemeToolbar = () => {
+      if (!visibleToolbar.theme) {
+        return;
+      }
+      const currentTheme = resolveCurrentViewerTheme(options.theme);
+      const title = currentTheme === 'dark'
+        ? t('toolbar.themeToLight')
+        : t('toolbar.themeToDark');
+      const button = createButton(documentRef, '', 'file-viewer-web-icon-button file-viewer-web-theme-button', async () => {
+        const previousViewState = instance.getViewState();
+        const nextTheme = toggleFileViewerColorScheme(
+          currentOptions.options?.theme,
+          viewerColorSchemeQuery?.matches
+        );
+        currentOptions = {
+          ...currentOptions,
+          options: {
+            ...(currentOptions.options || {}),
+            theme: nextTheme,
+          },
+        };
+        instance.updateOptions({ theme: nextTheme });
+        applyViewerEvent({ type: 'theme-change', payload: nextTheme });
+        if (currentSource) {
+          const session = await loadSource(currentSource).catch(() => null);
+          if (session && previousViewState) {
+            await instance.applyViewState(previousViewState, {
+              action: 'restore',
+              source: 'api',
+            });
+          }
+        }
+      });
+      addPart(button, 'theme-toggle');
+      setThemeButtonIcon(button, currentTheme);
+      button.title = title;
+      button.setAttribute('aria-label', title);
+      button.setAttribute('aria-pressed', String(currentTheme === 'dark'));
+      button.disabled = toolbarDisabled;
+      toolbarEl.appendChild(button);
+    };
+
     resolveFileViewerToolbarOrder(toolbar).forEach(item => {
       if (item === 'search') {
         appendSearchToolbar();
@@ -817,12 +900,54 @@ export const mountViewer = (
           () => controller?.downloadOriginalFile()
         );
       } else if (item === 'print') {
-        appendToolbarButton(
-          visibleToolbar.print,
-          t('toolbar.print'),
-          t('toolbar.printTitle'),
-          () => controller?.printRenderedHtml()
-        );
+        if (!visibleToolbar.print) {
+          return;
+        }
+        const menu = documentRef.createElement('div');
+        menu.className = 'file-viewer-web-print-menu';
+        addPart(menu, 'toolbar-group');
+
+        const trigger = createButton(documentRef, t('toolbar.print'), '', () => {
+          menu.dataset.open = menu.dataset.open === 'true' ? 'false' : 'true';
+        });
+        trigger.title = t('toolbar.printTitle');
+        trigger.setAttribute('aria-label', t('toolbar.printTitle'));
+        trigger.setAttribute('aria-haspopup', 'menu');
+        trigger.disabled = toolbarDisabled;
+
+        const panel = documentRef.createElement('div');
+        panel.className = 'file-viewer-web-print-menu-panel';
+        panel.setAttribute('role', 'menu');
+
+        const closeMenu = () => {
+          menu.dataset.open = 'false';
+        };
+
+        const directButton = createButton(documentRef, t('toolbar.printDirect'), '', async () => {
+          closeMenu();
+          await controller?.printRenderedHtml();
+        });
+        directButton.title = t('toolbar.printTitle');
+        directButton.setAttribute('role', 'menuitem');
+        directButton.disabled = toolbarDisabled;
+
+        const maskButton = createButton(documentRef, t('toolbar.printMask'), '', async () => {
+          closeMenu();
+          await controller?.printWithMask();
+        });
+        maskButton.title = t('toolbar.printMaskTitle');
+        maskButton.setAttribute('role', 'menuitem');
+        maskButton.disabled = toolbarDisabled;
+
+        panel.append(directButton, maskButton);
+        menu.append(trigger, panel);
+        menu.addEventListener('focusout', event => {
+          const next = event.relatedTarget as Node | null;
+          if (!next || !menu.contains(next)) {
+            closeMenu();
+          }
+        });
+        toolbarEl.appendChild(menu);
       } else if (item === 'exportHtml') {
         appendToolbarButton(
           visibleToolbar.exportHtml,
@@ -830,8 +955,15 @@ export const mountViewer = (
           t('toolbar.exportHtmlTitle'),
           () => controller?.exportRenderedHtml()
         );
+      } else if (item === 'theme') {
+        appendThemeToolbar();
       }
     });
+  };
+  const handleViewerColorSchemeChange = () => {
+    if (normalizeFileViewerTheme(currentOptions.options?.theme) === 'system') {
+      renderToolbar();
+    }
   };
   const notifyState = (event?: ViewerEvent) => {
     const snapshot = snapshotState();
@@ -880,6 +1012,7 @@ export const mountViewer = (
     options: currentOptions.options,
     onEvent: applyViewerEvent,
   });
+  viewerColorSchemeQuery?.addEventListener?.('change', handleViewerColorSchemeChange);
   renderToolbar();
 
   const cancel = () => {
@@ -962,6 +1095,7 @@ export const mountViewer = (
       if (disposed) return;
       disposed = true;
       cancel();
+      viewerColorSchemeQuery?.removeEventListener?.('change', handleViewerColorSchemeChange);
       void instance.destroy('component-unmount');
       styleHandle.remove();
       renderRoot.replaceChildren();
@@ -972,8 +1106,11 @@ export const mountViewer = (
     downloadOriginalFile() {
       return callApi(instance, api => api.download(), undefined);
     },
-    printRenderedHtml() {
-      return callApi(instance, api => api.print(), undefined);
+    printRenderedHtml(options?: FileViewerPrintOptions) {
+      return callApi(instance, api => api.print(options), undefined);
+    },
+    printWithMask(options?: FileViewerPrintOptions) {
+      return callApi(instance, api => api.printWithMask(options), undefined);
     },
     exportRenderedHtml() {
       return callApi(
