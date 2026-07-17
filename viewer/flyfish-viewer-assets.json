@@ -1,7 +1,64 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-10T02:28:36.186Z",
+  "generatedAt": "2026-07-17T03:30:00.216Z",
   "rendererAssetManifests": [
+    {
+      "rendererId": "model",
+      "assets": [
+        {
+          "id": "model-occt-worker",
+          "rendererId": "model",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/model/occt-worker.js",
+          "optionPath": "model.workerUrl",
+          "description": "File Viewer worker that runs STEP, IGES, and BREP tessellation off the UI thread."
+        },
+        {
+          "id": "model-occt-runtime",
+          "rendererId": "model",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/model/occt-import-js.js",
+          "packagePath": "occt-import-js/dist/occt-import-js.js",
+          "optionPath": "model.runtimeUrl",
+          "description": "Self-hosted occt-import-js runtime for browser-native STEP, IGES, and BREP preview."
+        },
+        {
+          "id": "model-occt-wasm",
+          "rendererId": "model",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/model/occt-import-js.wasm",
+          "packagePath": "occt-import-js/dist/occt-import-js.wasm",
+          "optionPath": "model.wasmUrl",
+          "description": "OpenCascade WebAssembly geometry kernel used by the model renderer."
+        },
+        {
+          "id": "model-occt-license",
+          "rendererId": "model",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/model/LICENSE.occt.txt",
+          "packagePath": "occt-import-js/dist/license.occt.txt",
+          "description": "OpenCascade license notice distributed with the browser geometry kernel."
+        },
+        {
+          "id": "model-occt-import-license",
+          "rendererId": "model",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/model/LICENSE.occt-import-js.txt",
+          "packagePath": "occt-import-js/dist/license.occt-import-js.txt",
+          "description": "occt-import-js license notice distributed with the browser geometry kernel."
+        }
+      ]
+    },
     {
       "rendererId": "drawing",
       "assets": [
@@ -138,6 +195,24 @@
           "defaultPath": "wasm/cad/dwfv-render.wasm",
           "optionPath": "cad.dwfWasmUrl",
           "description": "DWF/DWFx/XPS raster WebAssembly module used by @flyfish-dev/cad-viewer."
+        },
+        {
+          "id": "cad-libredwg-script",
+          "rendererId": "cad",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/libredwg-web.js",
+          "description": "LibreDWG JavaScript runtime loaded by the CAD DWG worker for offline parsing."
+        },
+        {
+          "id": "cad-libredwg-wasm",
+          "rendererId": "cad",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/libredwg-web.wasm",
+          "description": "LibreDWG WebAssembly runtime loaded by the CAD DWG worker for offline parsing."
         }
       ]
     },
@@ -163,6 +238,96 @@
           "defaultPath": "vendor/docx/jszip.min.js",
           "optionPath": "docx.workerJsZipUrl",
           "description": "JSZip runtime loaded by the @file-viewer/docx worker for fully offline DOCX parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "office-presentation-binary",
+      "assets": [
+        {
+          "id": "ppt-module",
+          "rendererId": "office-presentation-binary",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/index.mjs",
+          "optionPath": "presentation.pptModuleUrl",
+          "description": "Official @file-viewer/ppt 0.3 browser entry for PowerPoint 97–2003 preview."
+        },
+        {
+          "id": "ppt-worker",
+          "rendererId": "office-presentation-binary",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/worker.mjs",
+          "optionPath": "presentation.pptWorkerUrl",
+          "description": "Official @file-viewer/ppt 0.3 module Worker."
+        },
+        {
+          "id": "ppt-frame-cache",
+          "rendererId": "office-presentation-binary",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/frame-cache.mjs",
+          "description": "Bounded IndexedDB frame cache imported by the binary-PPT Worker."
+        },
+        {
+          "id": "ppt-wasm",
+          "rendererId": "office-presentation-binary",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/ppt-native.wasm",
+          "optionPath": "presentation.pptWasmUrl",
+          "description": "Official @file-viewer/ppt 0.3 native WebAssembly parser and renderer."
+        },
+        {
+          "id": "ppt-cjk-font",
+          "rendererId": "office-presentation-binary",
+          "kind": "font",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/ppt-font-cjk.otf",
+          "optionPath": "presentation.pptFontUrl",
+          "description": "CJK font pack verified and loaded by the binary-PPT runtime."
+        },
+        {
+          "id": "ppt-runtime-manifest",
+          "rendererId": "office-presentation-binary",
+          "kind": "metadata",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/manifest.json",
+          "description": "Integrity and edition metadata for the official binary-PPT runtime."
+        },
+        {
+          "id": "ppt-runtime-package",
+          "rendererId": "office-presentation-binary",
+          "kind": "metadata",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/package.json",
+          "description": "Package identity metadata for the official binary-PPT runtime."
+        },
+        {
+          "id": "ppt-runtime-license",
+          "rendererId": "office-presentation-binary",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/LICENSE",
+          "description": "License shipped by the independently versioned @file-viewer/ppt package."
+        },
+        {
+          "id": "ppt-runtime-notice",
+          "rendererId": "office-presentation-binary",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/NOTICE",
+          "description": "Notices shipped by the independently versioned @file-viewer/ppt package."
         }
       ]
     },
@@ -252,8 +417,58 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-07-10T02:28:36.184Z",
+    "checkedAt": "2026-07-17T03:30:00.216Z",
     "assets": [
+      {
+        "id": "model-occt-worker",
+        "rendererId": "model",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/model/occt-worker.js",
+        "exists": true,
+        "description": "File Viewer worker that runs STEP, IGES, and BREP tessellation off the UI thread."
+      },
+      {
+        "id": "model-occt-runtime",
+        "rendererId": "model",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/model/occt-import-js.js",
+        "exists": true,
+        "description": "Self-hosted occt-import-js runtime for browser-native STEP, IGES, and BREP preview."
+      },
+      {
+        "id": "model-occt-wasm",
+        "rendererId": "model",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/model/occt-import-js.wasm",
+        "exists": true,
+        "description": "OpenCascade WebAssembly geometry kernel used by the model renderer."
+      },
+      {
+        "id": "model-occt-license",
+        "rendererId": "model",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/model/LICENSE.occt.txt",
+        "exists": true,
+        "description": "OpenCascade license notice distributed with the browser geometry kernel."
+      },
+      {
+        "id": "model-occt-import-license",
+        "rendererId": "model",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/model/LICENSE.occt-import-js.txt",
+        "exists": true,
+        "description": "occt-import-js license notice distributed with the browser geometry kernel."
+      },
       {
         "id": "drawio-viewer-script",
         "rendererId": "drawing",
@@ -375,6 +590,26 @@
         "description": "DWF/DWFx/XPS raster WebAssembly module used by @flyfish-dev/cad-viewer."
       },
       {
+        "id": "cad-libredwg-script",
+        "rendererId": "cad",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/libredwg-web.js",
+        "exists": true,
+        "description": "LibreDWG JavaScript runtime loaded by the CAD DWG worker for offline parsing."
+      },
+      {
+        "id": "cad-libredwg-wasm",
+        "rendererId": "cad",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/libredwg-web.wasm",
+        "exists": true,
+        "description": "LibreDWG WebAssembly runtime loaded by the CAD DWG worker for offline parsing."
+      },
+      {
         "id": "docx-worker",
         "rendererId": "office-word-openxml",
         "kind": "worker",
@@ -393,6 +628,96 @@
         "relativePath": "vendor/docx/jszip.min.js",
         "exists": true,
         "description": "JSZip runtime loaded by the @file-viewer/docx worker for fully offline DOCX parsing."
+      },
+      {
+        "id": "ppt-module",
+        "rendererId": "office-presentation-binary",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/index.mjs",
+        "exists": true,
+        "description": "Official @file-viewer/ppt 0.3 browser entry for PowerPoint 97–2003 preview."
+      },
+      {
+        "id": "ppt-worker",
+        "rendererId": "office-presentation-binary",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/worker.mjs",
+        "exists": true,
+        "description": "Official @file-viewer/ppt 0.3 module Worker."
+      },
+      {
+        "id": "ppt-frame-cache",
+        "rendererId": "office-presentation-binary",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/frame-cache.mjs",
+        "exists": true,
+        "description": "Bounded IndexedDB frame cache imported by the binary-PPT Worker."
+      },
+      {
+        "id": "ppt-wasm",
+        "rendererId": "office-presentation-binary",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/ppt-native.wasm",
+        "exists": true,
+        "description": "Official @file-viewer/ppt 0.3 native WebAssembly parser and renderer."
+      },
+      {
+        "id": "ppt-cjk-font",
+        "rendererId": "office-presentation-binary",
+        "kind": "font",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/ppt-font-cjk.otf",
+        "exists": true,
+        "description": "CJK font pack verified and loaded by the binary-PPT runtime."
+      },
+      {
+        "id": "ppt-runtime-manifest",
+        "rendererId": "office-presentation-binary",
+        "kind": "metadata",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/manifest.json",
+        "exists": true,
+        "description": "Integrity and edition metadata for the official binary-PPT runtime."
+      },
+      {
+        "id": "ppt-runtime-package",
+        "rendererId": "office-presentation-binary",
+        "kind": "metadata",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/package.json",
+        "exists": true,
+        "description": "Package identity metadata for the official binary-PPT runtime."
+      },
+      {
+        "id": "ppt-runtime-license",
+        "rendererId": "office-presentation-binary",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/LICENSE",
+        "exists": true,
+        "description": "License shipped by the independently versioned @file-viewer/ppt package."
+      },
+      {
+        "id": "ppt-runtime-notice",
+        "rendererId": "office-presentation-binary",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/NOTICE",
+        "exists": true,
+        "description": "Notices shipped by the independently versioned @file-viewer/ppt package."
       },
       {
         "id": "pptx-worker",

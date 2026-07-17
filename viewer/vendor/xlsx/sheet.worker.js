@@ -27355,7 +27355,92 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 		l.length && (a[n] = l);
 	}
 	return a;
-}, Yv = {
+}, Yv = new Set(["csv", "tsv"]), Xv = new Set(["text/csv", "text/tab-separated-values"]), Zv = (e) => String(e || "").trim().toLowerCase().replace(/^\./, "").split(/[?#;]/, 1)[0], Qv = (e) => {
+	let t = String(e || "").trim().toLowerCase().split(/[?#]/, 1)[0], n = Math.max(t.lastIndexOf("/"), t.lastIndexOf("\\")), r = t.lastIndexOf(".");
+	return r > n ? t.slice(r + 1) : "";
+}, $v = ({ fileType: e, filename: t }) => {
+	let n = Zv(e);
+	return n ? Yv.has(n) || Xv.has(n) : Yv.has(Qv(t));
+}, ey = (e, t) => {
+	if (typeof TextDecoder > "u") throw Error("Spreadsheet text decoding requires the browser TextDecoder API.");
+	try {
+		return new TextDecoder(t).decode(e);
+	} catch (e) {
+		throw t === "gb18030" && e instanceof RangeError ? Error("This browser does not provide GB18030 text decoding. Use a current browser or set spreadsheet.textEncoding to \"utf-8\".") : e;
+	}
+}, ty = (e) => e.length >= 3 && e[0] === 239 && e[1] === 187 && e[2] === 191, ny = (e) => e !== void 0 && e >= 128 && e <= 191, ry = (e) => {
+	for (let t = 0; t < e.length;) {
+		let n = e[t];
+		if (n === void 0) return !1;
+		if (n <= 127) {
+			t += 1;
+			continue;
+		}
+		let r = e[t + 1], i = e[t + 2], a = e[t + 3];
+		if (n >= 194 && n <= 223 && ny(r)) {
+			t += 2;
+			continue;
+		}
+		if (n === 224 && r !== void 0 && r >= 160 && r <= 191 && ny(i)) {
+			t += 3;
+			continue;
+		}
+		if ((n >= 225 && n <= 236 || n >= 238 && n <= 239) && ny(r) && ny(i)) {
+			t += 3;
+			continue;
+		}
+		if (n === 237 && r !== void 0 && r >= 128 && r <= 159 && ny(i)) {
+			t += 3;
+			continue;
+		}
+		if (n === 240 && r !== void 0 && r >= 144 && r <= 191 && ny(i) && ny(a)) {
+			t += 4;
+			continue;
+		}
+		if (n >= 241 && n <= 243 && ny(r) && ny(i) && ny(a)) {
+			t += 4;
+			continue;
+		}
+		if (n === 244 && r !== void 0 && r >= 128 && r <= 143 && ny(i) && ny(a)) {
+			t += 4;
+			continue;
+		}
+		return !1;
+	}
+	return !0;
+}, iy = (e) => {
+	let t = String(e || "auto").trim().toLowerCase().replace("_", "-");
+	return t === "utf8" || t === "utf-8" ? "utf-8" : t === "gbk" || t === "cp936" || t === "gb2312" ? "gbk" : t === "gb18030" ? "gb18030" : "auto";
+}, ay = (e, t = "auto") => {
+	let n = new Uint8Array(e), r = iy(t);
+	return r === "utf-8" ? {
+		text: ey(ty(n) ? n.subarray(3) : n, "utf-8"),
+		encoding: "utf-8"
+	} : r === "gbk" || r === "gb18030" ? {
+		text: ey(n, "gb18030"),
+		encoding: "gb18030"
+	} : ty(n) ? {
+		text: ey(n.subarray(3), "utf-8"),
+		encoding: "utf-8"
+	} : ry(n) ? {
+		text: ey(n, "utf-8"),
+		encoding: "utf-8"
+	} : {
+		text: ey(n, "gb18030"),
+		encoding: "gb18030"
+	};
+}, oy = (e, t = {}) => {
+	if (!$v(t)) return {
+		kind: "binary",
+		data: e
+	};
+	let n = ay(e, t.textEncoding);
+	return {
+		kind: "text",
+		data: n.text,
+		encoding: n.encoding
+	};
+}, sy = {
 	type: "array",
 	dense: !0,
 	cellDates: !0,
@@ -27363,17 +27448,17 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 	browserPixels: !0,
 	drawings: !0,
 	validateMerges: !0
-}, Xv = () => ({
+}, cy = () => ({
 	workbook: null,
 	sheets: [],
 	charts: {}
-}), Zv = (e, t = {}) => ({
+}), ly = (e, t = {}) => ({
 	type: "parseError",
 	payload: {
 		...t,
 		message: e instanceof Error ? e.message : String(e)
 	}
-}), Qv = (e) => {
+}), uy = (e) => {
 	var t;
 	return ((e == null || (t = e["!drawings"]) == null ? void 0 : t.images) || []).reduce((e, t) => {
 		var n, r, i, a, o, s;
@@ -27386,7 +27471,7 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 		rowCount: 0,
 		colCount: 0
 	});
-}, $v = (e) => (e || []).reduce((e, t) => {
+}, dy = (e) => (e || []).reduce((e, t) => {
 	var n, r, i, a, o, s;
 	let c = (n = t.ext) != null && n.height ? Math.ceil(t.ext.height / 9525 / 20) : 0, l = (r = t.ext) != null && r.width ? Math.ceil(t.ext.width / 9525 / 64) : 0, u = (i = (a = t.to) == null ? void 0 : a.row) == null ? t.from.row + c : i, d = (o = (s = t.to) == null ? void 0 : s.col) == null ? t.from.col + l : o;
 	return {
@@ -27396,14 +27481,14 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 }, {
 	rowCount: 0,
 	colCount: 0
-}), ey = (e) => {
+}), fy = (e) => {
 	var t;
 	let n = e.workbook;
 	if (!(n != null && n.SheetNames)) return [];
 	let r = ((t = n.Workbook) == null ? void 0 : t.Sheets) || [];
 	return e.sheets = n.SheetNames.reduce((t, i, a) => {
 		var o;
-		let s = n.Sheets[i], c = s == null ? void 0 : s["!ref"], l = Qv(s), u = $v(e.charts[i]);
+		let s = n.Sheets[i], c = s == null ? void 0 : s["!ref"], l = uy(s), u = dy(e.charts[i]);
 		if (!c && !l.rowCount && !l.colCount && !u.rowCount && !u.colCount) return t;
 		let d = c ? Lg.decode_range(c) : Lg.decode_range("A1");
 		return t.push({
@@ -27417,19 +27502,23 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 		type: "sheets",
 		payload: { sheets: e.sheets }
 	}];
-}, ty = async (e, t) => {
+}, py = async (e, t, n = {}) => {
 	try {
-		if (e.workbook = _g(t, Yv), (t.byteLength >= 2 ? new DataView(t).getUint16(0, !1) : 0) === 20555) try {
+		let r = oy(t, n);
+		if (e.workbook = r.kind === "text" ? _g(r.data, {
+			...sy,
+			type: "string"
+		}) : _g(r.data, sy), (t.byteLength >= 2 ? new DataView(t).getUint16(0, !1) : 0) === 20555) try {
 			e.charts = await Jv(t);
 		} catch (t) {
 			e.charts = {}, console.warn("[file-viewer] Spreadsheet chart parsing failed; continuing with cell content.", t);
 		}
 		else e.charts = {};
-		return ey(e);
+		return fy(e);
 	} catch (e) {
-		return [Zv(e)];
+		return [ly(e)];
 	}
-}, ny = (e, t = {}) => {
+}, my = (e, t = {}) => {
 	let { sheet: n, startRow: r = 0, pageSize: i = 500, sessionId: a = 0 } = t;
 	try {
 		var o;
@@ -27456,27 +27545,31 @@ while (r === s[++i] && r === s[++i] && r === s[++i] && r === s[++i] && r === s[+
 			}
 		}];
 	} catch (e) {
-		return [Zv(e, {
+		return [ly(e, {
 			sessionId: a,
 			startRow: r
 		})];
 	}
-}, ry = (e, t) => {
+}, hy = (e, t) => {
 	switch (t.type) {
 		case "parseWorkbook":
-			var n;
-			return ty(e, (n = t.payload) == null ? void 0 : n.workbook);
-		case "parseSheet": return ny(e, t.payload);
+			var n, r, i, a;
+			return py(e, (n = t.payload) == null ? void 0 : n.workbook, {
+				fileType: (r = t.payload) == null ? void 0 : r.fileType,
+				filename: (i = t.payload) == null ? void 0 : i.filename,
+				textEncoding: (a = t.payload) == null ? void 0 : a.textEncoding
+			});
+		case "parseSheet": return my(e, t.payload);
 		default: return [];
 	}
-}, iy = typeof self > "u" ? null : self;
-if (iy) {
-	let e = Xv();
-	iy.onmessage = async (t) => {
-		(await ry(e, t.data)).forEach((e) => {
-			iy.postMessage(e);
+}, gy = typeof self > "u" ? null : self;
+if (gy) {
+	let e = cy();
+	gy.onmessage = async (t) => {
+		(await hy(e, t.data)).forEach((e) => {
+			gy.postMessage(e);
 		});
-	}, iy.onerror = (e) => {
+	}, gy.onerror = (e) => {
 		console.error(e);
 	};
 }
