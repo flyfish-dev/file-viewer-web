@@ -345,7 +345,7 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
     if (!this.controller && this.isConnected) {
       this.mount();
     }
-    await this.controller?.load(this.createEffectiveMountOptions());
+    await this.controller?.load(this.createControllerMountOptions());
   }
 
   async update(options: ViewerMountOptions = {}): Promise<void> {
@@ -354,7 +354,7 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       this.mount();
       return;
     }
-    await this.controller?.update(this.createEffectiveMountOptions());
+    await this.controller?.update(this.createControllerMountOptions());
   }
 
   reload(): Promise<void> {
@@ -484,7 +484,7 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
     }
     const node = this.ensureMountNode();
     try {
-      this.controller = mountCoreViewer(node, this.createEffectiveMountOptions(), {
+      this.controller = mountCoreViewer(node, this.createControllerMountOptions(), {
         registry: fileViewerCoreRendererRegistry,
         ...this.internalCoreOptions,
       });
@@ -570,6 +570,24 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
           state,
           event,
         });
+      },
+    };
+  }
+
+  private createControllerMountOptions(): ViewerMountOptions {
+    const mountOptions = this.createEffectiveMountOptions();
+    if (!this.shadowRoot || this.mountNode?.getRootNode() !== this.shadowRoot) {
+      return mountOptions;
+    }
+    // The custom element already owns this ShadowRoot. Ask the shared
+    // controller to render its scoped shell inside it instead of creating a
+    // redundant nested root. Framework containers inside a customer's Shadow
+    // DOM still receive their own controller-owned root.
+    return {
+      ...mountOptions,
+      options: {
+        ...(mountOptions.options || {}),
+        styleIsolation: 'scoped',
       },
     };
   }
@@ -674,7 +692,7 @@ export class FileViewerElement extends ElementBase implements ViewerControllerHa
       if (!this.controller) {
         return;
       }
-      this.controller.update(this.createEffectiveMountOptions()).catch(error => {
+      this.controller.update(this.createControllerMountOptions()).catch(error => {
         this.dispatchError(error);
       });
     });

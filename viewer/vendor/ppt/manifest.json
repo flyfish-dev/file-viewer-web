@@ -3,9 +3,9 @@
   "product": "Flyfish PPT Viewer",
   "format": "PowerPoint 97-2003 (.ppt)",
   "packageName": "@file-viewer/ppt",
-  "packageVersion": "0.3.1",
+  "packageVersion": "0.3.2",
   "engine": "flyfish-classic-ppt-native-engine",
-  "engineBuild": "593d0a6cf32f928f",
+  "engineBuild": "ee7c677fc3007f1b",
   "id": "FV-PPT-PUBLIC-WATERMARKED-V2",
   "feature": "ppt",
   "edition": "public-watermarked",
@@ -40,5 +40,5 @@
   "virtualScrollDefault": true,
   "frameCache": "indexeddb-final-watermarked-png-lru",
   "watermarkEnforcement": "native-final-frame",
-  "wasmSha256": "8e95d7de0e322d6c96dcd7ea18c5cd9b6783cb82f3fe1c8714008119f19e7915"
+  "wasmSha256": "6d209f487ab8be74f23b463eaecafd9f588948e75670f82e69d7b7d6b10cb6a7"
 }
