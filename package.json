@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/web",
-  "version": "2.2.6",
+  "version": "2.2.8",
   "private": false,
   "type": "module",
   "description": "Standard pure web component package for File Viewer",
@@ -71,7 +71,7 @@
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "2.2.6"
+    "@file-viewer/core": "2.2.8"
   },
   "devDependencies": {
     "@types/node": "^25.8.0",
