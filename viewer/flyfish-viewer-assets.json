@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-23T13:56:10.897Z",
+  "generatedAt": "2026-08-12T09:45:27.354Z",
   "rendererAssetManifests": [
     {
       "rendererId": "model",
@@ -398,6 +398,107 @@
       ]
     },
     {
+      "rendererId": "apple-pages",
+      "assets": [
+        {
+          "id": "apple-pages-iwork-worker",
+          "rendererId": "apple-pages",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/iwork/iwork.worker.js",
+          "packagePath": "@file-viewer/renderer-iwork/worker/iwork.worker.js",
+          "optionPath": "iwork.workerUrl",
+          "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "apple-numbers",
+      "assets": [
+        {
+          "id": "apple-numbers-iwork-worker",
+          "rendererId": "apple-numbers",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/iwork/iwork.worker.js",
+          "packagePath": "@file-viewer/renderer-iwork/worker/iwork.worker.js",
+          "optionPath": "iwork.workerUrl",
+          "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "apple-keynote",
+      "assets": [
+        {
+          "id": "apple-keynote-iwork-worker",
+          "rendererId": "apple-keynote",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/iwork/iwork.worker.js",
+          "packagePath": "@file-viewer/renderer-iwork/worker/iwork.worker.js",
+          "optionPath": "iwork.workerUrl",
+          "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "office-hangul",
+      "assets": [
+        {
+          "id": "hangul-worker",
+          "rendererId": "office-hangul",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/hangul/hangul.worker.js",
+          "packagePath": "@file-viewer/renderer-hangul/worker/hangul.worker.js",
+          "optionPath": "hangul.workerUrl",
+          "description": "Module Worker for bounded HWP v5 CFB and HWPX ZIP/XML parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "office-wordperfect",
+      "assets": [
+        {
+          "id": "wordperfect-worker",
+          "rendererId": "office-wordperfect",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/wordperfect/wordperfect.worker.js",
+          "packagePath": "@file-viewer/renderer-wordperfect/worker/wordperfect.worker.js",
+          "optionPath": "wordPerfect.workerUrl",
+          "description": "Module Worker for bounded WordPerfect signature detection and parsing."
+        },
+        {
+          "id": "wordperfect-libwpd-wasm",
+          "rendererId": "office-wordperfect",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/wordperfect/libwpd.wasm",
+          "packagePath": "@file-viewer/renderer-wordperfect/worker/libwpd.wasm",
+          "optionPath": "wordPerfect.wasmUrl",
+          "description": "MPL-2.0 libwpd/librevenge WebAssembly parser lazy-loaded by the WordPerfect Worker."
+        },
+        {
+          "id": "wordperfect-libwpd-module",
+          "rendererId": "office-wordperfect",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/wordperfect/libwpd.mjs",
+          "packagePath": "@file-viewer/renderer-wordperfect/worker/libwpd.mjs",
+          "description": "Emscripten ES module loader for the MPL-2.0 libwpd/librevenge WebAssembly runtime."
+        }
+      ]
+    },
+    {
       "rendererId": "typst",
       "assets": [
         {
@@ -453,7 +554,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-07-23T13:56:10.896Z",
+    "checkedAt": "2026-08-12T09:45:27.353Z",
     "assets": [
       {
         "id": "model-occt-worker",
@@ -814,6 +915,76 @@
         "relativePath": "vendor/xlsx/sheet.worker.js",
         "exists": true,
         "description": "Optional Spreadsheet worker for off-main-thread styled-exceljs workbook parsing."
+      },
+      {
+        "id": "apple-pages-iwork-worker",
+        "rendererId": "apple-pages",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/iwork/iwork.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+      },
+      {
+        "id": "apple-numbers-iwork-worker",
+        "rendererId": "apple-numbers",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/iwork/iwork.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+      },
+      {
+        "id": "apple-keynote-iwork-worker",
+        "rendererId": "apple-keynote",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/iwork/iwork.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded ZIP, Snappy, IWA/Protobuf and iWork 09 XML/APXL parsing."
+      },
+      {
+        "id": "hangul-worker",
+        "rendererId": "office-hangul",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/hangul/hangul.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded HWP v5 CFB and HWPX ZIP/XML parsing."
+      },
+      {
+        "id": "wordperfect-worker",
+        "rendererId": "office-wordperfect",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/wordperfect/wordperfect.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded WordPerfect signature detection and parsing."
+      },
+      {
+        "id": "wordperfect-libwpd-wasm",
+        "rendererId": "office-wordperfect",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/wordperfect/libwpd.wasm",
+        "exists": true,
+        "description": "MPL-2.0 libwpd/librevenge WebAssembly parser lazy-loaded by the WordPerfect Worker."
+      },
+      {
+        "id": "wordperfect-libwpd-module",
+        "rendererId": "office-wordperfect",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/wordperfect/libwpd.mjs",
+        "exists": true,
+        "description": "Emscripten ES module loader for the MPL-2.0 libwpd/librevenge WebAssembly runtime."
       },
       {
         "id": "typst-compiler-wasm",
