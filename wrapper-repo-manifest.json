@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-28T07:41:55.779Z",
+  "generatedAt": "2026-08-28T07:49:43.805Z",
   "sourceBranch": "main",
-  "sourceCommit": "6664be24b",
+  "sourceCommit": "f2b26943c",
   "organization": "flyfish-dev",
   "framework": "Vanilla JS / Pure Web",
   "packageName": "@file-viewer/web",
