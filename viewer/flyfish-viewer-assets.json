@@ -1,7 +1,45 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-12T09:45:27.354Z",
+  "generatedAt": "2026-08-31T10:56:30.753Z",
   "rendererAssetManifests": [
+    {
+      "rendererId": "chm",
+      "assets": [
+        {
+          "id": "chm-worker",
+          "rendererId": "chm",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/chm/chm.worker.js",
+          "packagePath": "@file-viewer/renderer-chm/worker/chm.worker.js",
+          "optionPath": "chm.workerUrl",
+          "description": "Module Worker that isolates Rust/WASM CHM parsing, LZX decompression, search and virtual-file access."
+        },
+        {
+          "id": "chm-wasm-module",
+          "rendererId": "chm",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/chm/chm_wasm.js",
+          "packagePath": "@file-viewer/renderer-chm/wasm/chm_wasm.js",
+          "optionPath": "chm.wasmModuleUrl",
+          "description": "wasm-bindgen ES module loader for the browser-local Rust CHM engine."
+        },
+        {
+          "id": "chm-wasm",
+          "rendererId": "chm",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/chm/chm_wasm_bg.wasm",
+          "packagePath": "@file-viewer/renderer-chm/wasm/chm_wasm_bg.wasm",
+          "optionPath": "chm.wasmUrl",
+          "description": "Rust WebAssembly engine for bounded ITSF/ITSP parsing and LZX decompression."
+        }
+      ]
+    },
     {
       "rendererId": "model",
       "assets": [
@@ -536,6 +574,598 @@
       ]
     },
     {
+      "rendererId": "illustrator-pdf-design",
+      "assets": [
+        {
+          "id": "illustrator-pdf-design-third-party-notices",
+          "rendererId": "illustrator-pdf-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "illustrator-pgf-license",
+          "rendererId": "illustrator-pdf-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.illustrator-pgf-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/illustrator-pgf-MIT.txt",
+          "description": "illustrator-pgf MIT license text for the bundled native Illustrator Worker."
+        },
+        {
+          "id": "illustrator-pgf-worker",
+          "rendererId": "illustrator-pdf-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/illustrator-pgf.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/illustrator-pgf.worker.js",
+          "optionPath": "design.illustratorWorkerUrl",
+          "description": "Terminable module Worker for bounded native Illustrator PGF/private-source parsing and Canvas rendering."
+        },
+        {
+          "id": "illustrator-zstd-license",
+          "rendererId": "illustrator-pdf-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.fzstd-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/fzstd-MIT.txt",
+          "description": "fzstd MIT license text for the bounded streaming zstd decoder bundled into the Illustrator Worker."
+        }
+      ]
+    },
+    {
+      "rendererId": "photoshop-design",
+      "assets": [
+        {
+          "id": "photoshop-design-third-party-notices",
+          "rendererId": "photoshop-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "photoshop-design-ag-psd-license",
+          "rendererId": "photoshop-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.ag-psd-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/ag-psd-MIT.txt",
+          "description": "ag-psd MIT license and upstream image/brush ownership notice."
+        },
+        {
+          "id": "photoshop-design-base64-js-license",
+          "rendererId": "photoshop-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.base64-js-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/base64-js-MIT.txt",
+          "description": "base64-js MIT license text for the dependency bundled through ag-psd."
+        },
+        {
+          "id": "photoshop-design-pako-license",
+          "rendererId": "photoshop-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.pako-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/pako-MIT.txt",
+          "description": "pako MIT license text for the dependency bundled through ag-psd."
+        },
+        {
+          "id": "photoshop-design-webtoon-psd-license",
+          "rendererId": "photoshop-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.webtoon-psd-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/webtoon-psd-MIT.txt",
+          "description": "@webtoon/psd MIT license text for the bundled PSB parser."
+        },
+        {
+          "id": "photoshop-design-worker",
+          "rendererId": "photoshop-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/photoshop.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/photoshop.worker.js",
+          "optionPath": "design.workerUrl",
+          "description": "Module Worker for bounded PSD/PSB parsing and composite/layer pixel synthesis."
+        }
+      ]
+    },
+    {
+      "rendererId": "photoshop-resource-design",
+      "assets": [
+        {
+          "id": "photoshop-resource-design-third-party-notices",
+          "rendererId": "photoshop-resource-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "photoshop-resource-design-ag-psd-license",
+          "rendererId": "photoshop-resource-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.ag-psd-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/ag-psd-MIT.txt",
+          "description": "ag-psd MIT license and upstream image/brush ownership notice."
+        },
+        {
+          "id": "photoshop-resource-design-base64-js-license",
+          "rendererId": "photoshop-resource-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.base64-js-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/base64-js-MIT.txt",
+          "description": "base64-js MIT license text for the dependency bundled through ag-psd."
+        },
+        {
+          "id": "photoshop-resource-design-pako-license",
+          "rendererId": "photoshop-resource-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.pako-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/pako-MIT.txt",
+          "description": "pako MIT license text for the dependency bundled through ag-psd."
+        },
+        {
+          "id": "photoshop-resource-worker",
+          "rendererId": "photoshop-resource-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-resource.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-resource.worker.js",
+          "optionPath": "design.adobeResourceWorkerUrl",
+          "description": "Module Worker for bounded Photoshop ABR, CSH, PAT, GRD, and ASL resource parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "adobe-palette-design",
+      "assets": [
+        {
+          "id": "adobe-palette-design-third-party-notices",
+          "rendererId": "adobe-palette-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "adobe-palette-design-xmldom-license",
+          "rendererId": "adobe-palette-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmldom-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmldom-MIT.txt",
+          "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-palette-design-saxes-license",
+          "rendererId": "adobe-palette-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.saxes-ISC.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/saxes-ISC.txt",
+          "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-palette-design-xmlchars-license",
+          "rendererId": "adobe-palette-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmlchars-MIT.txt",
+          "description": "xmlchars MIT license text for the dependency bundled through saxes."
+        },
+        {
+          "id": "adobe-palette-container-worker",
+          "rendererId": "adobe-palette-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-container.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-container.worker.js",
+          "optionPath": "design.containerWorkerUrl",
+          "description": "Terminable module Worker for bounded ASE and ACO palette parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "indesign-exchange-design",
+      "assets": [
+        {
+          "id": "indesign-exchange-design-third-party-notices",
+          "rendererId": "indesign-exchange-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "indesign-exchange-design-xmldom-license",
+          "rendererId": "indesign-exchange-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmldom-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmldom-MIT.txt",
+          "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "indesign-exchange-design-saxes-license",
+          "rendererId": "indesign-exchange-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.saxes-ISC.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/saxes-ISC.txt",
+          "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "indesign-exchange-design-xmlchars-license",
+          "rendererId": "indesign-exchange-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmlchars-MIT.txt",
+          "description": "xmlchars MIT license text for the dependency bundled through saxes."
+        },
+        {
+          "id": "indesign-exchange-container-worker",
+          "rendererId": "indesign-exchange-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-container.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-container.worker.js",
+          "optionPath": "design.containerWorkerUrl",
+          "description": "Terminable module Worker for bounded ICML, IDMS, and legacy INX parsing and layout-fragment reconstruction."
+        }
+      ]
+    },
+    {
+      "rendererId": "adobe-animate-xfl-design",
+      "assets": [
+        {
+          "id": "adobe-animate-xfl-design-third-party-notices",
+          "rendererId": "adobe-animate-xfl-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "adobe-animate-xfl-design-xmldom-license",
+          "rendererId": "adobe-animate-xfl-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmldom-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmldom-MIT.txt",
+          "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-animate-xfl-design-saxes-license",
+          "rendererId": "adobe-animate-xfl-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.saxes-ISC.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/saxes-ISC.txt",
+          "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-animate-xfl-design-xmlchars-license",
+          "rendererId": "adobe-animate-xfl-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmlchars-MIT.txt",
+          "description": "xmlchars MIT license text for the dependency bundled through saxes."
+        },
+        {
+          "id": "adobe-animate-xfl-container-worker",
+          "rendererId": "adobe-animate-xfl-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-container.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-container.worker.js",
+          "optionPath": "design.containerWorkerUrl",
+          "description": "Terminable module Worker for bounded modern ZIP/XFL-based Animate FLA parsing and first-frame reconstruction."
+        }
+      ]
+    },
+    {
+      "rendererId": "adobe-xd-design",
+      "assets": [
+        {
+          "id": "adobe-xd-design-third-party-notices",
+          "rendererId": "adobe-xd-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "adobe-xd-design-xmldom-license",
+          "rendererId": "adobe-xd-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmldom-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmldom-MIT.txt",
+          "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-xd-design-saxes-license",
+          "rendererId": "adobe-xd-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.saxes-ISC.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/saxes-ISC.txt",
+          "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "adobe-xd-design-xmlchars-license",
+          "rendererId": "adobe-xd-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmlchars-MIT.txt",
+          "description": "xmlchars MIT license text for the dependency bundled through saxes."
+        },
+        {
+          "id": "adobe-xd-container-worker",
+          "rendererId": "adobe-xd-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-container.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-container.worker.js",
+          "optionPath": "design.containerWorkerUrl",
+          "description": "Terminable module Worker for bounded XD package parsing and saved-preview extraction."
+        }
+      ]
+    },
+    {
+      "rendererId": "indesign-native-design",
+      "assets": [
+        {
+          "id": "indesign-native-design-third-party-notices",
+          "rendererId": "indesign-native-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "indesign-native-design-xmldom-license",
+          "rendererId": "indesign-native-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmldom-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmldom-MIT.txt",
+          "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "indesign-native-design-saxes-license",
+          "rendererId": "indesign-native-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.saxes-ISC.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/saxes-ISC.txt",
+          "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+        },
+        {
+          "id": "indesign-native-design-xmlchars-license",
+          "rendererId": "indesign-native-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/xmlchars-MIT.txt",
+          "description": "xmlchars MIT license text for the dependency bundled through saxes."
+        },
+        {
+          "id": "indesign-native-container-worker",
+          "rendererId": "indesign-native-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/adobe-container.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/adobe-container.worker.js",
+          "optionPath": "design.containerWorkerUrl",
+          "description": "Terminable module Worker for bounded native INDD and INDT parsing."
+        }
+      ]
+    },
+    {
+      "rendererId": "postscript-design",
+      "assets": [
+        {
+          "id": "postscript-design-third-party-notices",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "postscript-design-worker",
+          "rendererId": "postscript-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/postscript.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/postscript.worker.js",
+          "optionPath": "design.postscriptWorkerUrl",
+          "description": "Terminable module Worker for bounded EPS/PostScript execution and page rasterization."
+        },
+        {
+          "id": "postscript-design-wasm",
+          "rendererId": "postscript-design",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/stet_wasm_bg.wasm",
+          "packagePath": "@file-viewer/renderer-design/wasm/postscript.wasm",
+          "optionPath": "design.postscriptWasmUrl",
+          "description": "License-safe Stet WebAssembly interpreter with OFL substitutes and no bundled CMYK ICC profile."
+        },
+        {
+          "id": "postscript-design-license-stet-apache",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.stet-Apache-2.0.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/Stet-Apache-2.0.txt",
+          "description": "Stet Apache-2.0 license text."
+        },
+        {
+          "id": "postscript-design-license-stet-mit",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.stet-MIT.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/Stet-MIT.txt",
+          "description": "Stet MIT license text."
+        },
+        {
+          "id": "postscript-design-license-carlito-ofl",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.Carlito-OFL-1.1.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/Carlito-OFL-1.1.txt",
+          "description": "Carlito SIL Open Font License 1.1 text."
+        },
+        {
+          "id": "postscript-design-license-tinos-ofl",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.Tinos-OFL-1.1.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/Tinos-OFL-1.1.txt",
+          "description": "Tinos SIL Open Font License 1.1 text."
+        },
+        {
+          "id": "postscript-design-license-cousine-ofl",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.Cousine-OFL-1.1.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/Cousine-OFL-1.1.txt",
+          "description": "Cousine SIL Open Font License 1.1 text."
+        },
+        {
+          "id": "postscript-design-license-noto-symbols-ofl",
+          "rendererId": "postscript-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.NotoSansSymbols2-OFL-1.1.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/NotoSansSymbols2-OFL-1.1.txt",
+          "description": "Noto Sans Symbols 2 SIL Open Font License 1.1 text."
+        }
+      ]
+    },
+    {
+      "rendererId": "indesign-idml-design",
+      "assets": [
+        {
+          "id": "indesign-idml-design-third-party-notices",
+          "rendererId": "indesign-idml-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/THIRD_PARTY_NOTICES.md",
+          "packagePath": "@file-viewer/renderer-design/third-party-notices",
+          "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+        },
+        {
+          "id": "indesign-idml-worker",
+          "rendererId": "indesign-idml-design",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/idml.worker.js",
+          "packagePath": "@file-viewer/renderer-design/worker/idml.worker.js",
+          "optionPath": "design.idmlWorkerUrl",
+          "description": "Module Worker that validates IDML packages and renders pages outside the UI thread."
+        },
+        {
+          "id": "indesign-idml-wasm",
+          "rendererId": "indesign-idml-design",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/paged_introspect_wasm_bg.wasm",
+          "packagePath": "@paged-media/introspect-wasm/paged_introspect_wasm_bg.wasm",
+          "optionPath": "design.idmlWasmUrl",
+          "description": "Self-hosted @paged-media/introspect-wasm CPU renderer used by the IDML Worker."
+        },
+        {
+          "id": "indesign-idml-license",
+          "rendererId": "indesign-idml-design",
+          "kind": "license",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/design/LICENSE.introspect-wasm-MPL-2.0.txt",
+          "packagePath": "@file-viewer/renderer-design/licenses/MPL-2.0.txt",
+          "description": "MPL-2.0 license text distributed with the IDML WebAssembly engine."
+        }
+      ]
+    },
+    {
       "rendererId": "data-asset",
       "assets": [
         {
@@ -554,8 +1184,38 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-08-12T09:45:27.353Z",
+    "checkedAt": "2026-08-31T10:56:30.752Z",
     "assets": [
+      {
+        "id": "chm-worker",
+        "rendererId": "chm",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/chm/chm.worker.js",
+        "exists": true,
+        "description": "Module Worker that isolates Rust/WASM CHM parsing, LZX decompression, search and virtual-file access."
+      },
+      {
+        "id": "chm-wasm-module",
+        "rendererId": "chm",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/chm/chm_wasm.js",
+        "exists": true,
+        "description": "wasm-bindgen ES module loader for the browser-local Rust CHM engine."
+      },
+      {
+        "id": "chm-wasm",
+        "rendererId": "chm",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/chm/chm_wasm_bg.wasm",
+        "exists": true,
+        "description": "Rust WebAssembly engine for bounded ITSF/ITSP parsing and LZX decompression."
+      },
       {
         "id": "model-occt-worker",
         "rendererId": "model",
@@ -1015,6 +1675,536 @@
         "relativePath": "wasm/typst/fonts/",
         "exists": true,
         "description": "Self-hosted default Typst text fonts used by typst.ts without public CDN requests."
+      },
+      {
+        "id": "illustrator-pdf-design-third-party-notices",
+        "rendererId": "illustrator-pdf-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "illustrator-pgf-license",
+        "rendererId": "illustrator-pdf-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.illustrator-pgf-MIT.txt",
+        "exists": true,
+        "description": "illustrator-pgf MIT license text for the bundled native Illustrator Worker."
+      },
+      {
+        "id": "illustrator-pgf-worker",
+        "rendererId": "illustrator-pdf-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/illustrator-pgf.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded native Illustrator PGF/private-source parsing and Canvas rendering."
+      },
+      {
+        "id": "illustrator-zstd-license",
+        "rendererId": "illustrator-pdf-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.fzstd-MIT.txt",
+        "exists": true,
+        "description": "fzstd MIT license text for the bounded streaming zstd decoder bundled into the Illustrator Worker."
+      },
+      {
+        "id": "photoshop-design-third-party-notices",
+        "rendererId": "photoshop-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "photoshop-design-ag-psd-license",
+        "rendererId": "photoshop-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.ag-psd-MIT.txt",
+        "exists": true,
+        "description": "ag-psd MIT license and upstream image/brush ownership notice."
+      },
+      {
+        "id": "photoshop-design-base64-js-license",
+        "rendererId": "photoshop-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.base64-js-MIT.txt",
+        "exists": true,
+        "description": "base64-js MIT license text for the dependency bundled through ag-psd."
+      },
+      {
+        "id": "photoshop-design-pako-license",
+        "rendererId": "photoshop-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.pako-MIT.txt",
+        "exists": true,
+        "description": "pako MIT license text for the dependency bundled through ag-psd."
+      },
+      {
+        "id": "photoshop-design-webtoon-psd-license",
+        "rendererId": "photoshop-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.webtoon-psd-MIT.txt",
+        "exists": true,
+        "description": "@webtoon/psd MIT license text for the bundled PSB parser."
+      },
+      {
+        "id": "photoshop-design-worker",
+        "rendererId": "photoshop-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/photoshop.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded PSD/PSB parsing and composite/layer pixel synthesis."
+      },
+      {
+        "id": "photoshop-resource-design-third-party-notices",
+        "rendererId": "photoshop-resource-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "photoshop-resource-design-ag-psd-license",
+        "rendererId": "photoshop-resource-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.ag-psd-MIT.txt",
+        "exists": true,
+        "description": "ag-psd MIT license and upstream image/brush ownership notice."
+      },
+      {
+        "id": "photoshop-resource-design-base64-js-license",
+        "rendererId": "photoshop-resource-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.base64-js-MIT.txt",
+        "exists": true,
+        "description": "base64-js MIT license text for the dependency bundled through ag-psd."
+      },
+      {
+        "id": "photoshop-resource-design-pako-license",
+        "rendererId": "photoshop-resource-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.pako-MIT.txt",
+        "exists": true,
+        "description": "pako MIT license text for the dependency bundled through ag-psd."
+      },
+      {
+        "id": "photoshop-resource-worker",
+        "rendererId": "photoshop-resource-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-resource.worker.js",
+        "exists": true,
+        "description": "Module Worker for bounded Photoshop ABR, CSH, PAT, GRD, and ASL resource parsing."
+      },
+      {
+        "id": "adobe-palette-design-third-party-notices",
+        "rendererId": "adobe-palette-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "adobe-palette-design-xmldom-license",
+        "rendererId": "adobe-palette-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmldom-MIT.txt",
+        "exists": true,
+        "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-palette-design-saxes-license",
+        "rendererId": "adobe-palette-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.saxes-ISC.txt",
+        "exists": true,
+        "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-palette-design-xmlchars-license",
+        "rendererId": "adobe-palette-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+        "exists": true,
+        "description": "xmlchars MIT license text for the dependency bundled through saxes."
+      },
+      {
+        "id": "adobe-palette-container-worker",
+        "rendererId": "adobe-palette-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-container.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded ASE and ACO palette parsing."
+      },
+      {
+        "id": "indesign-exchange-design-third-party-notices",
+        "rendererId": "indesign-exchange-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "indesign-exchange-design-xmldom-license",
+        "rendererId": "indesign-exchange-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmldom-MIT.txt",
+        "exists": true,
+        "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "indesign-exchange-design-saxes-license",
+        "rendererId": "indesign-exchange-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.saxes-ISC.txt",
+        "exists": true,
+        "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "indesign-exchange-design-xmlchars-license",
+        "rendererId": "indesign-exchange-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+        "exists": true,
+        "description": "xmlchars MIT license text for the dependency bundled through saxes."
+      },
+      {
+        "id": "indesign-exchange-container-worker",
+        "rendererId": "indesign-exchange-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-container.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded ICML, IDMS, and legacy INX parsing and layout-fragment reconstruction."
+      },
+      {
+        "id": "adobe-animate-xfl-design-third-party-notices",
+        "rendererId": "adobe-animate-xfl-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "adobe-animate-xfl-design-xmldom-license",
+        "rendererId": "adobe-animate-xfl-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmldom-MIT.txt",
+        "exists": true,
+        "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-animate-xfl-design-saxes-license",
+        "rendererId": "adobe-animate-xfl-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.saxes-ISC.txt",
+        "exists": true,
+        "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-animate-xfl-design-xmlchars-license",
+        "rendererId": "adobe-animate-xfl-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+        "exists": true,
+        "description": "xmlchars MIT license text for the dependency bundled through saxes."
+      },
+      {
+        "id": "adobe-animate-xfl-container-worker",
+        "rendererId": "adobe-animate-xfl-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-container.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded modern ZIP/XFL-based Animate FLA parsing and first-frame reconstruction."
+      },
+      {
+        "id": "adobe-xd-design-third-party-notices",
+        "rendererId": "adobe-xd-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "adobe-xd-design-xmldom-license",
+        "rendererId": "adobe-xd-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmldom-MIT.txt",
+        "exists": true,
+        "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-xd-design-saxes-license",
+        "rendererId": "adobe-xd-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.saxes-ISC.txt",
+        "exists": true,
+        "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "adobe-xd-design-xmlchars-license",
+        "rendererId": "adobe-xd-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+        "exists": true,
+        "description": "xmlchars MIT license text for the dependency bundled through saxes."
+      },
+      {
+        "id": "adobe-xd-container-worker",
+        "rendererId": "adobe-xd-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-container.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded XD package parsing and saved-preview extraction."
+      },
+      {
+        "id": "indesign-native-design-third-party-notices",
+        "rendererId": "indesign-native-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "indesign-native-design-xmldom-license",
+        "rendererId": "indesign-native-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmldom-MIT.txt",
+        "exists": true,
+        "description": "@xmldom/xmldom MIT license text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "indesign-native-design-saxes-license",
+        "rendererId": "indesign-native-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.saxes-ISC.txt",
+        "exists": true,
+        "description": "saxes ISC and inherited notice text for the bundled Adobe container Worker."
+      },
+      {
+        "id": "indesign-native-design-xmlchars-license",
+        "rendererId": "indesign-native-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.xmlchars-MIT.txt",
+        "exists": true,
+        "description": "xmlchars MIT license text for the dependency bundled through saxes."
+      },
+      {
+        "id": "indesign-native-container-worker",
+        "rendererId": "indesign-native-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/adobe-container.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded native INDD and INDT parsing."
+      },
+      {
+        "id": "postscript-design-third-party-notices",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "postscript-design-worker",
+        "rendererId": "postscript-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/postscript.worker.js",
+        "exists": true,
+        "description": "Terminable module Worker for bounded EPS/PostScript execution and page rasterization."
+      },
+      {
+        "id": "postscript-design-wasm",
+        "rendererId": "postscript-design",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/stet_wasm_bg.wasm",
+        "exists": true,
+        "description": "License-safe Stet WebAssembly interpreter with OFL substitutes and no bundled CMYK ICC profile."
+      },
+      {
+        "id": "postscript-design-license-stet-apache",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.stet-Apache-2.0.txt",
+        "exists": true,
+        "description": "Stet Apache-2.0 license text."
+      },
+      {
+        "id": "postscript-design-license-stet-mit",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.stet-MIT.txt",
+        "exists": true,
+        "description": "Stet MIT license text."
+      },
+      {
+        "id": "postscript-design-license-carlito-ofl",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.Carlito-OFL-1.1.txt",
+        "exists": true,
+        "description": "Carlito SIL Open Font License 1.1 text."
+      },
+      {
+        "id": "postscript-design-license-tinos-ofl",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.Tinos-OFL-1.1.txt",
+        "exists": true,
+        "description": "Tinos SIL Open Font License 1.1 text."
+      },
+      {
+        "id": "postscript-design-license-cousine-ofl",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.Cousine-OFL-1.1.txt",
+        "exists": true,
+        "description": "Cousine SIL Open Font License 1.1 text."
+      },
+      {
+        "id": "postscript-design-license-noto-symbols-ofl",
+        "rendererId": "postscript-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.NotoSansSymbols2-OFL-1.1.txt",
+        "exists": true,
+        "description": "Noto Sans Symbols 2 SIL Open Font License 1.1 text."
+      },
+      {
+        "id": "indesign-idml-design-third-party-notices",
+        "rendererId": "indesign-idml-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/THIRD_PARTY_NOTICES.md",
+        "exists": true,
+        "description": "Third-party notices for the bundled Adobe design Worker and WebAssembly dependency closure."
+      },
+      {
+        "id": "indesign-idml-worker",
+        "rendererId": "indesign-idml-design",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/idml.worker.js",
+        "exists": true,
+        "description": "Module Worker that validates IDML packages and renders pages outside the UI thread."
+      },
+      {
+        "id": "indesign-idml-wasm",
+        "rendererId": "indesign-idml-design",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/paged_introspect_wasm_bg.wasm",
+        "exists": true,
+        "description": "Self-hosted @paged-media/introspect-wasm CPU renderer used by the IDML Worker."
+      },
+      {
+        "id": "indesign-idml-license",
+        "rendererId": "indesign-idml-design",
+        "kind": "license",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/design/LICENSE.introspect-wasm-MPL-2.0.txt",
+        "exists": true,
+        "description": "MPL-2.0 license text distributed with the IDML WebAssembly engine."
       },
       {
         "id": "data-sql-wasm",

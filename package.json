@@ -1,6 +1,6 @@
 {
   "name": "@file-viewer/web",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": false,
   "type": "module",
   "description": "Standard pure web component package for File Viewer",
@@ -60,17 +60,18 @@
     "README.en.md"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.json && node scripts/build-iife.mjs",
+    "build": "tsc -b tsconfig.json && node scripts/build-iife.mjs && node --test test/*.test.mjs",
+    "test": "node --test test/*.test.mjs",
     "type-check": "tsc -b tsconfig.json"
   },
   "dependencies": {
-    "@file-viewer/core": "3.0.0"
+    "@file-viewer/core": "3.0.1"
   },
   "devDependencies": {
-    "@types/node": "^25.8.0",
+    "@types/node": "^26.4.0",
     "esbuild": "^0.28.2",
     "typescript": "^6.0.3",
-    "vite": "^8.0.16"
+    "vite": "^8.2.2"
   },
   "license": "Apache-2.0",
   "packageManager": "pnpm@11.0.9"
