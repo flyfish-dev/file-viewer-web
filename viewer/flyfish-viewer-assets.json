@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-08-31T10:56:30.753Z",
+  "generatedAt": "2026-09-05T10:46:50.021Z",
   "rendererAssetManifests": [
     {
       "rendererId": "chm",
@@ -210,7 +210,7 @@
           "kind": "wasm-directory",
           "target": "public",
           "required": true,
-          "defaultPath": "wasm/cad/0.8.0/",
+          "defaultPath": "wasm/cad/0.8.1/",
           "optionPath": "cad.wasmPath",
           "description": "@flyfish-dev/cad-viewer WebAssembly directory for DWG/DXF helpers."
         },
@@ -220,7 +220,7 @@
           "kind": "worker",
           "target": "public",
           "required": true,
-          "defaultPath": "wasm/cad/0.8.0/dwg-worker.js",
+          "defaultPath": "wasm/cad/0.8.1/dwg-worker.js",
           "optionPath": "cad.workerUrl",
           "description": "DWG worker entry used by @flyfish-dev/cad-viewer."
         },
@@ -230,7 +230,7 @@
           "kind": "wasm",
           "target": "public",
           "required": true,
-          "defaultPath": "wasm/cad/0.8.0/dwfv-render.wasm",
+          "defaultPath": "wasm/cad/0.8.1/dwfv-render.wasm",
           "optionPath": "cad.dwfWasmUrl",
           "description": "DWF/DWFx/XPS raster WebAssembly module used by @flyfish-dev/cad-viewer."
         },
@@ -240,7 +240,7 @@
           "kind": "script",
           "target": "public",
           "required": true,
-          "defaultPath": "wasm/cad/0.8.0/libredwg-web.js",
+          "defaultPath": "wasm/cad/0.8.1/libredwg-web.js",
           "description": "LibreDWG JavaScript runtime loaded by the CAD DWG worker for offline parsing."
         },
         {
@@ -249,8 +249,53 @@
           "kind": "wasm",
           "target": "public",
           "required": true,
-          "defaultPath": "wasm/cad/0.8.0/libredwg-web.wasm",
+          "defaultPath": "wasm/cad/0.8.1/libredwg-web.wasm",
           "description": "LibreDWG WebAssembly runtime loaded by the CAD DWG worker for offline parsing."
+        },
+        {
+          "id": "cad-compat-0-8-0-wasm-directory",
+          "rendererId": "cad",
+          "kind": "wasm-directory",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/0.8.0/",
+          "description": "Legacy @flyfish-dev/cad-viewer 0.8.0 directory kept for full-package path compatibility."
+        },
+        {
+          "id": "cad-compat-0-8-0-dwg-worker",
+          "rendererId": "cad",
+          "kind": "worker",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/0.8.0/dwg-worker.js",
+          "description": "Legacy CAD 0.8.0 DWG worker kept for full-package path compatibility."
+        },
+        {
+          "id": "cad-compat-0-8-0-dwf-wasm",
+          "rendererId": "cad",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/0.8.0/dwfv-render.wasm",
+          "description": "Legacy CAD 0.8.0 DWF runtime kept for full-package path compatibility."
+        },
+        {
+          "id": "cad-compat-0-8-0-libredwg-script",
+          "rendererId": "cad",
+          "kind": "script",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/0.8.0/libredwg-web.js",
+          "description": "Legacy CAD 0.8.0 LibreDWG script kept for full-package path compatibility."
+        },
+        {
+          "id": "cad-compat-0-8-0-libredwg-wasm",
+          "rendererId": "cad",
+          "kind": "wasm",
+          "target": "public",
+          "required": true,
+          "defaultPath": "wasm/cad/0.8.0/libredwg-web.wasm",
+          "description": "Legacy CAD 0.8.0 LibreDWG WebAssembly runtime kept for full-package path compatibility."
         },
         {
           "id": "cad-legacy-dwg-worker",
@@ -1184,7 +1229,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-08-31T10:56:30.752Z",
+    "checkedAt": "2026-09-05T10:46:50.020Z",
     "assets": [
       {
         "id": "chm-worker",
@@ -1362,7 +1407,7 @@
         "kind": "wasm-directory",
         "target": "public",
         "required": true,
-        "relativePath": "wasm/cad/0.8.0/",
+        "relativePath": "wasm/cad/0.8.1/",
         "exists": true,
         "description": "@flyfish-dev/cad-viewer WebAssembly directory for DWG/DXF helpers."
       },
@@ -1372,7 +1417,7 @@
         "kind": "worker",
         "target": "public",
         "required": true,
-        "relativePath": "wasm/cad/0.8.0/dwg-worker.js",
+        "relativePath": "wasm/cad/0.8.1/dwg-worker.js",
         "exists": true,
         "description": "DWG worker entry used by @flyfish-dev/cad-viewer."
       },
@@ -1382,7 +1427,7 @@
         "kind": "wasm",
         "target": "public",
         "required": true,
-        "relativePath": "wasm/cad/0.8.0/dwfv-render.wasm",
+        "relativePath": "wasm/cad/0.8.1/dwfv-render.wasm",
         "exists": true,
         "description": "DWF/DWFx/XPS raster WebAssembly module used by @flyfish-dev/cad-viewer."
       },
@@ -1392,7 +1437,7 @@
         "kind": "script",
         "target": "public",
         "required": true,
-        "relativePath": "wasm/cad/0.8.0/libredwg-web.js",
+        "relativePath": "wasm/cad/0.8.1/libredwg-web.js",
         "exists": true,
         "description": "LibreDWG JavaScript runtime loaded by the CAD DWG worker for offline parsing."
       },
@@ -1402,9 +1447,59 @@
         "kind": "wasm",
         "target": "public",
         "required": true,
-        "relativePath": "wasm/cad/0.8.0/libredwg-web.wasm",
+        "relativePath": "wasm/cad/0.8.1/libredwg-web.wasm",
         "exists": true,
         "description": "LibreDWG WebAssembly runtime loaded by the CAD DWG worker for offline parsing."
+      },
+      {
+        "id": "cad-compat-0-8-0-wasm-directory",
+        "rendererId": "cad",
+        "kind": "wasm-directory",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/0.8.0/",
+        "exists": true,
+        "description": "Legacy @flyfish-dev/cad-viewer 0.8.0 directory kept for full-package path compatibility."
+      },
+      {
+        "id": "cad-compat-0-8-0-dwg-worker",
+        "rendererId": "cad",
+        "kind": "worker",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/0.8.0/dwg-worker.js",
+        "exists": true,
+        "description": "Legacy CAD 0.8.0 DWG worker kept for full-package path compatibility."
+      },
+      {
+        "id": "cad-compat-0-8-0-dwf-wasm",
+        "rendererId": "cad",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/0.8.0/dwfv-render.wasm",
+        "exists": true,
+        "description": "Legacy CAD 0.8.0 DWF runtime kept for full-package path compatibility."
+      },
+      {
+        "id": "cad-compat-0-8-0-libredwg-script",
+        "rendererId": "cad",
+        "kind": "script",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/0.8.0/libredwg-web.js",
+        "exists": true,
+        "description": "Legacy CAD 0.8.0 LibreDWG script kept for full-package path compatibility."
+      },
+      {
+        "id": "cad-compat-0-8-0-libredwg-wasm",
+        "rendererId": "cad",
+        "kind": "wasm",
+        "target": "public",
+        "required": true,
+        "relativePath": "wasm/cad/0.8.0/libredwg-web.wasm",
+        "exists": true,
+        "description": "Legacy CAD 0.8.0 LibreDWG WebAssembly runtime kept for full-package path compatibility."
       },
       {
         "id": "cad-legacy-dwg-worker",
