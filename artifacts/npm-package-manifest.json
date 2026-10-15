@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "mode": "runtime-only",
+  "sourceCommit": "d20dc22c19a9101647a8198f46dc4037277da7cc",
+  "aggregateRelease": {
+    "repository": "flyfish-dev/file-viewer",
+    "tag": "v3.2.0",
+    "commit": "8cf8e2795300ada3bb27a090c786bdf2d0211ae4"
+  },
+  "package": {
+    "packageName": "@file-viewer/web",
+    "version": "3.2.0",
+    "tarball": "file-viewer-web-3.2.0.tgz",
+    "tarballSize": 230672,
+    "sha256": "ba752877e7a14729f204b6318da292f4c7369635af86facacdf506757382011d",
+    "fileCount": 19,
+    "integrity": "sha512-4c9N6AbDad6umrWboQ8RBnkt4NVrEC7b+AXe73WeQu+VaD2m3AwsSH3LfbS6SGBBGNeZnYA+M5mGZtCUbzBY7w==",
+    "license": "Apache-2.0",
+    "releaseArtifact": {
+      "includeTarball": true
+    }
+  }
+}
