@@ -1,0 +1,37 @@
+{
+  "profile": "chm-conservative-lock",
+  "lock": "packages/renderers/chm/rust/Cargo.lock",
+  "output": "packages/renderers/chm/.build/CHM_NATIVE_THIRD_PARTY_LICENSES.json",
+  "runtimeFiles": [
+    "packages/renderers/chm/src/wasm/chm_wasm_bg.wasm"
+  ],
+  "source": {
+    "scope": "Retained modified private Apache wrapper with public RustChm/FastChm source attribution; no private source is published."
+  },
+  "standardLibrary": {
+    "version": "1.94.1",
+    "scope": "Original Rust project/standard library grants for declared build profile; no post-link symbols claim.",
+    "legalFiles": [
+      {
+        "name": "chm-std-LICENSE-MIT",
+        "path": "packages/build-support/licenses/native/chm-std-LICENSE-MIT",
+        "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1"
+      },
+      {
+        "name": "chm-std-LICENSE-APACHE",
+        "path": "packages/build-support/licenses/native/chm-std-LICENSE-APACHE",
+        "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+      },
+      {
+        "name": "chm-std-COPYRIGHT",
+        "path": "packages/build-support/licenses/native/chm-std-COPYRIGHT",
+        "sha256": "172020dbfd5b53a226dfde77616190a48dcff519b0bc0e6deb91a8450782c4af"
+      },
+      {
+        "name": "chm-std-COPYRIGHT-library.html",
+        "path": "packages/build-support/licenses/native/chm-std-COPYRIGHT-library.html",
+        "sha256": "af70aaabed1b73e872f14f9130db37e09f3f4d73a5f7c598b9173697a5d2729f"
+      }
+    ]
+  }
+}

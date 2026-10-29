@@ -1,0 +1,556 @@
+{
+  "schemaVersion": 1,
+  "scope": "Exact material identity mapping; generated provenance is not a grant; source availability is reviewed separately.",
+  "materials": [
+    {
+      "sourcePath": "packages/components/web/viewer/wasm/cad/CORRESPONDING_SOURCE_NOTICE.txt",
+      "sha256": "84708e14468333976a636351c2412d8304616bb846c0623fc329cc1c7572db0e",
+      "bytes": 3560,
+      "kind": "generated-corresponding-source-offer",
+      "component": "CAD runtime@0.8.3",
+      "declaredLicense": null,
+      "source": "Existing immutable complete public source https://codeload.github.com/flyfish-dev/file-viewer/tar.gz/b982adc6d8f7f635ef7b86d842ba28e45a8fd8cd (SHA-256 b3d5fca3ff9edf343fe07ef87c19a2ccb3d799c5065f26edb7bc818edf0b86b5), normal rebuild identical to current CAD integration; standalone source retained in public checkout. Original native owner source URLs remain in the notice.",
+      "initialOccurrences": 10
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/wasm/cad/GPL-3.0.txt",
+      "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903",
+      "bytes": 35147,
+      "kind": "standard-license-text",
+      "component": "LibreDWG native CAD binding",
+      "declaredLicense": "GPL-3.0-only",
+      "source": "Complete GNU GPL v3 standard text retained with the separately identified LibreDWG native source; CAD/DWF own AGPL grants remain independent.",
+      "initialOccurrences": 10
+    },
+    {
+      "sourcePath": "packages/renderers/chm/rust/NOTICE.md",
+      "sha256": "11f149225645449dc6f525c15e080acebb696fcbf0e92ff706af1d1136465554",
+      "bytes": 2080,
+      "kind": "generated-original-notice-collection",
+      "component": "CHM source profile",
+      "declaredLicense": null,
+      "source": "Exact public Cargo checksums and retained RustChm/FastChm adapted-source notices",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/chm/rust/THIRD_PARTY_LICENSES.md",
+      "sha256": "e6df6dce7b229945d3a62b0753dad6f5fc1413db190035b32f7f1ab865cdb299",
+      "bytes": 547673,
+      "kind": "generated-original-notice-collection",
+      "component": "CHM source profile",
+      "declaredLicense": null,
+      "source": "Exact public Cargo checksums and retained RustChm/FastChm adapted-source notices",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/chm/THIRD_PARTY_NOTICES.md",
+      "sha256": "87f38c0efe292bd4d3c729a87147fd0cea3986c01e4096a38e7d7f6afce643de",
+      "bytes": 745,
+      "kind": "generated-original-notice-collection",
+      "component": "CHM source profile",
+      "declaredLicense": null,
+      "source": "Exact public Cargo checksums and retained RustChm/FastChm adapted-source notices",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/chm/LICENSE",
+      "sha256": "ff478ac8e55ccd78f44a5a50a81ecb723df50122e1a4f8722c656f59be5016e1",
+      "bytes": 10759,
+      "kind": "original-own-license",
+      "component": "CHM source profile",
+      "declaredLicense": "Apache-2.0",
+      "source": "Exact public Cargo checksums and retained RustChm/FastChm adapted-source notices",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/renderers/design/LICENSES/Carlito-OFL-1.1.txt",
+      "sha256": "58402f82a7c332a700294988fe7554fbb0a63a8d27ccc1ee3bbc640311990a00",
+      "bytes": 4424,
+      "kind": "original-license-grant",
+      "component": "Carlito",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://github.com/google/fonts/tree/ade3d1533e06b2b1462ffcde8e08b129627ca360/ofl",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/design/LICENSES/Cousine-OFL-1.1.txt",
+      "sha256": "b81c4d4dc0a9f72c9155e78187316e016e2012a8102468804173dc61468b906d",
+      "bytes": 4387,
+      "kind": "original-license-grant",
+      "component": "Cousine",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://github.com/google/fonts/tree/ade3d1533e06b2b1462ffcde8e08b129627ca360/ofl",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/design/LICENSES/NotoSansSymbols2-OFL-1.1.txt",
+      "sha256": "b118dd41337806a5d4797052c77caf3bd096aed783e5eb21b4d11154351e1ac0",
+      "bytes": 4383,
+      "kind": "original-license-grant",
+      "component": "NotoSansSymbols2",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://github.com/google/fonts/tree/ade3d1533e06b2b1462ffcde8e08b129627ca360/ofl",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/components/web/viewer/vendor/design/LICENSE.saxes-ISC.txt",
+      "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
+      "bytes": 3011,
+      "kind": "original-license-grant",
+      "component": "saxes@6.0.0",
+      "declaredLicense": "ISC",
+      "source": "https://github.com/lddubeau/saxes/blob/211fa0ebec9b628affc09219199639887174bfc3/LICENSE",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/design/LICENSE.stet-Apache-2.0.txt",
+      "sha256": "281755c6f4d045a464a29eb720c3e7586175c621352675dce144ca74bd1228cb",
+      "bytes": 10283,
+      "kind": "original-license-grant",
+      "component": "Stet",
+      "declaredLicense": "Apache-2.0 OR MIT",
+      "source": "https://github.com/AndyCappDev/stet/tree/3aaf0a76ebd0f9129a715dfa10614d8871d8e965",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/design/LICENSE.stet-MIT.txt",
+      "sha256": "4e27c8bbd00f817fb6fb96e8ca8eada8f0983a50a38fe3114ba8f977d31f654b",
+      "bytes": 1069,
+      "kind": "original-license-grant",
+      "component": "Stet",
+      "declaredLicense": "Apache-2.0 OR MIT",
+      "source": "https://github.com/AndyCappDev/stet/tree/3aaf0a76ebd0f9129a715dfa10614d8871d8e965",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/design/LICENSES/Tinos-OFL-1.1.txt",
+      "sha256": "cb3382d4643e8b02c12e322c220a3c76a5020d667e4fd4e7c75e744cca6caa6b",
+      "bytes": 4383,
+      "kind": "original-license-grant",
+      "component": "Tinos",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://github.com/googlefonts/tinos/blob/3b4482a99b80ea5fc75f187b1be3120a3f5905b3/OFL.txt",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "third_party/drawio/shapes/LICENSE",
+      "sha256": "55f8931a59e1f6e3ffff6c950c44339981c4806925ac0d97517a71164b0ca2ea",
+      "bytes": 629,
+      "kind": "original-restricted-grant",
+      "component": "drawio Atlassian assets@30.2.5",
+      "declaredLicense": "LicenseRef-Drawio-Atlassian-Restricted",
+      "source": "https://github.com/jgraph/drawio/tree/7976c02e1b10b1687c028d82782f9f5d90a885d6/src/main/webapp",
+      "initialOccurrences": 6
+    },
+    {
+      "sourcePath": "third_party/drawio/math4/LICENSE.GUST-1.0.txt",
+      "sha256": "49ea6cb9257bbee0a3979c48a774cd221550ac1c20c95549efe45fc99cc18050",
+      "bytes": 1377,
+      "kind": "original-license-grant",
+      "component": "MathJax fonts",
+      "declaredLicense": "LicenseRef-GUST-1.0 AND LPPL-1.3c-or-later",
+      "source": "https://github.com/jgraph/drawio/tree/7976c02e1b10b1687c028d82782f9f5d90a885d6/src/main/webapp",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "packages/renderers/typst/assets/fonts/LICENSE.LPPL-1.3c.txt",
+      "sha256": "3d262cdf34dafa6955f703c634a8c238ec44109bc8dd6ef34fb7aa54809f7e66",
+      "bytes": 19102,
+      "kind": "original-upstream-font-notice",
+      "component": "typst-assets external fonts@0.13.1",
+      "declaredLicense": "LPPL-1.3c-or-later",
+      "source": "https://github.com/typst/typst-assets/blob/ad8080d46d42fca909562572cfa14a86f00eb945/NOTICE",
+      "initialOccurrences": 8
+    },
+    {
+      "sourcePath": "third_party/drawio/math4/LICENSE.OFL-1.1.txt",
+      "sha256": "ebc109078c06f79af74cf2b27454c262830d12a65749f0e2bf25d1ac1db7a02a",
+      "bytes": 4128,
+      "kind": "original-license-grant",
+      "component": "MathJax fonts",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://github.com/jgraph/drawio/tree/7976c02e1b10b1687c028d82782f9f5d90a885d6/src/main/webapp",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "third_party/drawio/math4/NOTICE.bbm-upstream.txt",
+      "sha256": "7b085ddd6a7f340f66f580b4eddb3905aee9ecb005b0a6c5986f6f5072f588a1",
+      "bytes": 2480,
+      "kind": "original-upstream-permission",
+      "component": "bbm fonts",
+      "declaredLicense": "LicenseRef-CTAN-bbm",
+      "source": "https://ctan.org/tex-archive/fonts/cm/bbm?lang=en",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "third_party/drawio/math4/NOTICE.doublestroke-upstream.txt",
+      "sha256": "ccb7766b328e115f59a4bfb9954336190c1f2bf81c364d79379af384a6be7333",
+      "bytes": 4762,
+      "kind": "original-upstream-permission",
+      "component": "doublestroke fonts",
+      "declaredLicense": "LicenseRef-CTAN-doublestroke",
+      "source": "https://ctan.org/tex-archive/fonts/doublestroke?lang=en",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "third_party/drawio/math4/THIRD_PARTY_NOTICES.fonts.md",
+      "sha256": "6844ab0228e2a3f8426cea1d5a7269af612f48e7f4214094cb48df5cf8b9c4a1",
+      "bytes": 12389,
+      "kind": "generated-font-attribution",
+      "component": "MathJax fonts",
+      "declaredLicense": null,
+      "source": "33 exact SFNT nameID 0/13/14 records",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "third_party/drawio/stencils/LICENSE",
+      "sha256": "f4098ff053b5954abbf69b15811ef06cd277847ca49934beda355c3d841ebdac",
+      "bytes": 630,
+      "kind": "original-restricted-grant",
+      "component": "drawio Atlassian assets@30.2.5",
+      "declaredLicense": "LicenseRef-Drawio-Atlassian-Restricted",
+      "source": "https://github.com/jgraph/drawio/tree/7976c02e1b10b1687c028d82782f9f5d90a885d6/src/main/webapp",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "third_party/drawio/styles/fonts/LICENSE.ArchitectsDaughter.txt",
+      "sha256": "cfdb1247c5e5d30660be14327d66324d36b9b19fc881a70255bdfd8475c6b5d6",
+      "bytes": 4408,
+      "kind": "original-font-metadata-grant",
+      "component": "Architects Daughter",
+      "declaredLicense": "OFL-1.1",
+      "source": "Exact TTF nameID 13; original Kimberly Geswein attribution",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/hangul/licenses/THIRD_PARTY_LICENSES.txt",
+      "sha256": "28b717ba861874b22e964d260888e2727c908fff42a3b8e56412c15e0d21c53b",
+      "bytes": 49254,
+      "kind": "generated-original-bundle-grants",
+      "component": "Physical Worker dependency inputs",
+      "declaredLicense": null,
+      "source": "Exact normal Worker bundle-input inventory and complete original grants",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/iwork/licenses/THIRD_PARTY_LICENSES.txt",
+      "sha256": "5c50b49023ab5666629a5491c46b49d8d8997bdddd8ecbed95f2641dac06a514",
+      "bytes": 61552,
+      "kind": "generated-original-bundle-grants",
+      "component": "Physical Worker dependency inputs",
+      "declaredLicense": null,
+      "source": "Exact normal Worker bundle-input inventory and complete original grants",
+      "initialOccurrences": 3
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/wasm/model/LICENSE.occt-import-js.txt",
+      "sha256": "20c17d8b8c48a600800dfd14f95d5cb9ff47066a9641ddeab48dc54aec96e331",
+      "bytes": 26526,
+      "kind": "original-license-grant",
+      "component": "occt-import-js@0.0.23",
+      "declaredLicense": "LGPL-2.1-only",
+      "source": "https://github.com/kovacsv/occt-import-js/tree/c2148e54b456b571238d35cac037d304053d64b2",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/wasm/model/LICENSE.occt.txt",
+      "sha256": "f2f118b9029ec1871b953639ecc46651b2fc7b62e295e6cf3ef2ac4c9a058b33",
+      "bytes": 26432,
+      "kind": "original-license-grant",
+      "component": "OCCT@7.6.1",
+      "declaredLicense": "LGPL-2.1-only",
+      "source": "https://github.com/Open-Cascade-SAS/OCCT/tree/d2abb6d844231cb8f29be6894440874a4700e4a5",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/components/web/viewer/vendor/ppt/LICENSE",
+      "sha256": "fa3378d3e005fc6096e9da42d7fd53ea3a9742315560271369e0d958af2764f6",
+      "bytes": 5970,
+      "kind": "original-proprietary-runtime-notice",
+      "component": "@file-viewer/ppt",
+      "declaredLicense": "LicenseRef-Flyfish-Public-Watermarked-Binary-v2",
+      "source": "Retained original public watermarked runtime grant",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/components/web/viewer/vendor/ppt/NOTICE",
+      "sha256": "6b57bc92d0cb360a1aee691a3374ccf722037422cbbec8693607cce5859eb2d4",
+      "bytes": 10493,
+      "kind": "original-proprietary-runtime-notice",
+      "component": "@file-viewer/ppt",
+      "declaredLicense": "LicenseRef-Flyfish-Public-Watermarked-Binary-v2",
+      "source": "Retained original public watermarked runtime grant",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/cmaps/LICENSE",
+      "sha256": "aa92ab5a472974865a96fd4a4e9c13bb41bf6fe1b309cb6b8da48bc9e19839a2",
+      "bytes": 2080,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "BSD-3-Clause",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/pdf/fonts/OFL-1.1.txt",
+      "sha256": "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
+      "bytes": 4314,
+      "kind": "original-license-grant",
+      "component": "Noto Sans SC@5.3.0",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://www.npmjs.com/package/@fontsource-variable/noto-sans-sc/v/5.3.0",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/standard_fonts/LICENSE_LIBERATION",
+      "sha256": "93fed46019c38bbe566b479d22148e2e8a1e85ada614accb0211c37b2c61c19b",
+      "bytes": 4414,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "OFL-1.1",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/wasm/LICENSE_JBIG2",
+      "sha256": "9e66b7f1b934a28b37f3bc4dac97915de1674271e79a0a88182a18ed9731b4d1",
+      "bytes": 12862,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "BSD-3-Clause AND Apache-2.0",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "apps/viewer-demo/public/vendor/pdf/wasm/LICENSE_OPENJPEG",
+      "sha256": "7a81d5bbd4008c63cc4bf64496b1e75b9f5fbf009ec3b06c79d8b05974f6b8b6",
+      "bytes": 2109,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "BSD-2-Clause",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/wasm/LICENSE_PDFJS_JBIG2",
+      "sha256": "aad3cce09842e00e9e11ad5e8fef8cc02fbc3a3768fe2f007443b9cee37aaee5",
+      "bytes": 555,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "Apache-2.0",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/wasm/LICENSE_PDFJS_OPENJPEG",
+      "sha256": "717fc62da03292dbb4dd0c8280bd4ce7bb8550dcf31d772bc93455fb50313425",
+      "bytes": 1285,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "BSD-2-Clause",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/wasm/LICENSE_PDFJS_QCMS",
+      "sha256": "eb5104ca33552be007857a28351bc408f379ddd4bfacab1226b09c6d1e9fd7c4",
+      "bytes": 1285,
+      "kind": "original-license-grant",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": "BSD-2-Clause",
+      "source": "https://www.npmjs.com/package/pdfjs-dist/v/5.4.624",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/spreadsheet/dist/worker.THIRD_PARTY_LICENSES.txt",
+      "sha256": "cb601b1ed88a83b18a79f08e122879b979d7f71f99f93b7513be189ccbf1ba2f",
+      "bytes": 76320,
+      "kind": "generated-original-bundle-grants",
+      "component": "Physical Worker dependency inputs",
+      "declaredLicense": null,
+      "source": "Exact normal Worker bundle-input inventory and complete original grants",
+      "initialOccurrences": 2
+    },
+    {
+      "sourcePath": "packages/renderers/typst/assets/fonts/NOTICE.typst-assets.txt",
+      "sha256": "e33cd2ec7ac4730aff2497293c4012cfeb2560099563cc2fafc30ff120433d06",
+      "bytes": 22100,
+      "kind": "original-upstream-font-notice",
+      "component": "typst-assets external fonts@0.13.1",
+      "declaredLicense": "OFL-1.1 AND LicenseRef-GUST-1.0 AND LicenseRef-Bitstream-Vera",
+      "source": "https://github.com/typst/typst-assets/blob/ad8080d46d42fca909562572cfa14a86f00eb945/NOTICE",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/wordperfect/vendor/libwpd-src/LICENSE.xberg-shim-MIT.txt",
+      "sha256": "081ff9e2978a771dc90f475aa5130871d85debdf120683cbb860b41662641272",
+      "bytes": 1077,
+      "kind": "original-license-grant",
+      "component": "WordPerfect native runtime",
+      "declaredLicense": "MIT",
+      "source": "Fixed public source archives and original materials in NATIVE_PROVENANCE.json",
+      "initialOccurrences": 5
+    },
+    {
+      "sourcePath": "packages/renderers/wordperfect/vendor/libwpd-src/PROVENANCE.md",
+      "sha256": "ffb0692e8addbecc36081ce7beefedc2ec29d4bd559ba62e79794e58698e7826",
+      "bytes": 2238,
+      "kind": "generated-native-provenance",
+      "component": "WordPerfect native runtime",
+      "declaredLicense": null,
+      "source": "Fixed public source archives and original materials in NATIVE_PROVENANCE.json",
+      "initialOccurrences": 4
+    },
+    {
+      "sourcePath": "packages/renderers/geometry-engine/dist/vendor/license.occt.txt",
+      "sha256": "090f8eb6ba63e72887c1f89b009fb1656cfda02d83b6e9805b20468520a5d77f",
+      "bytes": 26936,
+      "kind": "original-license-grant",
+      "component": "OCCT@7.6.1",
+      "declaredLicense": "LGPL-2.1-only",
+      "source": "https://github.com/Open-Cascade-SAS/OCCT/tree/d2abb6d844231cb8f29be6894440874a4700e4a5",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/3d/licenses/laz-perf-PROVENANCE.md",
+      "sha256": "02d22c26502b635ada1e9c23ba8c35deb6b18fc87c3b446394e39a1111f347b7",
+      "bytes": 1285,
+      "kind": "generated-runtime-provenance",
+      "component": "laz-perf@0.0.7",
+      "declaredLicense": null,
+      "source": "Exact public upstream Git blobs; original CRLF and checkout LF are distinguished",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/3d/licenses/lerc-NOTICE",
+      "sha256": "dec77a45efad63cb8d1792eb6793fd5038fb9a6672d19f3e7cf3288ef543680a",
+      "bytes": 656,
+      "kind": "original-upstream-notice",
+      "component": "lerc@3.0.0",
+      "declaredLicense": "Apache-2.0",
+      "source": "Exact public upstream Git blobs; original CRLF and checkout LF are distinguished",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/3d/licenses/lerc-PROVENANCE.md",
+      "sha256": "fea92e9188f97b94a9d96b0eef7d7e5702b40d09f6aa620fc43e03edad914418",
+      "bytes": 2249,
+      "kind": "generated-runtime-provenance",
+      "component": "lerc@3.0.0",
+      "declaredLicense": null,
+      "source": "Exact public upstream Git blobs; original CRLF and checkout LF are distinguished",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/dicom/THIRD_PARTY_NOTICES.md",
+      "sha256": "9f3659d9a88b598b8dcc85a025188f1e6bb456c3a400e24a00da16bd53c9e404",
+      "bytes": 14378,
+      "kind": "generated-attribution-inventory",
+      "component": "DICOM source inventory",
+      "declaredLicense": null,
+      "source": "Deterministic source ledger template; actual runtime receipt remains distinct",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/media/dist/vendor/mp4v/AOSP-NOTICE.txt",
+      "sha256": "92d336191c9ec51cc39f0b2fc44e5153f685c661c3d1e44e088fad4e68358ab2",
+      "bytes": 10694,
+      "kind": "original-license-grant",
+      "component": "AOSP MP4V",
+      "declaredLicense": "Apache-2.0",
+      "source": "https://android.googlesource.com/platform/frameworks/av/+/e2f098935447ca4945946de5cb69db843fe3f003/",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/media/dist/vendor/mp4v/EMSCRIPTEN-LICENSE.txt",
+      "sha256": "2fd38dc06e484cdd7a3f1e2f6577f5d53062052a2fd85131b56b89fbd673731c",
+      "bytes": 5091,
+      "kind": "original-license-grant",
+      "component": "Emscripten project license only",
+      "declaredLicense": "MIT OR NCSA",
+      "source": "https://android.googlesource.com/platform/frameworks/av/+/e2f098935447ca4945946de5cb69db843fe3f003/",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/pdf/dist/vendor/pdfjs/NOTICE",
+      "sha256": "c4f140a3a00d31c38813a6b2144da7acba5809b8c7b15cfd2eeec99310ec60fe",
+      "bytes": 197,
+      "kind": "generated-runtime-provenance",
+      "component": "pdfjs-dist@5.4.624",
+      "declaredLicense": null,
+      "source": "stage-pdfjs-runtime.mjs exact deterministic template",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/signature/THIRD_PARTY_NOTICES.md",
+      "sha256": "4dcf2fddbc8c9e7b86c615f56d2a9a4c2596675c8ede7eb77250a518e31da577",
+      "bytes": 870,
+      "kind": "generated-attribution-inventory",
+      "component": "rPGP and JSZip source profile",
+      "declaredLicense": null,
+      "source": "Normal source book generator; public original Cargo/npm materials",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/libxml2-xsd-Copyright.txt",
+      "sha256": "c99aae1afe013e50b8b3701e089222b351258043c3025b64053a233fd25b4be7",
+      "bytes": 1273,
+      "kind": "original-license-grant",
+      "component": "XML optional profiles",
+      "declaredLicense": "MIT",
+      "source": "Immutable original upstream references retained in XML profile NOTICE",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/libxml2-xslt-Copyright.txt",
+      "sha256": "5d4873884a890122a4b9b20ad56ac6f7da1d796a5bfcf04a427970ac96217626",
+      "bytes": 1314,
+      "kind": "original-license-grant",
+      "component": "XML optional profiles",
+      "declaredLicense": "MIT",
+      "source": "Immutable original upstream references retained in XML profile NOTICE",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/libxslt-Copyright.txt",
+      "sha256": "7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819",
+      "bytes": 2968,
+      "kind": "original-license-grant",
+      "component": "XML optional profiles",
+      "declaredLicense": "MIT",
+      "source": "Immutable original upstream references retained in XML profile NOTICE",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/NOTICE.md",
+      "sha256": "6a926c623a4b1df24584110f596f60dcfcdaa2e99c01e88ba16720b7e30eb2f4",
+      "bytes": 2356,
+      "kind": "generated-runtime-provenance",
+      "component": "XML optional profiles",
+      "declaredLicense": null,
+      "source": "Fixed public libxml2/libxslt commits and exact runtime publication versions in NOTICE",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/xmllint-wasm-COPYING.txt",
+      "sha256": "e98df1cfcec684393740037a0d82a2886b6a2c52518cab54072c29ee01755c2d",
+      "bytes": 1177,
+      "kind": "original-license-grant",
+      "component": "XML optional profiles",
+      "declaredLicense": "MIT",
+      "source": "Immutable original upstream references retained in XML profile NOTICE",
+      "initialOccurrences": 1
+    },
+    {
+      "sourcePath": "packages/renderers/text/licenses/xml-profiles/xslt-polyfill-LICENSE.txt",
+      "sha256": "54c3dd9f65fffc74f4cc1295e6cd23c4378d588d9073b6363e199547043f0747",
+      "bytes": 1498,
+      "kind": "original-license-grant",
+      "component": "XML optional profiles",
+      "declaredLicense": "BSD-3-Clause",
+      "source": "Immutable original upstream references retained in XML profile NOTICE",
+      "initialOccurrences": 1
+    }
+  ]
+}

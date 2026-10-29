@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "purpose": "Native source and linked runtime redistribution provenance",
+  "emscriptenVersion": "6.0.9",
+  "emscriptenCommit": "4e4223852a0835923411059a3929907d7df1232e",
+  "toolchainSource": "https://github.com/emscripten-core/emscripten/tree/4e4223852a0835923411059a3929907d7df1232e",
+  "zlibVersion": "1.3.2",
+  "zlibSource": "https://github.com/madler/zlib/tree/v1.3.2",
+  "zlibPortArchiveSha512": "16fea4df307a68cf0035858abe2fd550250618a97590e202037acd18a666f57afc10f8836cbbd472d54a0e76539d0e558cb26f059d53de52ff90634bbf4f47d4",
+  "linkedSystemArchives": [
+    "libc++.a",
+    "libc++abi.a",
+    "libc.a",
+    "libclang_rt.builtins.a",
+    "libdlmalloc.a",
+    "libz.a"
+  ],
+  "legalMaterials": [
+    {
+      "name": "Emscripten-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/LICENSE",
+      "officialCommit": "4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "620a78084fc7ca97c0b5dea9abf891f3ffcadfdbf305276f099c9c4e12fc1d86",
+      "bytes": 5093,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-Emscripten-LICENSE.txt"
+    },
+    {
+      "name": "Musl-COPYRIGHT.txt",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libc/musl/COPYRIGHT",
+      "officialCommit": "4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "b870108ec5e7790e9f9919064f1b9421d62d5f9b0e6c230c6adf7ea2da62e97b",
+      "bytes": 6196,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-Musl-COPYRIGHT.txt"
+    },
+    {
+      "name": "LLVM-libcxx-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libcxx/LICENSE.TXT",
+      "officialCommit": "4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "539dd7aed86e8a4f12cbdd0e6c50c189c7d74847e4fecc64ce2c6ee3a01da38b",
+      "bytes": 16703,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-LLVM-libcxx-LICENSE.txt"
+    },
+    {
+      "name": "LLVM-libcxxabi-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/libcxxabi/LICENSE.TXT",
+      "officialCommit": "4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "e2b35be49f7284a45b7baca8fc7b3ab7440e7902392b2528a457816b5bb2a15c",
+      "bytes": 16706,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-LLVM-libcxxabi-LICENSE.txt"
+    },
+    {
+      "name": "LLVM-compiler-rt-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/compiler-rt/LICENSE.TXT",
+      "officialCommit": "4e4223852a0835923411059a3929907d7df1232e",
+      "sha256": "1a8f1058753f1ba890de984e48f0242a3a5c29a6a8f2ed9fd813f36985387e8d",
+      "bytes": 16708,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-LLVM-compiler-rt-LICENSE.txt"
+    },
+    {
+      "name": "Zlib-1.3.2-LICENSE.txt",
+      "url": "https://raw.githubusercontent.com/madler/zlib/v1.3.2/LICENSE",
+      "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+      "bytes": 1002,
+      "installedBytesMatchOfficial": true,
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-Zlib-1.3.2-LICENSE.txt"
+    },
+    {
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-dlmalloc-NOTICE.txt",
+      "source": "https://raw.githubusercontent.com/emscripten-core/emscripten/4e4223852a0835923411059a3929907d7df1232e/system/lib/dlmalloc.c",
+      "sha256": "8defa334f869217fe9d8eaa3fd91621d076ca66ca7fc7453419e286e3dabab72"
+    },
+    {
+      "distributedPath": "vendor/libwpd-src/LICENSE.toolchain-dlmalloc-CC0-1.0.txt",
+      "source": "https://creativecommons.org/publicdomain/zero/1.0/legalcode.txt",
+      "sha256": "a2010f343487d3f7618affe54f789f5487602331c0a8d03f49e9a7c547cf0499"
+    }
+  ],
+  "nativeOutputs": [
+    {
+      "path": "dist/libwpd.wasm",
+      "sha256": "bbfe0c7f712a357e3f9d11f9cf96d931e7cf4b9165d4379af78bf1bcb69333f0"
+    },
+    {
+      "path": "dist/libwpd.mjs",
+      "sha256": "ccd3267ce9cac2961bb6a500761753efa05c93563e7a5e46a31594cceb5e3096"
+    }
+  ],
+  "coveredSourcesModified": false,
+  "selectedCoveredLicense": "MPL-2.0",
+  "correspondingSourceCommit": "db5ff1624cb0307ebca7cafb2af8fa6c6f93f2b4"
+}

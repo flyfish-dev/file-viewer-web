@@ -1,0 +1,12 @@
+{
+  "repository": "nickstenning/marks",
+  "commit": "dce72cd7e5a09ceba5a5b713395bcd4db832b497",
+  "url": "https://raw.githubusercontent.com/nickstenning/marks/dce72cd7e5a09ceba5a5b713395bcd4db832b497/package.json",
+  "sha256": "3b048a653385c0d12da3460f43c348f22994b0c521a58178ae0280640c0f38a6",
+  "role": "predecessor author/license metadata; not a fabricated copyright notice",
+  "author": "Nick Stenning",
+  "declaredLicense": "MIT",
+  "inCurrentForkHistory": true,
+  "currentFork": "fchasen/marks",
+  "publicHistoryUrl": "https://api.github.com/repos/fchasen/marks/commits?per_page=100"
+}

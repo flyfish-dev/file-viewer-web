@@ -1,0 +1,24 @@
+{
+  "name": "path-webpack",
+  "version": "0.0.3",
+  "license": "MIT",
+  "author": "fchasen@gmail.com",
+  "registryAuthor": {
+    "name": "fchasen@gmail.com"
+  },
+  "registryUrl": "https://registry.npmjs.org/path-webpack/0.0.3",
+  "registryJsonSha256": "7143f557d4f092c7c0e7843a95b523e57f5844a6ecd6d01514a6638fd075dadd",
+  "tarballUrl": "https://registry.npmjs.org/path-webpack/-/path-webpack-0.0.3.tgz",
+  "integrity": "sha512-AmeDxedoo5svf7aB3FYqSAKqMxys014lVKBzy1o/5vv9CtU7U4wgGWL1dA2o6MOzcD53ScN4Jmiq6VbtLz1vIQ==",
+  "shasum": "ff6dec749eec5a94605c04d5f63fc55607a03a16",
+  "tarballSha256": "bf7dcd4a824b4a75a56b188c49361fa49e015f489a427fb5dda4a57cf0cdfa29",
+  "gitHead": "a8e7bf91e3646e3265c69fe4e8d414aad41b3e30",
+  "packageJsonSha256": "80ced94cd0276b29e3499ec7c07f1c65f66a6a957d1e01b1a47a45bdd04cfd22",
+  "independentLicenseFiles": [],
+  "status": {
+    "mitDeclaration": "verified",
+    "independentLicenseFile": "absent",
+    "noticeSupplement": "truthfully completed by normal notice generator"
+  },
+  "packageJsonBytes": 452
+}

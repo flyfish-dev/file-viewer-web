@@ -1,0 +1,10 @@
+{
+  "name": "@file-viewer/renderer-pdf",
+  "version": "3.3.1",
+  "license": "Apache-2.0",
+  "scopeChain": null,
+  "dependencies": {
+    "@file-viewer/core": "3.3.1",
+    "@fontsource-variable/noto-sans-sc": "5.3.1"
+  }
+}

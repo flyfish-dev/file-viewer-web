@@ -1,0 +1,17 @@
+{
+  "profile": "stet-conservative-lock",
+  "lock": "packages/renderers/design/source/postscript/Cargo.lock",
+  "output": "packages/renderers/design/LICENSES/Stet_NATIVE_THIRD_PARTY_LICENSES.json",
+  "runtimeFiles": [
+    "packages/renderers/design/runtime/postscript/stet_wasm_bg.wasm"
+  ],
+  "source": {
+    "repository": "https://github.com/AndyCappDev/stet",
+    "commit": "58c7066817f7939789c6f030515c02e94fb0353b",
+    "includesCoveredModifications": false,
+    "scope": "Unmodified upstream source and resources; only the documented downstream dependency lock is supplied."
+  },
+  "generationEntrypoint": "packages/renderers/design/scripts/collect-postscript-notices.mjs",
+  "upstreamProfile": "packages/renderers/design/source/postscript/upstream.json",
+  "cargoLockSha256": "828105d370044c45bd761c529c7f23a4d0822ff29ef32e82d201e9dbd6595793"
+}

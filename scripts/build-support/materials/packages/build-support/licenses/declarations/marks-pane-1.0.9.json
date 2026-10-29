@@ -1,0 +1,24 @@
+{
+  "name": "marks-pane",
+  "version": "1.0.9",
+  "license": "MIT",
+  "author": "Fred Chasen",
+  "registryAuthor": {
+    "name": "Fred Chasen"
+  },
+  "registryUrl": "https://registry.npmjs.org/marks-pane/1.0.9",
+  "registryJsonSha256": "52ed9687f6e5315eb85e937964262f045f3a10120c9665d6253b26e92a21ccb5",
+  "tarballUrl": "https://registry.npmjs.org/marks-pane/-/marks-pane-1.0.9.tgz",
+  "integrity": "sha512-Ahs4oeG90tbdPWwAJkAAoHg2lRR8lAs9mZXETNPO9hYg3AkjUJBKi1NQ4aaIQZVGrig7c/3NUV1jANl8rFTeMg==",
+  "shasum": "c0b5ab813384d8cd81faaeb3bbf3397dc809c1b3",
+  "tarballSha256": "db081b29beabd8c21be5b58e95f652c69f9d2f2439445ae8a5ce17d5b738cbb3",
+  "gitHead": "2f5bb3ccfb237a2575e12c4db9188651a0b21d9a",
+  "packageJsonSha256": "09ad68a28c8d7ec8f115d0d79a1f66f6626d089d7831b983eee23d8d59ed0898",
+  "independentLicenseFiles": [],
+  "status": {
+    "mitDeclaration": "verified",
+    "independentLicenseFile": "absent",
+    "noticeSupplement": "truthfully completed by normal notice generator"
+  },
+  "packageJsonBytes": 1272
+}

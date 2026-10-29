@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemaVersion": 1,
+  "contractId": "file-viewer-copy-assets-v2-public-contract",
+  "compatibilityPolicy": {
+    "legacyPackage": "file-viewer-copy-assets",
+    "unifiedPackage": "@file-viewer/cli",
+    "minimumLegacyNodeMajor": 18,
+    "versionCoupling": "exact",
+    "safeCorrectionsMayTightenLegacyBehavior": true
+  },
+  "entrypoints": {
+    "legacy": {
+      "bin": "file-viewer-copy-assets",
+      "argvPrefix": []
+    },
+    "unified": {
+      "bin": "file-viewer",
+      "argvPrefix": ["assets"]
+    },
+    "unifiedLegacyAlias": {
+      "bin": "file-viewer-copy-assets",
+      "argvPrefix": []
+    }
+  },
+  "fullPackages": [
+    "@file-viewer/jquery-full",
+    "@file-viewer/react-full",
+    "@file-viewer/react-legacy-full",
+    "@file-viewer/svelte-full",
+    "@file-viewer/vue2.6-full",
+    "@file-viewer/vue2.7-full",
+    "@file-viewer/vue3-full",
+    "@file-viewer/web-full"
+  ],
+  "fullPackagesWithExactLegacyDependency": [
+    "@file-viewer/jquery-full",
+    "@file-viewer/react-full",
+    "@file-viewer/react-legacy-full",
+    "@file-viewer/svelte-full",
+    "@file-viewer/vue2.6-full",
+    "@file-viewer/vue2.7-full",
+    "@file-viewer/vue3-full"
+  ],
+  "arguments": {
+    "positionalTarget": {
+      "maximum": 1,
+      "default": "public/file-viewer"
+    },
+    "flags": {
+      "--clean": "request replacement of the dedicated target",
+      "--confirm": "required together with --clean",
+      "--no-clean": "deprecated no-op alias for the default merge mode",
+      "--renderers <csv>": "copy a deterministic de-duplicated renderer asset subset",
+      "-h, --help": "print help without writing project files",
+      "-v, --version": "print the package version without writing project files"
+    }
+  },
+  "environment": {
+    "FILE_VIEWER_PUBLIC_DIR": "target override when no positional target is supplied",
+    "FILE_VIEWER_SKIP_ASSET_COPY": {
+      "truthyValues": ["1", "true"],
+      "effect": "successful no-op"
+    },
+    "INIT_CWD": "base directory for the default public/file-viewer target",
+    "precedence": [
+      "positional target",
+      "FILE_VIEWER_PUBLIC_DIR",
+      "INIT_CWD/public/file-viewer",
+      "process.cwd()/public/file-viewer"
+    ]
+  },
+  "exitCodes": {
+    "success": 0,
+    "usageOrRuntimeError": 1
+  },
+  "output": {
+    "runtimeManifest": "flyfish-viewer-assets.json",
+    "distributionManifest": "flyfish-viewer-manifest.json",
+    "legacySelectedManifest": "file-viewer-copy-assets.manifest.json",
+    "legacyReceipt": "file-viewer-copy-assets.receipt.json",
+    "ownerLedger": "file-viewer-assets.ledger.json",
+    "requirements": [
+      "runtime manifest schemaVersion remains 1",
+      "asset payload bytes are equivalent across legacy, unified, alias, and full-package entrypoints",
+      "integrity metadata is stable on an idempotent merge",
+      "adding owner receipts or the owner ledger is backward compatible"
+    ]
+  },
+  "incrementalAndConflictPolicy": {
+    "defaultMode": "transactional merge",
+    "preserveUnrelatedFiles": true,
+    "identicalUnownedFile": "keep and record as shared",
+    "differentUnownedFile": "fail without overwriting",
+    "modifiedManagedFile": "fail without overwriting",
+    "rendererSubsetMerge": "union copy groups without deleting earlier groups",
+    "idempotentRepeat": "do not rewrite receipts or manifests"
+  },
+  "securityPolicy": {
+    "cleanRequires": ["--clean", "--confirm"],
+    "cleanTargetBasename": "file-viewer",
+    "forbiddenCleanTargets": [
+      "filesystem root",
+      "current working directory",
+      "home directory",
+      "non-file-viewer directory"
+    ],
+    "rejectPathTraversal": true,
+    "rejectSymbolicLinkTargetOrDescendant": true,
+    "transactionalRollback": true
+  },
+  "legacyFullRendererIds": [
+    "adobe-animate-xfl-design",
+    "adobe-palette-design",
+    "adobe-xd-design",
+    "apple-keynote",
+    "apple-numbers",
+    "apple-pages",
+    "archive",
+    "cad",
+    "chm",
+    "data-asset",
+    "drawing",
+    "illustrator-pdf-design",
+    "indesign-exchange-design",
+    "indesign-idml-design",
+    "indesign-native-design",
+    "model",
+    "office-hangul",
+    "office-presentation",
+    "office-presentation-binary",
+    "office-word-openxml",
+    "office-wordperfect",
+    "pdf",
+    "photoshop-design",
+    "photoshop-resource-design",
+    "postscript-design",
+    "spreadsheet-openxml",
+    "typst"
+  ],
+  "legacyFullAssetRoots": [
+    "vendor/chm/chm.worker.js",
+    "vendor/chm/chm_wasm.js",
+    "vendor/chm/chm_wasm_bg.wasm",
+    "vendor/design/LICENSE.Carlito-OFL-1.1.txt",
+    "vendor/design/LICENSE.Cousine-OFL-1.1.txt",
+    "vendor/design/LICENSE.NotoSansSymbols2-OFL-1.1.txt",
+    "vendor/design/LICENSE.Tinos-OFL-1.1.txt",
+    "vendor/design/LICENSE.ag-psd-MIT.txt",
+    "vendor/design/LICENSE.base64-js-MIT.txt",
+    "vendor/design/LICENSE.fzstd-MIT.txt",
+    "vendor/design/LICENSE.illustrator-pgf-MIT.txt",
+    "vendor/design/LICENSE.introspect-wasm-MPL-2.0.txt",
+    "vendor/design/LICENSE.pako-MIT.txt",
+    "vendor/design/LICENSE.saxes-ISC.txt",
+    "vendor/design/LICENSE.stet-Apache-2.0.txt",
+    "vendor/design/LICENSE.stet-MIT.txt",
+    "vendor/design/LICENSE.Stet-URW-Fonts-OFL-1.1.txt",
+    "vendor/design/LICENSE.Stet-CMYK-Profile.txt",
+    "vendor/design/LICENSE.CC0-1.0.txt",
+    "vendor/design/Stet_NATIVE_THIRD_PARTY_LICENSES.json",
+    "vendor/design/LICENSE.webtoon-psd-MIT.txt",
+    "vendor/design/LICENSE.xmlchars-MIT.txt",
+    "vendor/design/LICENSE.xmldom-MIT.txt",
+    "vendor/design/THIRD_PARTY_NOTICES.md",
+    "vendor/design/adobe-container.worker.js",
+    "vendor/design/adobe-resource.worker.js",
+    "vendor/design/idml.worker.js",
+    "vendor/design/illustrator-pgf.worker.js",
+    "vendor/design/paged_introspect_wasm_bg.wasm",
+    "vendor/design/photoshop.worker.js",
+    "vendor/design/postscript.worker.js",
+    "vendor/design/stet_wasm_bg.wasm",
+    "vendor/docx/docx.worker.js",
+    "vendor/docx/jszip.min.js",
+    "vendor/drawio/",
+    "vendor/drawio/viewer-static.min.js",
+    "vendor/hangul/hangul.worker.js",
+    "vendor/iwork/iwork.worker.js",
+    "vendor/libarchive/libarchive.wasm",
+    "vendor/libarchive/worker-bundle.js",
+    "vendor/pdf/cmaps/",
+    "vendor/pdf/fonts/",
+    "vendor/pdf/pdf.worker.mjs",
+    "vendor/pdf/standard_fonts/",
+    "vendor/pdf/wasm/",
+    "vendor/ppt/LICENSE",
+    "vendor/ppt/NOTICE",
+    "vendor/ppt/frame-cache.mjs",
+    "vendor/ppt/index.mjs",
+    "vendor/ppt/manifest.json",
+    "vendor/ppt/package.json",
+    "vendor/ppt/ppt-font-cjk.otf",
+    "vendor/ppt/ppt-native.wasm",
+    "vendor/ppt/worker.mjs",
+    "vendor/pptx/pptx.worker.js",
+    "vendor/wordperfect/libwpd.mjs",
+    "vendor/wordperfect/libwpd.wasm",
+    "vendor/wordperfect/wordperfect.worker.js",
+    "vendor/xlsx/sheet.worker.js",
+    "wasm/cad/0.8.0/",
+    "wasm/cad/0.8.0/dwfv-render.wasm",
+    "wasm/cad/0.8.0/dwg-worker.js",
+    "wasm/cad/0.8.0/libredwg-web.js",
+    "wasm/cad/0.8.0/libredwg-web.wasm",
+    "wasm/cad/0.8.1/",
+    "wasm/cad/0.8.1/dwfv-render.wasm",
+    "wasm/cad/0.8.1/dwg-worker.js",
+    "wasm/cad/0.8.1/libredwg-web.js",
+    "wasm/cad/0.8.1/libredwg-web.wasm",
+    "wasm/cad/dwfv-render.wasm",
+    "wasm/cad/dwg-worker.js",
+    "wasm/cad/libredwg-web.js",
+    "wasm/cad/libredwg-web.wasm",
+    "wasm/data/sql-wasm.wasm",
+    "wasm/model/LICENSE.occt-import-js.txt",
+    "wasm/model/LICENSE.occt.txt",
+    "wasm/model/occt-import-js.js",
+    "wasm/model/occt-import-js.wasm",
+    "wasm/model/occt-worker.js",
+    "wasm/typst/fonts/",
+    "wasm/typst/typst_ts_renderer_bg.wasm",
+    "wasm/typst/typst_ts_web_compiler_bg.wasm"
+  ],
+  "registryReleaseGate": {
+    "package": "file-viewer-copy-assets",
+    "historicalRegression": {
+      "version": "2.4.0",
+      "observedFailure": "The machine-default https://registry.npmmirror.com mirror temporarily returned E404 or ETARGET during the v3 release rehearsal.",
+      "statusAtContractCreation": "The authoritative https://registry.npmjs.org/ resolves 2.4.0; official-registry truth and mirror propagation must be reported separately."
+    },
+    "candidateRequirements": [
+      "exact package version resolves from the production npm registry",
+      "standalone CLI cold-installs and copies the full legacy matrix",
+      "every full package cold-installs with the exact same-version dependency",
+      "installed full-package file-viewer-copy-assets bin copies the full legacy matrix"
+    ]
+  },
+  "documentation": {
+    "legacyReadmes": [
+      "packages/tools/copy-assets/README.md",
+      "packages/tools/copy-assets/README.en.md"
+    ],
+    "unifiedReadmes": ["packages/tools/cli/README.md", "packages/tools/cli/README.en.md"],
+    "requiredTopics": [
+      "file-viewer assets",
+      "file-viewer-copy-assets",
+      "--clean --confirm",
+      "--renderers",
+      "FILE_VIEWER_PUBLIC_DIR",
+      "FILE_VIEWER_SKIP_ASSET_COPY"
+    ]
+  }
+}

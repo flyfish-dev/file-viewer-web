@@ -1,0 +1,94 @@
+{
+  "elkjs@0.9.3": {
+    "license": "EPL-2.0",
+    "scope": "Unmodified exact published elkjs runtime. Public preferred ELK Java source is the release-declared v0.9.1 base plus PR 955, with conservative original Maven source material notices.",
+    "sources": [
+      {
+        "name": "elkjs-source.tar.gz",
+        "url": "https://codeload.github.com/kieler/elkjs/tar.gz/a8304cf79fde75bc2ab1a89d28320f53f8637436",
+        "bytes": 1847454,
+        "sha256": "850418c89dd35dbd94ea0100a7becbc09d320c153fda4c4ea4a88c67e12121a9"
+      },
+      {
+        "name": "elk-java-base.tar.gz",
+        "url": "https://codeload.github.com/eclipse-elk/elk/tar.gz/62d5909f96fad541bc101ad52dabaece6b7eab7e",
+        "bytes": 9302222,
+        "sha256": "51212e3edb105296e2ec8e288e6097d3fc124d25af98a5a64f09655aa1fca842"
+      },
+      {
+        "name": "elk-pr955.patch",
+        "url": "https://github.com/eclipse-elk/elk/commit/7ca51784e42a24201f29bc13e458728b6fc61cdc.patch",
+        "bytes": 10697,
+        "sha256": "aea81c792ac69178f962bf9f3acd99d7d2591ec316daa286b74cdbc7696ff847"
+      },
+      {
+        "name": "org.eclipse.xtext-2.28.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/org/eclipse/xtext/org.eclipse.xtext/2.28.0/org.eclipse.xtext-2.28.0-sources.jar",
+        "bytes": 1499442,
+        "sha256": "bdfba536374f2815546d7866305006a9ef0e82a7045effe72f9978f379a8a00c"
+      },
+      {
+        "name": "org.eclipse.xtext.util-2.28.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/org/eclipse/xtext/org.eclipse.xtext.util/2.28.0/org.eclipse.xtext.util-2.28.0-sources.jar",
+        "bytes": 145643,
+        "sha256": "81d8779ee9d3ada4666240cb51e5c20b909a7f701109ac92c8859d0692afa3ad"
+      },
+      {
+        "name": "org.eclipse.xtext.xbase.lib-2.28.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/org/eclipse/xtext/org.eclipse.xtext.xbase.lib/2.28.0/org.eclipse.xtext.xbase.lib-2.28.0-sources.jar",
+        "bytes": 106059,
+        "sha256": "2b35e9ccd4308f605e213371bb26f458b6a84bbd1e3a13cecaac0eba607db69f"
+      },
+      {
+        "name": "org.eclipse.xtend.lib-2.28.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/org/eclipse/xtend/org.eclipse.xtend.lib/2.28.0/org.eclipse.xtend.lib-2.28.0-sources.jar",
+        "bytes": 123863,
+        "sha256": "899f1ffb8d761f11bb5f7b74e46cdd790bd8f9bc398221cd62524eea9344d926"
+      },
+      {
+        "name": "emf-common-2.12.4-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/genmymodel/emf/gwt/emf-common/2.12.4/emf-common-2.12.4-sources.jar",
+        "bytes": 138710,
+        "sha256": "8dfc4e97ca8eee5474927e2b0c5f3bdbd9a52dcd5dff8c0b433b1e938b843bbe"
+      },
+      {
+        "name": "emf-ecore-2.12.4-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/genmymodel/emf/gwt/emf-ecore/2.12.4/emf-ecore-2.12.4-sources.jar",
+        "bytes": 655830,
+        "sha256": "dd3b8c1c3bd0a27c1fbba908bcf0ff21a999148da4e68b3546bcde1dbce7b13a"
+      },
+      {
+        "name": "gwt-user-2.10.0-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/org/gwtproject/gwt-user/2.10.0/gwt-user-2.10.0-sources.jar",
+        "bytes": 6567401,
+        "sha256": "731ff22188418a1dfaca30c8956ea107e87219ba7c4fb32d2f059ede317660b9"
+      },
+      {
+        "name": "guava-gwt-31.1-jre-sources.jar",
+        "url": "https://repo.maven.apache.org/maven2/com/google/guava/guava-gwt/31.1-jre/guava-gwt-31.1-jre-sources.jar",
+        "bytes": 1212945,
+        "sha256": "d7e52f41ac6ea010787b5b3c8db7ffb54375d8d0c39c98c2badc9c38de7bf14b"
+      }
+    ],
+    "upstreamBuildLimitation": "Official build scripts used master and a Melk 0.10.0-SNAPSHOT compiler; exact upstream compiler provenance and bit-identical regeneration are not claimed."
+  },
+  "occt-import-js@0.0.23": {
+    "license": "LGPL-2.1-only",
+    "scope": "Exact published wrapper WASM and public preferred wrapper/OCCT library sources; no private renderer source is included.",
+    "sources": [
+      {
+        "name": "occt-import-js-source.tar.gz",
+        "url": "https://codeload.github.com/kovacsv/occt-import-js/tar.gz/c2148e54b456b571238d35cac037d304053d64b2",
+        "bytes": 4399573,
+        "sha256": "2bd3799b2ac56cbf3f0df6300a51c8890e137bd001462702b356f621e33ff192"
+      },
+      {
+        "name": "OCCT-7.6.1-source.tar.gz",
+        "url": "https://codeload.github.com/Open-Cascade-SAS/OCCT/tar.gz/d2abb6d844231cb8f29be6894440874a4700e4a5",
+        "bytes": 48218968,
+        "sha256": "2715d89a1bc44dfd34dab88f729c445ea93f6b57d6539b0c89614a80ae144a6c"
+      }
+    ],
+    "upstreamBuildLimitation": "Emscripten 3.1.69 is named by public setup script. Actual npm binary compiler provenance is not independently recovered; host IIFE relinking is a separate validation gate."
+  }
+}
