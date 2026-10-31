@@ -1,0 +1,7 @@
+PDF.js browser runtime
+
+Package: pdfjs-dist@5.4.624
+Source: https://github.com/mozilla/pdf.js
+License: Apache-2.0 (see LICENSE)
+
+The upstream npm package does not contain a standalone NOTICE file.
