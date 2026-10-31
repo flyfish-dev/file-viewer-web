@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-18T03:41:55.432Z",
+  "generatedAt": "2026-10-31T04:42:38.240Z",
   "rendererAssetManifests": [
     {
       "rendererId": "chm",
@@ -405,9 +405,9 @@
           "kind": "script",
           "target": "public",
           "required": true,
-          "defaultPath": "vendor/ppt/index.mjs",
+          "defaultPath": "vendor/ppt/dist/pptjs.mjs",
           "optionPath": "presentation.pptModuleUrl",
-          "description": "Official @file-viewer/ppt 0.3 browser entry for PowerPoint 97–2003 preview."
+          "description": "Self-hosted TypeScript PPT standalone module for PowerPoint 97–2003 preview."
         },
         {
           "id": "ppt-worker",
@@ -415,38 +415,18 @@
           "kind": "worker",
           "target": "public",
           "required": true,
-          "defaultPath": "vendor/ppt/worker.mjs",
+          "defaultPath": "vendor/ppt/dist/pptjs.worker.js",
           "optionPath": "presentation.pptWorkerUrl",
-          "description": "Official @file-viewer/ppt 0.3 module Worker."
+          "description": "TypeScript PPT parsing Worker; layout and Canvas rendering use the main thread."
         },
         {
-          "id": "ppt-frame-cache",
+          "id": "ppt-runtime-dist",
           "rendererId": "office-presentation-binary",
-          "kind": "script",
+          "kind": "directory",
           "target": "public",
           "required": true,
-          "defaultPath": "vendor/ppt/frame-cache.mjs",
-          "description": "Bounded IndexedDB frame cache imported by the binary-PPT Worker."
-        },
-        {
-          "id": "ppt-wasm",
-          "rendererId": "office-presentation-binary",
-          "kind": "wasm",
-          "target": "public",
-          "required": true,
-          "defaultPath": "vendor/ppt/ppt-native.wasm",
-          "optionPath": "presentation.pptWasmUrl",
-          "description": "Official @file-viewer/ppt 0.3 native WebAssembly parser and renderer."
-        },
-        {
-          "id": "ppt-cjk-font",
-          "rendererId": "office-presentation-binary",
-          "kind": "font",
-          "target": "public",
-          "required": true,
-          "defaultPath": "vendor/ppt/ppt-font-cjk.otf",
-          "optionPath": "presentation.pptFontUrl",
-          "description": "CJK font pack verified and loaded by the binary-PPT runtime."
+          "defaultPath": "vendor/ppt/dist",
+          "description": "Unmodified compiled JavaScript and declarations from the installed PPT package."
         },
         {
           "id": "ppt-runtime-manifest",
@@ -454,7 +434,7 @@
           "kind": "metadata",
           "target": "public",
           "required": true,
-          "defaultPath": "vendor/ppt/manifest.json",
+          "defaultPath": "vendor/ppt/dist/manifest.json",
           "description": "Integrity and edition metadata for the official binary-PPT runtime."
         },
         {
@@ -465,6 +445,15 @@
           "required": true,
           "defaultPath": "vendor/ppt/package.json",
           "description": "Package identity metadata for the official binary-PPT runtime."
+        },
+        {
+          "id": "ppt-runtime-readme",
+          "rendererId": "office-presentation-binary",
+          "kind": "metadata",
+          "target": "public",
+          "required": true,
+          "defaultPath": "vendor/ppt/README.md",
+          "description": "Usage and supported-format limits shipped with the PPT runtime."
         },
         {
           "id": "ppt-runtime-license",
@@ -481,7 +470,7 @@
           "kind": "license",
           "target": "public",
           "required": true,
-          "defaultPath": "vendor/ppt/NOTICE",
+          "defaultPath": "vendor/ppt/NOTICE.md",
           "description": "Notices shipped by the independently versioned @file-viewer/ppt package."
         }
       ]
@@ -1398,7 +1387,7 @@
   ],
   "validation": {
     "valid": true,
-    "checkedAt": "2026-10-18T03:41:55.431Z",
+    "checkedAt": "2026-10-31T04:42:38.240Z",
     "assets": [
       {
         "id": "chm-worker",
@@ -1776,9 +1765,9 @@
         "kind": "script",
         "target": "public",
         "required": true,
-        "relativePath": "vendor/ppt/index.mjs",
+        "relativePath": "vendor/ppt/dist/pptjs.mjs",
         "exists": true,
-        "description": "Official @file-viewer/ppt 0.3 browser entry for PowerPoint 97–2003 preview."
+        "description": "Self-hosted TypeScript PPT standalone module for PowerPoint 97–2003 preview."
       },
       {
         "id": "ppt-worker",
@@ -1786,39 +1775,19 @@
         "kind": "worker",
         "target": "public",
         "required": true,
-        "relativePath": "vendor/ppt/worker.mjs",
+        "relativePath": "vendor/ppt/dist/pptjs.worker.js",
         "exists": true,
-        "description": "Official @file-viewer/ppt 0.3 module Worker."
+        "description": "TypeScript PPT parsing Worker; layout and Canvas rendering use the main thread."
       },
       {
-        "id": "ppt-frame-cache",
+        "id": "ppt-runtime-dist",
         "rendererId": "office-presentation-binary",
-        "kind": "script",
+        "kind": "directory",
         "target": "public",
         "required": true,
-        "relativePath": "vendor/ppt/frame-cache.mjs",
+        "relativePath": "vendor/ppt/dist",
         "exists": true,
-        "description": "Bounded IndexedDB frame cache imported by the binary-PPT Worker."
-      },
-      {
-        "id": "ppt-wasm",
-        "rendererId": "office-presentation-binary",
-        "kind": "wasm",
-        "target": "public",
-        "required": true,
-        "relativePath": "vendor/ppt/ppt-native.wasm",
-        "exists": true,
-        "description": "Official @file-viewer/ppt 0.3 native WebAssembly parser and renderer."
-      },
-      {
-        "id": "ppt-cjk-font",
-        "rendererId": "office-presentation-binary",
-        "kind": "font",
-        "target": "public",
-        "required": true,
-        "relativePath": "vendor/ppt/ppt-font-cjk.otf",
-        "exists": true,
-        "description": "CJK font pack verified and loaded by the binary-PPT runtime."
+        "description": "Unmodified compiled JavaScript and declarations from the installed PPT package."
       },
       {
         "id": "ppt-runtime-manifest",
@@ -1826,7 +1795,7 @@
         "kind": "metadata",
         "target": "public",
         "required": true,
-        "relativePath": "vendor/ppt/manifest.json",
+        "relativePath": "vendor/ppt/dist/manifest.json",
         "exists": true,
         "description": "Integrity and edition metadata for the official binary-PPT runtime."
       },
@@ -1839,6 +1808,16 @@
         "relativePath": "vendor/ppt/package.json",
         "exists": true,
         "description": "Package identity metadata for the official binary-PPT runtime."
+      },
+      {
+        "id": "ppt-runtime-readme",
+        "rendererId": "office-presentation-binary",
+        "kind": "metadata",
+        "target": "public",
+        "required": true,
+        "relativePath": "vendor/ppt/README.md",
+        "exists": true,
+        "description": "Usage and supported-format limits shipped with the PPT runtime."
       },
       {
         "id": "ppt-runtime-license",
@@ -1856,7 +1835,7 @@
         "kind": "license",
         "target": "public",
         "required": true,
-        "relativePath": "vendor/ppt/NOTICE",
+        "relativePath": "vendor/ppt/NOTICE.md",
         "exists": true,
         "description": "Notices shipped by the independently versioned @file-viewer/ppt package."
       },

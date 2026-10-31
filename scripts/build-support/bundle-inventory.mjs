@@ -60,7 +60,7 @@ export async function writeBundleInventory(inputs, output, { base = process.cwd(
   }
   const receipt = {
     schemaVersion: 1, purpose: 'private-actual-bundle-input-evidence',
-    sourceLockSha256: "dccfd477c5596aa5ec1d7407ef6f6c59c6c20c7177985b114ceb68faa78b67cf",
+    sourceLockSha256: "086958bf2d4269dbd3e7121eabc95287e41b68414b6daf43b3685dbd3aea2921",
     packages: [...packages.values()].sort((a,b) => a.name.localeCompare(b.name) || a.version.localeCompare(b.version)), files, virtualInputs,
   }
   await mkdir(dirname(output), { recursive: true })

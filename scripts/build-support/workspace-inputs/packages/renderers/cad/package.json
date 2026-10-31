@@ -1,10 +1,10 @@
 {
   "name": "@file-viewer/renderer-cad",
-  "version": "3.3.1",
+  "version": "3.3.3",
   "license": "Apache-2.0",
   "scopeChain": null,
   "dependencies": {
-    "@file-viewer/core": "3.3.1",
+    "@file-viewer/core": "3.3.3",
     "@flyfish-dev/cad-viewer": "0.8.3"
   }
 }
